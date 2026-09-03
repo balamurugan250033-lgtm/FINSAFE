@@ -20,6 +20,46 @@ DebtGuard 2.0 is a comprehensive risk intelligence system that scans customer ba
 - **Risk Inspector**: Interactive account analysis with transaction audit trail
 - **JSON Display**: Raw scan data visualization
 
+### Integrated FinShield AI Architecture
+
+FinShield AI is the operator-facing financial wellness dashboard. DebtGuard 2.0 provides the real-time Account Aggregator (AA) Early Warning System as a dedicated feature inside FinShield's `AA EWS` workspace.
+
+```mermaid
+flowchart LR
+  AA[Account Aggregator transaction stream] --> API[FastAPI EWS API]
+  API --> VALIDATE[Pydantic validation]
+  VALIDATE --> ENGINE[DebtGuard Detection Engine]
+  ENGINE --> VELOCITY[Debt Velocity calculation]
+  ENGINE --> RULES[Rapid stacking and shadow lending rules]
+  VELOCITY --> RESULT[EWS scan result]
+  RULES --> RESULT
+  RESULT --> UI[FinShield AI AA EWS workspace]
+  UI --> KPI[Velocity and exposure KPIs]
+  UI --> TABLE[Portfolio risk table]
+  UI --> ACTIONS[Assistive intervention actions]
+```
+
+#### Request and response flow
+
+1. An AA-linked account sends a JSON payload containing the account identity and raw `CREDIT`/`DEBIT` transactions.
+2. FastAPI validates the payload with the `Transaction` and `AccountPayload` Pydantic models.
+3. The EWS engine calculates Debt Velocity from NBFC disbursals across a 14-day window.
+4. Detection rules identify `RAPID_LOAN_STACKING` and `SHADOW_LENDING_PATTERN_DETECTED` signals.
+5. The engine returns a risk tier, explainable flags, and a supportive intervention recommendation.
+6. FinShield renders the result in the `AA EWS` workspace and offers actions such as `TRIGGER_FINANCIAL_FIRST_AID_OFFER` for human review.
+
+#### Main components
+
+| Component | Responsibility |
+| --- | --- |
+| `main.py` | FastAPI app, CORS, Pydantic models, EWS scoring engine, mock portfolio, and scan endpoints |
+| `finshield-ai.html` | FinShield dashboard, customer risk views, AA EWS portfolio, consent simulation, and intervention toasts |
+| `static/index.html` | Standalone DebtGuard EWS dashboard for direct backend demonstrations |
+| `/api/v1/ews/scan` | Scores one AA account payload in real time |
+| `/api/v1/ews/mock-portfolio` | Supplies three deterministic demo accounts for the FinShield AA EWS view |
+
+Risk outputs are assistive signals for authorized human review. The system does not automatically reject credit or deny a financial service.
+
 ---
 
 ## 🚀 Quick Start
