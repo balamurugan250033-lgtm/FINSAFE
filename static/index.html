@@ -1,855 +1,279 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DebtGuard 2.0 - Enterprise Risk Intelligence</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'neon-blue': '#00d9ff',
-                        'neon-purple': '#b300ff',
-                        'neon-red': '#ff0066',
-                        'neon-yellow': '#ffcc00',
-                        'dark-bg': '#0a0e27',
-                        'dark-panel': '#131829',
-                        'dark-border': '#1e2749',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            font-family: 'Courier New', monospace;
-            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-        }
-        
-        .neon-glow {
-            text-shadow: 0 0 10px rgba(0, 217, 255, 0.8),
-                         0 0 20px rgba(0, 217, 255, 0.6);
-        }
-        
-        .neon-border {
-            border: 1px solid rgba(0, 217, 255, 0.3);
-            box-shadow: inset 0 0 15px rgba(0, 217, 255, 0.1),
-                        0 0 15px rgba(0, 217, 255, 0.1);
-        }
-        
-        .metric-card {
-            background: linear-gradient(135deg, rgba(19, 24, 41, 0.8) 0%, rgba(30, 39, 73, 0.8) 100%);
-            backdrop-filter: blur(10px);
-            border-radius: 8px;
-            padding: 20px;
-            border: 1px solid rgba(0, 217, 255, 0.2);
-        }
-        
-        .risk-row {
-            transition: all 0.2s ease;
-            cursor: pointer;
-            border-left: 3px solid transparent;
-        }
-        
-        .risk-row:hover {
-            background-color: rgba(0, 217, 255, 0.1);
-            border-left-color: #00d9ff;
-        }
-        
-        .risk-row.critical { border-left-color: #ff0066; }
-        .risk-row.high { border-left-color: #ff6600; }
-        .risk-row.medium { border-left-color: #ffcc00; }
-        .risk-row.low { border-left-color: #00ff00; }
-        
-        .flag-badge {
-            display: inline-block;
-            background: rgba(255, 0, 102, 0.2);
-            border: 1px solid #ff0066;
-            color: #ff0066;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin-right: 8px;
-            margin-bottom: 4px;
-        }
-        
-        .json-display {
-            background: rgba(10, 14, 39, 0.9);
-            border: 1px solid rgba(0, 217, 255, 0.2);
-            border-radius: 4px;
-            padding: 16px;
-            font-size: 0.8rem;
-            max-height: 400px;
-            overflow-y: auto;
-            color: #00d9ff;
-            font-family: 'Courier New', monospace;
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
-        
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        
-        .status-critical {
-            background: rgba(255, 0, 102, 0.3);
-            color: #ff0066;
-            border: 1px solid #ff0066;
-        }
-        
-        .status-high {
-            background: rgba(255, 102, 0, 0.3);
-            color: #ff6600;
-            border: 1px solid #ff6600;
-        }
-        
-        .status-medium {
-            background: rgba(255, 204, 0, 0.3);
-            color: #ffcc00;
-            border: 1px solid #ffcc00;
-        }
-        
-        .status-low {
-            background: rgba(0, 217, 255, 0.2);
-            color: #00d9ff;
-            border: 1px solid #00d9ff;
-        }
-        
-        .metric-value {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #00d9ff;
-            text-shadow: 0 0 10px rgba(0, 217, 255, 0.8);
-        }
-        
-        .metric-label {
-            color: #7a8aa0;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .tab-button {
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            padding: 12px 24px;
-            transition: all 0.3s;
-        }
-        
-        .tab-button.active {
-            border-bottom-color: #00d9ff;
-            color: #00d9ff;
-            text-shadow: 0 0 5px rgba(0, 217, 255, 0.6);
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal.active {
-            display: flex;
-        }
-        
-        .modal-content {
-            background: #131829;
-            border: 1px solid #00d9ff;
-            border-radius: 8px;
-            padding: 30px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DebtGuard 2.0 — RBI Early Warning System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            emerald: { 400:'#34d399',500:'#10b981',600:'#059669' },
+            rose: { 400:'#fb7185',500:'#f43f5e',600:'#e11d48' },
+            amber: { 400:'#fbbf24',500:'#f59e0b' },
+            slate: { 900:'#0f172a',950:'#020617' },
+          },
+          fontFamily: { sans:['Inter','ui-sans-serif','system-ui'], mono:['ui-monospace','Menlo','monospace'] },
+          boxShadow: {
+            neon: '0 0 0 3px theme(colors.emerald.500/0.25), 0 0 16px theme(colors.emerald.500/0.4)',
+            'neon-rose':'0 0 0 3px theme(colors.rose.500/0.25), 0 0 16px theme(colors.rose.500/0.4)',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body { background: radial-gradient(1200px 600px at 70% -10%, theme(colors.emerald.500/0.04) 0%, transparent 60%), theme(colors.slate.900); }
+    .phone-frame { background: radial-gradient(ellipse at center, #1e293b 0%, #0f172a 100%); }
+  </style>
 </head>
-<body class="text-gray-300 bg-dark-bg">
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal active">
-        <div class="modal-content">
-            <h2 class="text-2xl font-bold text-neon-blue mb-6 neon-glow">DebtGuard 2.0</h2>
-            <p class="text-gray-400 mb-6">Enterprise Risk Intelligence System</p>
-            
-            <input type="text" id="username" placeholder="Username" class="w-full bg-dark-panel border border-dark-border rounded px-4 py-2 mb-4 text-white">
-            <input type="password" id="password" placeholder="Password" class="w-full bg-dark-panel border border-dark-border rounded px-4 py-2 mb-4 text-white">
-            
-            <button onclick="login()" class="w-full bg-gradient-to-r from-neon-blue to-neon-purple hover:shadow-lg text-white font-bold py-2 px-4 rounded">
-                🔓 AUTHENTICATE
-            </button>
-            
-            <p class="text-xs text-gray-500 mt-4">Demo: Use any credentials</p>
+<body class="min-h-screen font-sans text-slate-100 antialiased">
+  <!-- ===== HEADER ===== -->
+  <header class="sticky top-0 z-30 flex items-center justify-between border-b border-slate-800/60 bg-slate-900/80 px-5 py-3 backdrop-blur">
+    <div class="flex items-center gap-3">
+      <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/15 ring-2 ring-emerald-500/40">🛡️</div>
+      <div>
+        <h1 class="text-base font-semibold tracking-tight text-emerald-400">DebtGuard 2.0</h1>
+        <p class="text-xs text-slate-400">RBI-Compliant Early Warning System (EWS)</p>
+      </div>
+    </div>
+    <button id="aaSyncBtn"
+      class="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-emerald-300 ring-1 ring-slate-700 transition-all hover:bg-slate-700 hover:shadow-neon">
+      📱 Simulate AA Sync
+    </button>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="px-5 py-6">
+    <!-- KPI cards -->
+    <section class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div id="kpi-total" class="kpi-card">
+        <div class="text-2xl">👥</div>
+        <div class="text-right">
+          <div id="kpi-total-val" class="text-2xl font-bold text-emerald-400">—</div>
+          <div class="text-xs text-slate-400">Total Monitored</div>
         </div>
+      </div>
+      <div id="kpi-critical" class="kpi-card">
+        <div class="text-2xl">⚡</div>
+        <div class="text-right">
+          <div id="kpi-critical-val" class="text-2xl font-bold text-rose-400">—</div>
+          <div class="text-xs text-slate-400">Critical Velocity Alerts</div>
+        </div>
+      </div>
+      <div id="kpi-shadow" class="kpi-card">
+        <div class="text-2xl">🕸️</div>
+        <div class="text-right">
+          <div id="kpi-shadow-val" class="text-2xl font-bold text-rose-400">—</div>
+          <div class="text-xs text-slate-400">Shadow Exposure</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Compliance note -->
+    <div class="mb-5 rounded-xl border border-slate-800 bg-slate-900/50 p-3.5 text-xs text-slate-400">
+      <span class="font-medium text-slate-300">Compliance:</span>
+      Scores computed in real time over raw AA transaction streams (zero reliance on 30-day-lagged CIBIL snapshots).
+      All risk actions are assistive recommendations reviewed per RBI FRMG 2026 §32.
     </div>
 
-    <div id="mainApp" style="display: none;">
-        <!-- HEADER -->
-        <header class="bg-dark-panel border-b border-dark-border sticky top-0 z-50">
-            <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-blue to-neon-purple flex items-center justify-center">
-                        <span class="text-white font-bold text-lg">⚔️</span>
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-bold neon-glow">DebtGuard 2.0</h1>
-                        <p class="text-xs text-gray-400">Enterprise Edition</p>
-                    </div>
-                </div>
-                <div class="flex gap-4 items-center">
-                    <span class="text-xs text-gray-400">User: <span id="userDisplay" class="text-neon-blue"></span></span>
-                    <button onclick="logout()" class="bg-red-900 hover:bg-red-800 px-4 py-2 rounded text-sm">Logout</button>
-                </div>
-            </div>
-        </header>
+    <!-- Portfolio table -->
+    <section class="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/60 ring-1 ring-slate-800">
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[720px] table-fixed text-sm">
+          <thead>
+            <tr class="bg-slate-800/60">
+              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Customer</th>
+              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Account</th>
+              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Debt Velocity</th>
+              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Risk Status</th>
+              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Flags</th>
+              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Action</th>
+            </tr>
+          </thead>
+          <tbody id="portfolio-body" class="divide-y divide-slate-800">
+            <tr><td colspan="6" class="py-8 text-center text-slate-400">Loading portfolio…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 
-        <!-- TAB NAVIGATION -->
-        <div class="bg-dark-panel border-b border-dark-border sticky top-20 z-40">
-            <div class="max-w-7xl mx-auto px-6 flex gap-1">
-                <button class="tab-button active" onclick="switchTab('dashboard')">📊 Dashboard</button>
-                <button class="tab-button" onclick="switchTab('portfolio')">📋 Portfolio</button>
-                <button class="tab-button" onclick="switchTab('analytics')">📈 Analytics</button>
-                <button class="tab-button" onclick="switchTab('admin')">⚙️ Admin</button>
-                <button class="tab-button" onclick="switchTab('alerts')">🚨 Alerts</button>
-            </div>
+  <!-- ===== AA Consent Modal (mobile phone frame) ===== -->
+  <div id="consentModal"
+    class="fixed inset-0 z-40 hidden items-end justify-center bg-black/60 p-4 backdrop-blur-sm">
+    <div class="phone-frame relative mx-auto mb-12 h-[560px] w-72 max-w-sm overflow-hidden rounded-[2.25rem] border-4 border-slate-800 shadow-2xl shadow-black/70">
+      <div class="absolute -right-1 -top-3 h-2 w-2 rounded-full bg-slate-700"></div>
+      <div class="absolute -right-1 bottom-16 h-6 w-6 rounded-full bg-slate-700"></div>
+
+      <div class="absolute inset-0 flex flex-col bg-slate-950">
+        <!-- status bar -->
+        <div class="flex items-center justify-between px-4 py-1 text-[10px] text-slate-500">
+          <span>9:41</span><span>100%</span><span>📶</span>
         </div>
 
-        <!-- CONTENT AREA -->
-        <div class="max-w-7xl mx-auto px-6 py-8">
-            <!-- DASHBOARD TAB -->
-            <div id="dashboard" class="tab-content active">
-                <!-- TOP METRICS -->
-                <div class="grid grid-cols-4 gap-6 mb-8">
-                    <div class="metric-card neon-border">
-                        <p class="metric-label">Monitored Accounts</p>
-                        <p class="metric-value" id="metric-accounts">0</p>
-                    </div>
-                    <div class="metric-card neon-border">
-                        <p class="metric-label">Critical Risk</p>
-                        <p class="metric-value" id="metric-critical">0</p>
-                    </div>
-                    <div class="metric-card neon-border">
-                        <p class="metric-label">High Risk Flags</p>
-                        <p class="metric-value" id="metric-flags">0</p>
-                    </div>
-                    <div class="metric-card neon-border">
-                        <p class="metric-label">Unreported Debt</p>
-                        <p class="metric-value" id="metric-exposure">₹0</p>
-                    </div>
-                </div>
+        <div class="flex-1 overflow-y-auto px-5 py-6">
+          <div class="mb-5 text-center">
+            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/15 ring-2 ring-emerald-500/40">🔐</div>
+            <h2 class="mt-3 text-lg font-semibold text-slate-100">Account Aggregator Consent</h2>
+            <p class="mt-1.5 text-xs text-slate-400">
+              DebtGuard 2.0 requests read-only access to your transaction streams to generate EWS alerts.
+            </p>
+          </div>
 
-                <!-- CHARTS ROW -->
-                <div class="grid grid-cols-2 gap-6 mb-8">
-                    <div class="neon-border rounded-lg p-6" style="background: rgba(19, 24, 41, 0.8);">
-                        <h3 class="text-neon-blue font-bold mb-4">Risk Tier Distribution</h3>
-                        <canvas id="riskTierChart"></canvas>
-                    </div>
-                    <div class="neon-border rounded-lg p-6" style="background: rgba(19, 24, 41, 0.8);">
-                        <h3 class="text-neon-blue font-bold mb-4">Risk Score Trend</h3>
-                        <canvas id="riskScoreChart"></canvas>
-                    </div>
-                </div>
+          <div class="rounded-xl border border-slate-800 bg-slate-900/80 p-3.5 text-xs text-slate-300">
+            <div class="mb-2 flex justify-between"><span>Data shared</span><span class="text-slate-400">Transactions (180 days)</span></div>
+            <div class="mb-2 flex justify-between"><span>Purpose</span><span class="text-slate-400">Risk scoring</span></div>
+            <div class="flex justify-between"><span>Duration</span><span class="text-slate-400">Single session</span></div>
+          </div>
 
-                <!-- PORTFOLIO PREVIEW -->
-                <div class="neon-border rounded-lg p-6" style="background: rgba(19, 24, 41, 0.8);">
-                    <h3 class="text-neon-blue font-bold mb-4">Recent Scans</h3>
-                    <div id="recentScans" class="space-y-2 max-h-60 overflow-y-auto"></div>
-                </div>
-            </div>
-
-            <!-- PORTFOLIO TAB -->
-            <div id="portfolio" class="tab-content">
-                <div class="grid grid-cols-2 gap-6">
-                    <!-- Portfolio Table -->
-                    <div class="neon-border rounded-lg overflow-hidden col-span-2" style="background: rgba(19, 24, 41, 0.8);">
-                        <div class="bg-dark-panel border-b border-dark-border px-6 py-4">
-                            <h2 class="text-lg font-bold text-neon-blue">PORTFOLIO MONITOR</h2>
-                            <input type="text" id="searchFilter" placeholder="Search by account ID or name" class="w-full mt-2 bg-dark-panel border border-dark-border rounded px-3 py-2 text-sm text-white" onkeyup="filterPortfolio()">
-                        </div>
-                        
-                        <div id="portfolio-table" class="overflow-y-auto max-h-screen">
-                            <div class="p-4 text-center text-gray-500">Loading...</div>
-                        </div>
-                    </div>
-
-                    <!-- Risk Inspector -->
-                    <div class="neon-border rounded-lg overflow-hidden" style="background: rgba(19, 24, 41, 0.8);">
-                        <div class="bg-dark-panel border-b border-dark-border px-6 py-4">
-                            <h2 class="text-lg font-bold text-neon-purple">RISK INSPECTOR</h2>
-                        </div>
-                        
-                        <div id="risk-inspector" class="p-6 overflow-y-auto max-h-96">
-                            <p class="text-center text-gray-500">Select an account to inspect</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ANALYTICS TAB -->
-            <div id="analytics" class="tab-content">
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="neon-border rounded-lg p-6" style="background: rgba(19, 24, 41, 0.8);">
-                        <h3 class="text-neon-blue font-bold mb-4">7-Day Risk Summary</h3>
-                        <div id="analyticsReport">Loading...</div>
-                    </div>
-                    <div class="neon-border rounded-lg p-6" style="background: rgba(19, 24, 41, 0.8);">
-                        <h3 class="text-neon-blue font-bold mb-4">Top Triggered Flags</h3>
-                        <canvas id="flagsChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ADMIN TAB -->
-            <div id="admin" class="tab-content">
-                <div class="grid grid-cols-2 gap-6">
-                    <!-- Rules Management -->
-                    <div class="neon-border rounded-lg p-6" style="background: rgba(19, 24, 41, 0.8);">
-                        <h3 class="text-neon-blue font-bold mb-4">Risk Rules</h3>
-                        <div id="rulesList" class="space-y-3 max-h-96 overflow-y-auto"></div>
-                    </div>
-
-                    <!-- Webhooks -->
-                    <div class="neon-border rounded-lg p-6" style="background: rgba(19, 24, 41, 0.8);">
-                        <h3 class="text-neon-blue font-bold mb-4">Webhooks</h3>
-                        <div class="mb-4">
-                            <input type="text" id="webhookUrl" placeholder="https://example.com/webhook" class="w-full bg-dark-panel border border-dark-border rounded px-3 py-2 text-sm text-white mb-2">
-                            <input type="text" id="webhookEvent" placeholder="Event type" class="w-full bg-dark-panel border border-dark-border rounded px-3 py-2 text-sm text-white mb-2">
-                            <button onclick="registerWebhook()" class="w-full bg-neon-purple hover:bg-opacity-80 text-white py-2 rounded">Register Webhook</button>
-                        </div>
-                        <div id="webhooksList" class="space-y-2 max-h-48 overflow-y-auto"></div>
-                    </div>
-                </div>
-
-                <!-- Audit Logs -->
-                <div class="neon-border rounded-lg p-6 mt-6" style="background: rgba(19, 24, 41, 0.8);">
-                    <h3 class="text-neon-blue font-bold mb-4">Audit Logs</h3>
-                    <div id="auditLogs" class="space-y-2 max-h-64 overflow-y-auto font-mono text-xs"></div>
-                </div>
-            </div>
-
-            <!-- ALERTS TAB -->
-            <div id="alerts" class="tab-content">
-                <div class="neon-border rounded-lg p-6" style="background: rgba(19, 24, 41, 0.8);">
-                    <h3 class="text-neon-blue font-bold mb-4">🚨 Real-Time Alerts</h3>
-                    <div id="alertsList" class="space-y-4 max-h-screen overflow-y-auto"></div>
-                </div>
-            </div>
+          <div class="mt-5">
+            <label class="mb-2 block text-xs font-medium text-slate-300">AA OTP (mock)</label>
+            <input id="otpInput" type="text" inputmode="numeric" maxlength="6"
+              class="w-full rounded-lg border border-slate-700 bg-slate-900 px-3.5 py-2.5 text-center text-base tracking-[0.2em] text-emerald-400 placeholder-slate-600 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              placeholder="● ● ● ● ● ●" />
+          </div>
         </div>
+
+        <div class="flex items-center justify-between border-t border-slate-800 p-3">
+          <button id="consentReject"
+            class="flex-1 rounded-lg py-2.5 text-center text-sm font-medium text-slate-300 hover:text-slate-100">
+            Not now
+          </button>
+          <button id="consentApprove"
+            class="flex-1 rounded-lg bg-emerald-600 py-2.5 text-center text-sm font-semibold text-white transition-colors hover:bg-emerald-500">
+            Approve & Sync
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script>
-        const API_BASE_URL = "http://localhost:8000";
-        let authToken = null;
-        let allScans = [];
+  <!-- ===== Toast container ===== -->
+  <div id="toastContainer" class="fixed inset-x-0 bottom-6 z-50 flex flex-col items-center gap-3 px-4"></div>
 
-        // ========================================
-        // AUTHENTICATION
-        // ========================================
+  <style>.kpi-card{@apply flex items-center justify-between rounded-xl border border-slate-800 bg-slate-900/60 p-4;}</style>
 
-        async function login() {
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
+  <script>
+    "use strict";
+    const API = "/api/v1/ews/mock-portfolio";
+    let portfolio = [];
 
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/v1/auth/token?username=${username}&password=${password}`, {
-                    method: "POST"
-                });
-                if (!response.ok) throw new Error("Login failed");
-                
-                const data = await response.json();
-                authToken = data.access_token;
-                
-                document.getElementById("userDisplay").textContent = username;
-                document.getElementById("loginModal").classList.remove("active");
-                document.getElementById("mainApp").style.display = "block";
-                
-                initializeDashboard();
-            } catch (error) {
-                alert("Login failed: " + error.message);
-            }
-        }
+    /* ---------- Toast ---------- */
+    function showToast(message) {
+      const container = document.getElementById("toastContainer");
+      const el = document.createElement("div");
+      el.className = "w-full max-w-sm rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-100 shadow-neon";
+      el.innerHTML = `<div class="flex items-center gap-2"><span>✅</span><span>${message}</span></div>`;
+      container.appendChild(el);
+      setTimeout(() => el.remove(), 3200);
+    }
 
-        function logout() {
-            authToken = null;
-            document.getElementById("loginModal").classList.add("active");
-            document.getElementById("mainApp").style.display = "none";
-        }
+    /* ---------- KPIs ---------- */
+    function renderKpis() {
+      const total = portfolio.length;
+      const critical = portfolio.filter(p => p.debt_velocity_tier === "HIGH").length;
+      const shadow = portfolio.filter(p => p.risk_flags.some(f => f.code === "SHADOW_LENDING_PATTERN_DETECTED")).length;
+      setText("kpi-total-val", total);
+      setText("kpi-critical-val", critical);
+      setText("kpi-shadow-val", shadow);
+    }
+    function setText(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    }
 
-        // ========================================
-        // TAB MANAGEMENT
-        // ========================================
+    /* ---------- Table helpers ---------- */
+    function tierBadge(tier) {
+      const color = tier === "HIGH" ? "rose" : tier === "MEDIUM" ? "amber" : "emerald";
+      const cfg = {
+        rose:   "border-rose-500/30 bg-rose-500/10 text-rose-300",
+        amber:  "border-amber-400/30 bg-amber-400/10 text-amber-300",
+        emerald:"border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
+      }[color];
+      return `<span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium ${cfg}">● ${tier}</span>`;
+    }
+    function velocityCell(score, tier) {
+      const high = tier === "HIGH";
+      const cls = high
+        ? "border-rose-500/30 bg-rose-500/10 text-rose-300 animate-pulse"
+        : "border-slate-700 bg-slate-800/60 text-slate-300";
+      return `<td class="px-4 py-3"><span class="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-medium tabular-nums ${cls}">₹${Number(score).toLocaleString('en-IN')}/day ${high ? '⚠️' : ''}</span></td>`;
+    }
+    function statusBadge(status) {
+      const ok = status === "LOW";
+      return `<span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium ${ok ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300' : 'border-rose-500/30 bg-rose-500/10 text-rose-300'}">● ${status}</span>`;
+    }
+    function flagsCell(flags) {
+      if (!flags.length) return `<span class="text-slate-500">— none</span>`;
+      return flags.map(f => `<span class="mr-1.5 rounded bg-slate-800 px-1.5 py-0.5 text-xs text-slate-300" title="${f.detail}">${f.code}</span>`).join("");
+    }
+    function renderTable() {
+      const tbody = document.getElementById("portfolio-body");
+      if (!portfolio.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-400">No accounts yet.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = portfolio.map(p => `
+        <tr class="border-t border-slate-800/60 transition-colors hover:bg-slate-800/40">
+          <td class="px-4 py-3 font-medium text-slate-100">${p.customer_name}</td>
+          <td class="px-4 py-3 text-slate-400">${p.account_id}</td>
+          ${velocityCell(p.debt_velocity_score, p.debt_velocity_tier)}
+          <td class="px-4 py-3">${statusBadge(p.risk_status)}</td>
+          <td class="max-w-[180px] px-4 py-3">${flagsCell(p.risk_flags)}</td>
+          <td class="px-4 py-3">
+            ${p.risk_status === "HIGH"
+              ? `<button data-customer="${p.customer_name}" onclick="firstAid(this)"
+                  class="inline-flex items-center gap-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 text-xs font-medium text-rose-300 transition-colors hover:bg-rose-500/20">🆘 Financial First-Aid</button>`
+              : `<span class="text-xs text-slate-500">—</span>`}
+          </td>
+        </tr>`).join("");
+    }
 
-        function switchTab(tabName) {
-            document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
-            document.querySelectorAll(".tab-button").forEach(btn => btn.classList.remove("active"));
-            
-            document.getElementById(tabName).classList.add("active");
-            event.target.classList.add("active");
-            
-            if (tabName === "analytics") loadAnalytics();
-            if (tabName === "admin") loadAdmin();
-            if (tabName === "alerts") loadAlerts();
-        }
+    /* ---------- Load portfolio ---------- */
+    async function loadPortfolio() {
+      try {
+        const res = await fetch(API, { cache: "no-store" });
+        const data = await res.json();
+        portfolio = data.portfolio || [];
+        renderKpis();
+        renderTable();
+      } catch (e) {
+        document.getElementById("portfolio-body").innerHTML =
+          `<tr><td colspan="6" class="py-8 text-center text-rose-400">Failed to load portfolio: ${e.message}</td></tr>`;
+      }
+    }
 
-        // ========================================
-        // DATA FETCHING
-        // ========================================
+    /* ---------- AA Sync simulation ---------- */
+    document.getElementById("aaSyncBtn").addEventListener("click", () => {
+      document.getElementById("consentModal").classList.remove("hidden");
+      document.getElementById("consentModal").classList.add("flex");
+      document.getElementById("otpInput").value = "";
+      document.getElementById("otpInput").focus();
+    });
+    document.getElementById("consentApprove").addEventListener("click", async () => {
+      const otp = document.getElementById("otpInput").value.trim();
+      if (otp.length < 4) { showToast("Please enter the mock OTP (e.g. 123456)."); return; }
+      document.getElementById("consentModal").classList.add("hidden");
+      document.getElementById("consentModal").classList.remove("flex");
+      await loadPortfolio();
+      showToast("AA sync approved — portfolio refreshed.");
+    });
+    document.getElementById("consentReject").addEventListener("click", () => {
+      const m = document.getElementById("consentModal");
+      m.classList.add("hidden"); m.classList.remove("flex");
+    });
 
-        async function fetchPortfolio() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/v1/portfolio/monitor`);
-                if (!response.ok) throw new Error("Failed to fetch portfolio");
-                return await response.json();
-            } catch (error) {
-                console.error("Portfolio fetch failed:", error);
-                return null;
-            }
-        }
+    /* ---------- Financial First-Aid ---------- */
+    window.firstAid = function (btn) {
+      const name = btn.dataset.customer;
+      showToast(`Automated Debt Consolidation Offer sent to ${name} via WhatsApp.`);
+    };
 
-        async function fetchHistory(days = 7) {
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/v1/history/recent?days=${days}`);
-                if (!response.ok) throw new Error("Failed to fetch history");
-                return await response.json();
-            } catch (error) {
-                console.error("History fetch failed:", error);
-                return null;
-            }
-        }
-
-        async function fetchAnalytics() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/v1/analytics/report`, {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({days: 7})
-                });
-                if (!response.ok) throw new Error("Failed to fetch analytics");
-                return await response.json();
-            } catch (error) {
-                console.error("Analytics fetch failed:", error);
-                return null;
-            }
-        }
-
-        async function fetchRules() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/v1/admin/rules`, {
-                    headers: {"Authorization": `Bearer ${authToken}`}
-                });
-                if (!response.ok) throw new Error("Failed to fetch rules");
-                return await response.json();
-            } catch (error) {
-                console.error("Rules fetch failed:", error);
-                return null;
-            }
-        }
-
-        async function fetchWebhooks() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/v1/admin/webhooks`, {
-                    headers: {"Authorization": `Bearer ${authToken}`}
-                });
-                if (!response.ok) throw new Error("Failed to fetch webhooks");
-                return await response.json();
-            } catch (error) {
-                console.error("Webhooks fetch failed:", error);
-                return null;
-            }
-        }
-
-        async function fetchAuditLogs() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/v1/admin/audit-logs`, {
-                    headers: {"Authorization": `Bearer ${authToken}`}
-                });
-                if (!response.ok) throw new Error("Failed to fetch audit logs");
-                return await response.json();
-            } catch (error) {
-                console.error("Audit logs fetch failed:", error);
-                return null;
-            }
-        }
-
-        // ========================================
-        // RENDERING
-        // ========================================
-
-        function renderMetrics(portfolio) {
-            if (!portfolio) return;
-            
-            document.getElementById("metric-accounts").textContent = portfolio.total_accounts;
-            document.getElementById("metric-critical").textContent = portfolio.critical_risk_count || 0;
-            document.getElementById("metric-flags").textContent = portfolio.high_risk_count;
-            document.getElementById("metric-exposure").textContent = 
-                `₹${portfolio.total_exposure.toLocaleString('en-IN', {maximumFractionDigits: 0})}`;
-        }
-
-        function renderPortfolioTable(portfolio) {
-            if (!portfolio) return;
-            
-            allScans = portfolio.accounts;
-            let html = '<table class="w-full text-sm">';
-            html += '<thead class="sticky top-0 bg-dark-panel border-b border-dark-border">';
-            html += '<tr>';
-            html += '<th class="text-left px-4 py-3 text-neon-blue font-bold">Account</th>';
-            html += '<th class="text-left px-4 py-3 text-neon-blue font-bold">Customer</th>';
-            html += '<th class="text-left px-4 py-3 text-neon-blue font-bold">Risk</th>';
-            html += '<th class="text-left px-4 py-3 text-neon-blue font-bold">Score</th>';
-            html += '<th class="text-right px-4 py-3 text-neon-blue font-bold">Exposure</th>';
-            html += '</tr>';
-            html += '</thead><tbody>';
-            
-            portfolio.accounts.forEach((account, index) => {
-                const riskClass = account.risk_tier.toLowerCase();
-                const exposure = account.estimated_unreported_debt > 0 
-                    ? `₹${account.estimated_unreported_debt.toLocaleString('en-IN')}`
-                    : '-';
-                
-                html += `<tr class="risk-row ${riskClass} border-b border-dark-border" data-index="${index}">`;
-                html += `<td class="px-4 py-3 font-mono text-xs">${account.account_id}</td>`;
-                html += `<td class="px-4 py-3">${account.customer_name}</td>`;
-                html += `<td class="px-4 py-3"><span class="status-badge status-${riskClass}">${account.risk_tier}</span></td>`;
-                html += `<td class="px-4 py-3 text-center">${account.risk_score}/100</td>`;
-                html += `<td class="px-4 py-3 text-right font-bold">${exposure}</td>`;
-                html += '</tr>';
-            });
-            
-            html += '</tbody></table>';
-            document.getElementById("portfolio-table").innerHTML = html;
-            
-            document.querySelectorAll('.risk-row').forEach(row => {
-                row.addEventListener('click', () => {
-                    const index = parseInt(row.dataset.index);
-                    renderRiskInspector(portfolio.accounts[index]);
-                });
-            });
-        }
-
-        function renderRiskInspector(account) {
-            let html = '<div>';
-            
-            html += `<div class="mb-4 pb-4 border-b border-neon-purple border-opacity-30">`;
-            html += `<p class="text-neon-purple font-bold text-lg">${account.customer_name}</p>`;
-            html += `<p class="text-gray-500 text-xs font-mono">${account.account_id}</p>`;
-            html += `<span class="status-badge status-${account.risk_tier.toLowerCase()}">${account.risk_tier}</span>`;
-            html += `</div>`;
-            
-            if (account.triggered_flags.length > 0) {
-                html += `<div class="mb-4">`;
-                html += `<p class="text-xs font-bold text-neon-red mb-2">🚨 RISK FLAGS (${account.triggered_flags.length})</p>`;
-                account.triggered_flags.forEach(flag => {
-                    html += `<div class="flag-badge">${flag}</div>`;
-                });
-                html += `</div>`;
-            }
-            
-            html += `<div class="grid grid-cols-2 gap-2 mb-4 text-xs">`;
-            html += `<div class="bg-dark-panel p-2 rounded border border-dark-border"><p class="text-gray-500">Risk Score</p><p class="text-neon-blue font-bold text-lg">${account.risk_score}%</p></div>`;
-            html += `<div class="bg-dark-panel p-2 rounded border border-dark-border"><p class="text-gray-500">Unreported Debt</p><p class="text-neon-blue font-bold">₹${account.estimated_unreported_debt.toLocaleString('en-IN', {maximumFractionDigits: 0})}</p></div>`;
-            html += `</div>`;
-            
-            html += `<div class="text-xs"><p class="font-bold text-gray-400 mb-1">Raw JSON</p>`;
-            html += `<div class="json-display">${JSON.stringify(account, null, 2)}</div></div>`;
-            
-            html += '</div>';
-            document.getElementById("risk-inspector").innerHTML = html;
-        }
-
-        function filterPortfolio() {
-            const filter = document.getElementById("searchFilter").value.toLowerCase();
-            document.querySelectorAll(".risk-row").forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(filter) ? "" : "none";
-            });
-        }
-
-        function renderRecentScans(history) {
-            if (!history || !history.scans) return;
-            
-            let html = '';
-            history.scans.slice(0, 5).forEach(scan => {
-                const riskClass = scan.risk_tier.toLowerCase();
-                html += `<div class="bg-dark-panel p-3 rounded border-l-4 border-${riskClass === 'low' ? 'neon-blue' : riskClass === 'medium' ? 'neon-yellow' : 'neon-red'}">`;
-                html += `<p class="font-bold text-sm">${scan.account_id}</p>`;
-                html += `<p class="text-xs text-gray-400">${scan.customer_name}</p>`;
-                html += `<div class="flex justify-between mt-1 text-xs">`;
-                html += `<span class="status-badge status-${riskClass}">${scan.risk_tier}</span>`;
-                html += `<span class="text-neon-yellow">${new Date(scan.scan_timestamp).toLocaleString()}</span>`;
-                html += `</div></div>`;
-            });
-            
-            document.getElementById("recentScans").innerHTML = html;
-        }
-
-        async function loadAnalytics() {
-            const analytics = await fetchAnalytics();
-            if (!analytics) return;
-            
-            let html = `
-            <div class="space-y-3 text-sm">
-                <p><span class="text-gray-400">Total Scans:</span> <span class="text-neon-blue font-bold">${analytics.total_scans}</span></p>
-                <p><span class="text-gray-400">High-Risk %:</span> <span class="text-neon-red font-bold">${analytics.high_risk_percentage}%</span></p>
-                <p><span class="text-gray-400">Avg Unreported Debt:</span> <span class="text-neon-yellow font-bold">₹${analytics.average_unreported_debt.toLocaleString('en-IN')}</span></p>
-                <div class="mt-4 pt-4 border-t border-dark-border">
-                    <p class="font-bold text-neon-blue mb-2">Risk Distribution</p>
-                    ${Object.entries(analytics.risk_tier_distribution).map(([tier, count]) => 
-                        `<p class="text-xs text-gray-400">${tier}: <span class="text-neon-blue font-bold">${count}</span></p>`
-                    ).join('')}
-                </div>
-            </div>
-            `;
-            
-            document.getElementById("analyticsReport").innerHTML = html;
-            
-            // Render flags chart
-            if (Object.keys(analytics.top_triggered_flags).length > 0) {
-                const ctx = document.getElementById("flagsChart").getContext("2d");
-                new Chart(ctx, {
-                    type: "bar",
-                    data: {
-                        labels: Object.keys(analytics.top_triggered_flags),
-                        datasets: [{
-                            label: "Occurrences",
-                            data: Object.values(analytics.top_triggered_flags),
-                            backgroundColor: "#ff0066",
-                            borderColor: "#ff0066",
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: true,
-                        scales: {
-                            y: { beginAtZero: true, ticks: { color: "#7a8aa0" }, grid: { color: "#1e2749" } },
-                            x: { ticks: { color: "#7a8aa0" }, grid: { color: "#1e2749" } }
-                        },
-                        plugins: { legend: { labels: { color: "#7a8aa0" } } }
-                    }
-                });
-            }
-        }
-
-        async function loadAdmin() {
-            const rules = await fetchRules();
-            const webhooks = await fetchWebhooks();
-            const auditLogs = await fetchAuditLogs();
-            
-            if (rules) {
-                let html = '';
-                rules.rules.forEach(rule => {
-                    html += `
-                    <div class="bg-dark-panel p-3 rounded border border-dark-border">
-                        <p class="font-bold text-sm text-neon-blue">${rule.name}</p>
-                        <p class="text-xs text-gray-400">${rule.description}</p>
-                        <div class="flex gap-2 mt-2 text-xs">
-                            <label class="text-gray-400">
-                                <input type="checkbox" ${rule.enabled ? 'checked' : ''} onchange="updateRule('${rule.rule_id}', this.checked)"> Enabled
-                            </label>
-                        </div>
-                    </div>
-                    `;
-                });
-                document.getElementById("rulesList").innerHTML = html;
-            }
-            
-            if (webhooks) {
-                let html = '';
-                webhooks.webhooks.forEach(webhook => {
-                    html += `
-                    <div class="bg-dark-panel p-2 rounded border border-dark-border text-xs">
-                        <p class="text-neon-blue font-mono text-xs truncate">${webhook.url}</p>
-                        <p class="text-gray-500">${webhook.event_type}</p>
-                    </div>
-                    `;
-                });
-                document.getElementById("webhooksList").innerHTML = html;
-            }
-            
-            if (auditLogs) {
-                let html = '';
-                auditLogs.logs.slice(0, 20).forEach(log => {
-                    html += `<p class="text-gray-400">[${log.action}] ${log.user_id || 'system'} @ ${log.created_at}</p>`;
-                });
-                document.getElementById("auditLogs").innerHTML = html;
-            }
-        }
-
-        async function loadAlerts() {
-            const portfolio = await fetchPortfolio();
-            if (!portfolio) return;
-            
-            let html = '';
-            const criticalAccounts = portfolio.accounts.filter(a => a.risk_tier === 'CRITICAL' || a.risk_tier === 'HIGH');
-            
-            if (criticalAccounts.length === 0) {
-                html = '<p class="text-center text-gray-400">No active alerts</p>';
-            } else {
-                criticalAccounts.forEach(account => {
-                    html += `
-                    <div class="bg-red-900 bg-opacity-20 border border-red-500 rounded p-4">
-                        <p class="font-bold text-red-400">⚠️ ${account.risk_tier} RISK DETECTED</p>
-                        <p class="text-sm mt-1">${account.customer_name} (${account.account_id})</p>
-                        <p class="text-xs text-gray-400">Risk Score: ${account.risk_score}/100</p>
-                        <p class="text-xs text-gray-400">Unreported Debt: ₹${account.estimated_unreported_debt.toLocaleString('en-IN')}</p>
-                    </div>
-                    `;
-                });
-            }
-            document.getElementById("alertsList").innerHTML = html;
-        }
-
-        async function registerWebhook() {
-            const url = document.getElementById("webhookUrl").value;
-            const event_type = document.getElementById("webhookEvent").value;
-            
-            if (!url || !event_type) {
-                alert("Please fill in all fields");
-                return;
-            }
-            
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/v1/admin/webhooks/register`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify({url, event_type})
-                });
-                
-                if (response.ok) {
-                    alert("Webhook registered successfully");
-                    document.getElementById("webhookUrl").value = "";
-                    document.getElementById("webhookEvent").value = "";
-                    loadAdmin();
-                }
-            } catch (error) {
-                alert("Failed to register webhook: " + error.message);
-            }
-        }
-
-        async function updateRule(ruleId, enabled) {
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/v1/admin/rules/update`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify({rule_id: ruleId, enabled})
-                });
-                
-                if (response.ok) {
-                    console.log("Rule updated");
-                }
-            } catch (error) {
-                console.error("Failed to update rule:", error);
-            }
-        }
-
-        // ========================================
-        // CHART INITIALIZATION
-        // ========================================
-
-        function initializeCharts(portfolio) {
-            if (!portfolio) return;
-            
-            // Risk Tier Distribution Chart
-            const riskDist = {};
-            portfolio.accounts.forEach(a => {
-                riskDist[a.risk_tier] = (riskDist[a.risk_tier] || 0) + 1;
-            });
-            
-            const riskTierCtx = document.getElementById("riskTierChart").getContext("2d");
-            new Chart(riskTierCtx, {
-                type: "doughnut",
-                data: {
-                    labels: Object.keys(riskDist),
-                    datasets: [{
-                        data: Object.values(riskDist),
-                        backgroundColor: ["#00ff00", "#ffcc00", "#ff6600", "#ff0066"],
-                        borderColor: "#131829"
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: { legend: { labels: { color: "#7a8aa0" } } }
-                }
-            });
-            
-            // Risk Score Chart
-            const riskScoreCtx = document.getElementById("riskScoreChart").getContext("2d");
-            new Chart(riskScoreCtx, {
-                type: "line",
-                data: {
-                    labels: portfolio.accounts.map(a => a.account_id),
-                    datasets: [{
-                        label: "Risk Score",
-                        data: portfolio.accounts.map(a => a.risk_score),
-                        borderColor: "#00d9ff",
-                        backgroundColor: "rgba(0, 217, 255, 0.1)",
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: { max: 100, ticks: { color: "#7a8aa0" }, grid: { color: "#1e2749" } },
-                        x: { ticks: { color: "#7a8aa0" }, grid: { color: "#1e2749" } }
-                    },
-                    plugins: { legend: { labels: { color: "#7a8aa0" } } }
-                }
-            });
-        }
-
-        // ========================================
-        // INITIALIZATION
-        // ========================================
-
-        async function initializeDashboard() {
-            const portfolio = await fetchPortfolio();
-            const history = await fetchHistory();
-            
-            if (portfolio) {
-                renderMetrics(portfolio);
-                renderPortfolioTable(portfolio);
-                initializeCharts(portfolio);
-            }
-            
-            if (history) {
-                renderRecentScans(history);
-            }
-        }
-
-        // Auto-refresh every 30 seconds
-        setInterval(() => {
-            if (authToken) {
-                initializeDashboard();
-            }
-        }, 30000);
-    </script>
+    loadPortfolio();
+  </script>
 </body>
 </html>

@@ -936,9 +936,115 @@
         .mb-2 { margin-bottom: 2rem; }
         .text-center { text-align: center; }
         .opacity-60 { opacity: 0.6; }
+
+        /* Simulation feedback */
+        .stress-toast {
+            position: fixed;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            z-index: 300;
+            width: min(390px, calc(100vw - 2rem));
+            padding: 1rem 1.1rem;
+            border: 1px solid rgba(245, 158, 11, 0.5);
+            border-left: 4px solid #f59e0b;
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.96);
+            box-shadow: 0 18px 45px rgba(2, 6, 23, 0.45);
+            opacity: 0;
+            transform: translateY(18px);
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .stress-toast.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stress-toast-header {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: #fbbf24;
+            font-weight: 700;
+        }
+
+        .stress-toast-header span:first-child {
+            display: grid;
+            place-items: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background: rgba(245, 158, 11, 0.15);
+        }
+
+        .stress-toast p {
+            margin-top: 0.45rem;
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            line-height: 1.45;
+        }
+
+        .stress-toast-deltas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            margin-top: 0.75rem;
+        }
+
+        .stress-toast-deltas span {
+            padding: 0.3rem 0.5rem;
+            border-radius: 5px;
+            background: rgba(239, 68, 68, 0.12);
+            color: #fca5a5;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .stress-updated {
+            animation: stressPulse 1s ease;
+        }
+
+        @keyframes stressPulse {
+            0%, 100% { transform: scale(1); }
+            35% { transform: scale(1.06); filter: drop-shadow(0 0 14px rgba(245, 158, 11, 0.65)); }
+        }
+
+        @media (max-width: 768px) {
+            .stress-toast { right: 1rem; bottom: 1rem; }
+        }
+
+        .ews-kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .ews-kpi { padding: 1.2rem; border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 10px; background: rgba(15, 23, 42, 0.55); }
+        .ews-kpi-label { color: #94a3b8; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
+        .ews-kpi-value { margin-top: 0.35rem; color: #34d399; font-size: 1.8rem; font-weight: 700; }
+        .ews-table-wrap { overflow-x: auto; border: 1px solid rgba(100, 116, 139, 0.2); border-radius: 10px; background: rgba(15, 23, 42, 0.5); }
+        .ews-table { width: 100%; min-width: 760px; border-collapse: collapse; }
+        .ews-table th, .ews-table td { padding: 0.9rem 1rem; border-bottom: 1px solid rgba(100, 116, 139, 0.15); text-align: left; }
+        .ews-table th { color: #94a3b8; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .ews-table td { color: #e2e8f0; font-size: 0.88rem; }
+        .ews-score { display: inline-flex; padding: 0.35rem 0.55rem; border-radius: 6px; font-weight: 700; color: #fca5a5; background: rgba(239, 68, 68, 0.13); }
+        .ews-score.low { color: #6ee7b7; background: rgba(16, 185, 129, 0.12); }
+        .ews-status { display: inline-flex; padding: 0.3rem 0.55rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; }
+        .ews-status.high { color: #fda4af; background: rgba(244, 63, 94, 0.14); }
+        .ews-status.low { color: #6ee7b7; background: rgba(16, 185, 129, 0.14); }
+        .ews-modal { position: fixed; inset: 0; z-index: 250; display: none; place-items: center; padding: 1rem; background: rgba(2, 6, 23, 0.78); backdrop-filter: blur(8px); }
+        .ews-modal.visible { display: grid; }
+        .ews-modal-card { width: min(360px, 100%); padding: 1.5rem; border: 1px solid rgba(16, 185, 129, 0.45); border-radius: 20px; background: #0f172a; box-shadow: 0 24px 70px rgba(2, 6, 23, 0.6); }
+        @media (max-width: 768px) { .ews-kpi-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
+    <div class="stress-toast" id="stressToast" role="status" aria-live="polite"></div>
+    <div class="ews-modal" id="ewsConsentModal" role="dialog" aria-modal="true" aria-labelledby="ewsConsentTitle">
+        <div class="ews-modal-card">
+            <div style="font-size: 2rem; text-align: center;">🔐</div>
+            <h3 id="ewsConsentTitle" style="text-align: center; margin-top: 0.6rem;">AA Consent Request</h3>
+            <p style="color: #94a3b8; font-size: 0.85rem; line-height: 1.5; margin: 0.8rem 0 1.2rem;">DebtGuard requests read-only transaction access to refresh early-warning signals. This demo simulates an RBI Account Aggregator consent.</p>
+            <input id="ewsOtp" inputmode="numeric" maxlength="6" placeholder="Enter mock OTP" style="width: 100%; padding: 0.75rem; border: 1px solid #475569; border-radius: 7px; background: #1e293b; color: #f1f5f9; text-align: center;">
+            <div style="display: flex; gap: 0.7rem; margin-top: 1rem;"><button class="btn btn-secondary" style="flex: 1;" onclick="closeEwsConsent()">Not now</button><button class="btn btn-demo" style="flex: 1;" onclick="approveEwsConsent()">Approve & Sync</button></div>
+        </div>
+    </div>
     <!-- Header -->
     <header class="header">
         <div class="logo-section">
@@ -953,6 +1059,7 @@
             <div class="nav-item" onclick="showSection('customers')">Customers</div>
             <div class="nav-item" onclick="showSection('risk-monitor')">Risk Monitor</div>
             <div class="nav-item" onclick="showSection('intervention-queue')">Intervention Queue</div>
+            <div class="nav-item" onclick="showSection('ews-monitor')">AA EWS</div>
         </nav>
         <div class="header-icons">
             <button class="icon-button" title="Notifications">🔔</button>
@@ -1005,6 +1112,28 @@
                 <div class="chart-wrapper">
                     <canvas id="riskDistributionChart"></canvas>
                 </div>
+            </div>
+        </section>
+
+        <!-- ===== CUSTOMERS SECTION ===== -->
+        <section id="ews-monitor" class="section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h2 style="font-size: 1.8rem; font-weight: 700;">Account Aggregator EWS</h2>
+                    <p style="color: #94a3b8; margin-top: 0.35rem;">Real-time Debt Velocity from raw transaction streams</p>
+                </div>
+                <button class="btn btn-demo" onclick="openEwsConsent()">📱 Simulate AA Sync</button>
+            </div>
+            <div class="ews-kpi-grid">
+                <div class="ews-kpi"><div class="ews-kpi-label">Total Monitored</div><div class="ews-kpi-value" id="ewsTotal">—</div></div>
+                <div class="ews-kpi"><div class="ews-kpi-label">Critical Velocity Alerts</div><div class="ews-kpi-value" style="color: #fb7185;" id="ewsCritical">—</div></div>
+                <div class="ews-kpi"><div class="ews-kpi-label">Shadow Exposure</div><div class="ews-kpi-value" style="color: #fb7185;" id="ewsShadow">—</div></div>
+            </div>
+            <div class="ews-table-wrap">
+                <table class="ews-table">
+                    <thead><tr><th>Customer</th><th>Account</th><th>Debt Velocity</th><th>Risk Status</th><th>Early Warning Flags</th><th>Intervention</th></tr></thead>
+                    <tbody id="ewsTableBody"><tr><td colspan="6" style="text-align: center; color: #94a3b8;">Loading live EWS portfolio...</td></tr></tbody>
+                </table>
             </div>
         </section>
 
@@ -1614,6 +1743,8 @@
                 } else if (sectionId === 'risk-monitor') {
                     if (!spendingChart) initSpendingChart();
                     if (!savingsChart) initSavingsChart();
+                } else if (sectionId === 'ews-monitor' && !ewsPortfolio.length) {
+                    loadEwsPortfolio();
                 }
             }, 100);
         }
@@ -1932,25 +2063,7 @@
         }
 
         function simulateFinancialStress() {
-                // If no customer loaded, load demo customer first
-                if (!currentCustomer) {
-                    loadDemoCustomer();
-                    setTimeout(() => {
-                        // After loading, simulate stress
-                        currentCustomer.riskScore = Math.min(99, currentCustomer.riskScore + 5);
-                        currentCustomer.spending = Math.round(currentCustomer.spending * 1.08);
-                        currentCustomer.savings = Math.max(0, currentCustomer.savings - 2000);
-                        currentCustomer.creditUtilization = Math.min(99, currentCustomer.creditUtilization + 3);
-                        currentCustomer.spendingHistory = [...currentCustomer.spendingHistory.slice(1), currentCustomer.spending];
-                        currentCustomer.savingsHistory = [...currentCustomer.savingsHistory.slice(1), currentCustomer.savings];
-
-                        renderRiskMonitor();
-                        renderInterventionQueue();
-                        alert(`⚡ Stress simulated!\n\n${currentCustomer.name}'s financial situation has worsened:\n✗ Risk Score: +5 → ${currentCustomer.riskScore}\n✗ Spending: ↑ ₹${currentCustomer.spending.toLocaleString()}\n✗ Savings: ↓ ₹${currentCustomer.savings.toLocaleString()}\n\nCustomer has moved up in the intervention queue!`);
-                    }, 100);
-                    return;
-                }
-
+            if (!currentCustomer) loadDemoCustomer();
             currentCustomer.riskScore = Math.min(99, currentCustomer.riskScore + 5);
             currentCustomer.spending = Math.round(currentCustomer.spending * 1.08);
             currentCustomer.savings = Math.max(0, currentCustomer.savings - 2000);
@@ -1960,7 +2073,25 @@
 
             renderRiskMonitor();
             renderInterventionQueue();
-            alert(`⚡ Stress simulated!\n\n${currentCustomer.name}'s financial situation has worsened:\n✗ Risk Score: +5 → ${currentCustomer.riskScore}\n✗ Spending: ↑ ₹${currentCustomer.spending.toLocaleString()}\n✗ Savings: ↓ ₹${currentCustomer.savings.toLocaleString()}\n\nCustomer has moved up in the intervention queue!`);
+
+            const scoreElement = document.getElementById('healthScore');
+            scoreElement.classList.remove('stress-updated');
+            void scoreElement.offsetWidth;
+            scoreElement.classList.add('stress-updated');
+
+            const toast = document.getElementById('stressToast');
+            toast.innerHTML = `
+                <div class="stress-toast-header"><span>⚡</span> Stress event simulated</div>
+                <p>${currentCustomer.name} moved higher in the intervention queue.</p>
+                <div class="stress-toast-deltas">
+                    <span>Risk +5 → ${currentCustomer.riskScore}</span>
+                    <span>Spending ↑ ₹${currentCustomer.spending.toLocaleString()}</span>
+                    <span>Savings ↓ ₹${currentCustomer.savings.toLocaleString()}</span>
+                </div>
+            `;
+            toast.classList.add('visible');
+            clearTimeout(window.stressToastTimer);
+            window.stressToastTimer = setTimeout(() => toast.classList.remove('visible'), 5000);
         }
 
         // ===== MODALS =====
@@ -1972,6 +2103,63 @@
         function closeModal(type) {
             const modalId = type + 'Modal';
             document.getElementById(modalId).classList.remove('active');
+        }
+
+        // ===== ACCOUNT AGGREGATOR EWS =====
+        let ewsPortfolio = [];
+
+        function openEwsConsent() {
+            document.getElementById('ewsConsentModal').classList.add('visible');
+            document.getElementById('ewsOtp').value = '';
+            document.getElementById('ewsOtp').focus();
+        }
+
+        function closeEwsConsent() {
+            document.getElementById('ewsConsentModal').classList.remove('visible');
+        }
+
+        async function approveEwsConsent() {
+            const otp = document.getElementById('ewsOtp').value.trim();
+            if (otp.length < 4) {
+                showEwsToast('Enter the mock AA OTP to approve this read-only sync.');
+                return;
+            }
+            closeEwsConsent();
+            await loadEwsPortfolio();
+            showEwsToast('AA sync approved. Debt Velocity signals refreshed.');
+        }
+
+        async function loadEwsPortfolio() {
+            const body = document.getElementById('ewsTableBody');
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/v1/ews/mock-portfolio', { cache: 'no-store' });
+                if (!response.ok) throw new Error('EWS service returned ' + response.status);
+                const data = await response.json();
+                ewsPortfolio = data.portfolio || [];
+                document.getElementById('ewsTotal').textContent = ewsPortfolio.length;
+                document.getElementById('ewsCritical').textContent = ewsPortfolio.filter(p => p.debt_velocity_tier === 'HIGH').length;
+                document.getElementById('ewsShadow').textContent = ewsPortfolio.filter(p => p.risk_flags.some(f => f.code === 'SHADOW_LENDING_PATTERN_DETECTED')).length;
+                body.innerHTML = ewsPortfolio.map(ews => {
+                    const tier = String(ews.debt_velocity_tier).toLowerCase();
+                    const flags = ews.risk_flags.length ? ews.risk_flags.map(f => `<span title="${f.detail}" style="display: inline-block; margin: 0 0.25rem 0.25rem 0; color: #cbd5e1; font-size: 0.75rem;">${f.code}</span>`).join('') : '<span style="color: #64748b;">None</span>';
+                    const action = ews.risk_status === 'HIGH' ? `<button class="btn btn-secondary" style="padding: 0.45rem 0.65rem; font-size: 0.75rem;" onclick="sendEwsFirstAid('${ews.customer_name}')">🆘 Financial First-Aid</button>` : '<span style="color: #64748b;">Monitor</span>';
+                    return `<tr><td>${ews.customer_name}</td><td style="color: #94a3b8;">${ews.account_id}</td><td><span class="ews-score ${tier === 'low' ? 'low' : ''}">₹${Number(ews.debt_velocity_score).toLocaleString('en-IN')}/day</span></td><td><span class="ews-status ${tier}">● ${ews.risk_status}</span></td><td>${flags}</td><td>${action}</td></tr>`;
+                }).join('');
+            } catch (error) {
+                body.innerHTML = `<tr><td colspan="6" style="padding: 2rem; text-align: center; color: #fda4af;">EWS service unavailable. Start DebtGuard with <code>uvicorn main:app --reload</code>.</td></tr>`;
+            }
+        }
+
+        function sendEwsFirstAid(customerName) {
+            showEwsToast(`Automated Debt Consolidation Offer sent to ${customerName} via WhatsApp.`);
+        }
+
+        function showEwsToast(message) {
+            const toast = document.getElementById('stressToast');
+            toast.innerHTML = `<div class="stress-toast-header"><span>✓</span> AA EWS update</div><p>${message}</p>`;
+            toast.classList.add('visible');
+            clearTimeout(window.ewsToastTimer);
+            window.ewsToastTimer = setTimeout(() => toast.classList.remove('visible'), 4000);
         }
 
         // ===== UTILITY FUNCTIONS =====
