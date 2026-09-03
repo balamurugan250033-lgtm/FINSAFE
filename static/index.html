@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="dark scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,269 +11,1050 @@
       theme: {
         extend: {
           colors: {
-            emerald: { 400:'#34d399',500:'#10b981',600:'#059669' },
-            rose: { 400:'#fb7185',500:'#f43f5e',600:'#e11d48' },
-            amber: { 400:'#fbbf24',500:'#f59e0b' },
-            slate: { 900:'#0f172a',950:'#020617' },
+            brand: {
+              50: '#ecfdf5',
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+              900: '#064e3b',
+            },
+            slate: {
+              850: '#0f172a',
+              900: '#0b1329',
+              950: '#030712',
+            }
           },
-          fontFamily: { sans:['Inter','ui-sans-serif','system-ui'], mono:['ui-monospace','Menlo','monospace'] },
-          boxShadow: {
-            neon: '0 0 0 3px theme(colors.emerald.500/0.25), 0 0 16px theme(colors.emerald.500/0.4)',
-            'neon-rose':'0 0 0 3px theme(colors.rose.500/0.25), 0 0 16px theme(colors.rose.500/0.4)',
-          },
-        },
-      },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Menlo', 'Monaco', 'monospace']
+          }
+        }
+      }
     };
   </script>
   <style>
-    body { background: radial-gradient(1200px 600px at 70% -10%, theme(colors.emerald.500/0.04) 0%, transparent 60%), theme(colors.slate.900); }
-    .phone-frame { background: radial-gradient(ellipse at center, #1e293b 0%, #0f172a 100%); }
+    body {
+      background: radial-gradient(1200px 800px at 50% -10%, rgba(16, 185, 129, 0.06) 0%, rgba(3, 7, 18, 1) 70%);
+    }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card-hover:hover {
+      background: rgba(30, 41, 59, 0.8);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0b1329; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
   </style>
 </head>
-<body class="min-h-screen font-sans text-slate-100 antialiased">
-  <!-- ===== HEADER ===== -->
-  <header class="sticky top-0 z-30 flex items-center justify-between border-b border-slate-800/60 bg-slate-900/80 px-5 py-3 backdrop-blur">
-    <div class="flex items-center gap-3">
-      <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/15 ring-2 ring-emerald-500/40">🛡️</div>
-      <div>
-        <h1 class="text-base font-semibold tracking-tight text-emerald-400">DebtGuard 2.0</h1>
-        <p class="text-xs text-slate-400">RBI-Compliant Early Warning System (EWS)</p>
+<body class="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- ==================== TOP NAVIGATION HEADER ==================== -->
+  <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-slate-950/85 backdrop-blur-md px-4 lg:px-8 py-3.5">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      
+      <!-- Brand & Status -->
+      <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
+        <div class="flex items-center gap-3">
+          <div class="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-600/10 border border-brand-500/30 text-brand-400 shadow-lg shadow-brand-500/10">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-base font-bold tracking-tight text-white">DebtGuard <span class="text-brand-400">2.0</span></h1>
+              <span class="px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-brand-500/10 text-brand-400 border border-brand-500/30 rounded-full">RBI AA Sentinel</span>
+            </div>
+            <p class="text-xs text-slate-400">Continuous Early Warning System over Account Aggregator Streams</p>
+          </div>
+        </div>
+
+        <div class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-slate-300">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span>Live Engine Active</span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs including 3. Stretch Customer View Toggle -->
+      <div class="flex items-center gap-2.5 w-full md:w-auto justify-end">
+        <nav class="flex p-1 bg-slate-900/90 border border-slate-800 rounded-lg text-xs font-medium text-slate-400 overflow-x-auto">
+          <button id="tab-sentinel" onclick="switchTab('sentinel')" class="tab-btn px-3 py-1.5 rounded-md text-white bg-slate-800 shadow-sm transition-all flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            <span>Bank Portfolio</span>
+          </button>
+          <button id="tab-borrower" onclick="switchTab('borrower')" class="tab-btn px-3 py-1.5 rounded-md hover:text-slate-200 transition-all flex items-center gap-1.5 text-amber-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+            <span>Borrower App View 📱</span>
+          </button>
+          <button id="tab-scanner" onclick="switchTab('scanner')" class="tab-btn px-3 py-1.5 rounded-md hover:text-slate-200 transition-all flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <span>Scanner Sandbox</span>
+          </button>
+          <button id="tab-audit" onclick="switchTab('audit')" class="tab-btn px-3 py-1.5 rounded-md hover:text-slate-200 transition-all flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span>Audit Trail</span>
+          </button>
+        </nav>
+
+        <button id="syncBtn" onclick="triggerAASync()" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-brand-500/10 hover:bg-brand-500/20 text-brand-400 text-xs font-semibold border border-brand-500/30 transition-all shadow-sm">
+          <svg id="syncIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <span>Simulate AA Sync</span>
+        </button>
+
+        <a href="/finshield" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-medium border border-slate-800 transition-all">
+          <span>FinShield UI</span>
+          <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
       </div>
     </div>
-    <button id="aaSyncBtn"
-      class="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-emerald-300 ring-1 ring-slate-700 transition-all hover:bg-slate-700 hover:shadow-neon">
-      📱 Simulate AA Sync
-    </button>
   </header>
 
-  <!-- ===== MAIN ===== -->
-  <main class="px-5 py-6">
-    <!-- KPI cards -->
-    <section class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <div id="kpi-total" class="kpi-card">
-        <div class="text-2xl">👥</div>
-        <div class="text-right">
-          <div id="kpi-total-val" class="text-2xl font-bold text-emerald-400">—</div>
-          <div class="text-xs text-slate-400">Total Monitored</div>
+  <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
+  <main class="max-w-7xl mx-auto px-4 lg:px-8 py-6 space-y-6">
+
+    <!-- KPI Metric Cards Grid -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="glass-card rounded-2xl p-4 flex items-center justify-between">
+        <div class="space-y-1">
+          <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Monitored Borrowers</p>
+          <p id="kpi-total" class="text-2xl font-bold text-white">3</p>
+          <p class="text-[11px] text-slate-400 flex items-center gap-1">
+            <span class="text-brand-400">●</span> AA Stream Consent Active
+          </p>
+        </div>
+        <div class="p-3 bg-slate-900 border border-slate-800 rounded-xl text-brand-400">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
         </div>
       </div>
-      <div id="kpi-critical" class="kpi-card">
-        <div class="text-2xl">⚡</div>
-        <div class="text-right">
-          <div id="kpi-critical-val" class="text-2xl font-bold text-rose-400">—</div>
-          <div class="text-xs text-slate-400">Critical Velocity Alerts</div>
+
+      <div class="glass-card rounded-2xl p-4 flex items-center justify-between">
+        <div class="space-y-1">
+          <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Velocity Alerts</p>
+          <p id="kpi-alerts" class="text-2xl font-bold text-rose-400">2</p>
+          <p class="text-[11px] text-rose-400/90 flex items-center gap-1">
+            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+            Requires Human Review
+          </p>
+        </div>
+        <div class="p-3 bg-rose-500/10 border border-rose-500/20 rounded-xl text-rose-400">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
         </div>
       </div>
-      <div id="kpi-shadow" class="kpi-card">
-        <div class="text-2xl">🕸️</div>
-        <div class="text-right">
-          <div id="kpi-shadow-val" class="text-2xl font-bold text-rose-400">—</div>
-          <div class="text-xs text-slate-400">Shadow Exposure</div>
+
+      <div class="glass-card rounded-2xl p-4 flex items-center justify-between">
+        <div class="space-y-1">
+          <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Unreported Debt Exposure</p>
+          <p id="kpi-exposure" class="text-2xl font-bold text-amber-400">₹450,000</p>
+          <p class="text-[11px] text-slate-400">Pre-CIBIL Bureau Sync</p>
+        </div>
+        <div class="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-400">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4 flex items-center justify-between">
+        <div class="space-y-1">
+          <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Inclusion & Consent</p>
+          <p id="kpi-audits" class="text-2xl font-bold text-emerald-400">100%</p>
+          <p class="text-[11px] text-slate-400">Transparency Guarantee</p>
+        </div>
+        <div class="p-3 bg-slate-900 border border-slate-800 rounded-xl text-emerald-400">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
       </div>
     </section>
 
-    <!-- Compliance note -->
-    <div class="mb-5 rounded-xl border border-slate-800 bg-slate-900/50 p-3.5 text-xs text-slate-400">
-      <span class="font-medium text-slate-300">Compliance:</span>
-      Scores computed in real time over raw AA transaction streams (zero reliance on 30-day-lagged CIBIL snapshots).
-      All risk actions are assistive recommendations reviewed per RBI FRMG 2026 §32.
+    <!-- 2. Explicit Line in Responsible AI Section -->
+    <div class="rounded-xl border border-brand-500/30 bg-slate-900/90 p-4 text-xs text-slate-200 space-y-2 shadow-inner">
+      <div class="flex items-center gap-2 text-brand-400 font-bold uppercase tracking-wider text-[11px]">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        <span>Responsible AI Customer Transparency Protocol</span>
+      </div>
+      <p class="text-slate-300 leading-relaxed">
+        <strong>Customer Right to Understand & Contest:</strong> Customers are automatically notified when proactive outreach occurs and maintain the right to view, understand, or contest the underlying factors behind any assessment. This signal does NOT impact credit score or loan eligibility under RBI DLT 2026.
+      </p>
     </div>
 
-    <!-- Portfolio table -->
-    <section class="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/60 ring-1 ring-slate-800">
-      <div class="overflow-x-auto">
-        <table class="w-full min-w-[720px] table-fixed text-sm">
-          <thead>
-            <tr class="bg-slate-800/60">
-              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Customer</th>
-              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Account</th>
-              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Debt Velocity</th>
-              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Risk Status</th>
-              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Flags</th>
-              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Action</th>
-            </tr>
-          </thead>
-          <tbody id="portfolio-body" class="divide-y divide-slate-800">
-            <tr><td colspan="6" class="py-8 text-center text-slate-400">Loading portfolio…</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-  </main>
-
-  <!-- ===== AA Consent Modal (mobile phone frame) ===== -->
-  <div id="consentModal"
-    class="fixed inset-0 z-40 hidden items-end justify-center bg-black/60 p-4 backdrop-blur-sm">
-    <div class="phone-frame relative mx-auto mb-12 h-[560px] w-72 max-w-sm overflow-hidden rounded-[2.25rem] border-4 border-slate-800 shadow-2xl shadow-black/70">
-      <div class="absolute -right-1 -top-3 h-2 w-2 rounded-full bg-slate-700"></div>
-      <div class="absolute -right-1 bottom-16 h-6 w-6 rounded-full bg-slate-700"></div>
-
-      <div class="absolute inset-0 flex flex-col bg-slate-950">
-        <!-- status bar -->
-        <div class="flex items-center justify-between px-4 py-1 text-[10px] text-slate-500">
-          <span>9:41</span><span>100%</span><span>📶</span>
+    <!-- ==================== VIEW 1: PORTFOLIO SENTINEL ==================== -->
+    <section id="view-sentinel" class="space-y-4">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-900/80 border border-slate-800 p-3 rounded-xl">
+        <div class="relative w-full sm:w-80">
+          <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input id="searchInput" type="text" oninput="filterPortfolio()" placeholder="Search borrower name or account ID..." class="w-full pl-9 pr-4 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-500/50 transition-all"/>
         </div>
 
-        <div class="flex-1 overflow-y-auto px-5 py-6">
-          <div class="mb-5 text-center">
-            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/15 ring-2 ring-emerald-500/40">🔐</div>
-            <h2 class="mt-3 text-lg font-semibold text-slate-100">Account Aggregator Consent</h2>
-            <p class="mt-1.5 text-xs text-slate-400">
-              DebtGuard 2.0 requests read-only access to your transaction streams to generate EWS alerts.
+        <div class="flex items-center gap-1.5 w-full sm:w-auto justify-start sm:justify-end overflow-x-auto">
+          <span class="text-xs text-slate-400 mr-1 font-medium">Filter Tier:</span>
+          <button onclick="setFilter('ALL')" id="filter-ALL" class="filter-pill px-3 py-1 rounded-lg text-xs font-medium bg-brand-500 text-white shadow-sm transition-all">All</button>
+          <button onclick="setFilter('HIGH')" id="filter-HIGH" class="filter-pill px-3 py-1 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:text-white transition-all">High Risk</button>
+          <button onclick="setFilter('MEDIUM')" id="filter-MEDIUM" class="filter-pill px-3 py-1 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:text-white transition-all">Medium Risk</button>
+          <button onclick="setFilter('LOW')" id="filter-LOW" class="filter-pill px-3 py-1 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:text-white transition-all">Low Risk</button>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-2xl overflow-hidden border border-slate-800">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-slate-800 bg-slate-900/90 text-[11px] uppercase tracking-wider font-semibold text-slate-400">
+                <th class="py-3 px-4">Borrower Profile</th>
+                <th class="py-3 px-4">Debt Velocity</th>
+                <th class="py-3 px-4">Risk Tier</th>
+                <th class="py-3 px-4">Triggered EWS Flags</th>
+                <th class="py-3 px-4">Personalized Assistive Recommendation</th>
+                <th class="py-3 px-4 text-right">Inspector</th>
+              </tr>
+            </thead>
+            <tbody id="portfolio-table-body" class="divide-y divide-slate-800/60 text-xs">
+              <tr>
+                <td colspan="6" class="py-12 text-center text-slate-400">
+                  <div class="inline-block animate-spin rounded-full h-6 w-6 border-2 border-brand-500 border-t-transparent"></div>
+                  <p class="mt-2 text-xs">Connecting to DebtGuard EWS Engine...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 3. BORROWER PORTAL VIEW (CUSTOMER APP TOGGLE) ==================== -->
+    <section id="view-borrower" class="hidden space-y-5">
+      <div class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl space-y-4 pb-6">
+        
+        <!-- Mobile App Top Bar -->
+        <div class="bg-gradient-to-r from-brand-600 to-brand-500 p-6 text-white space-y-3">
+          <div class="flex items-center justify-between text-xs opacity-90">
+            <span>Fintech Wellness Portal</span>
+            <span class="px-2 py-0.5 bg-white/20 rounded-full font-bold">AA Consent Active ✓</span>
+          </div>
+          <div>
+            <h2 class="text-xl font-bold">Hi Rohan 👋</h2>
+            <p class="text-xs text-brand-100 mt-0.5">Your Account Wellness Check-in</p>
+          </div>
+        </div>
+
+        <div class="px-6 space-y-4">
+          <!-- Non-Exclusion Banner -->
+          <div class="p-3.5 rounded-2xl bg-brand-500/10 border border-brand-500/30 text-xs space-y-1">
+            <span class="font-bold text-brand-400 block">🛡️ Supportive Financial Partner</span>
+            <p class="text-slate-300 text-[11px] leading-relaxed">
+              We periodically check transaction patterns via your Account Aggregator feed to offer pre-emptive assistance. <strong>This check-in does NOT impact your credit score or loan eligibility.</strong>
             </p>
           </div>
 
-          <div class="rounded-xl border border-slate-800 bg-slate-900/80 p-3.5 text-xs text-slate-300">
-            <div class="mb-2 flex justify-between"><span>Data shared</span><span class="text-slate-400">Transactions (180 days)</span></div>
-            <div class="mb-2 flex justify-between"><span>Purpose</span><span class="text-slate-400">Risk scoring</span></div>
-            <div class="flex justify-between"><span>Duration</span><span class="text-slate-400">Single session</span></div>
+          <!-- Active Offer Card -->
+          <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-white">Proactive Wellness Offer</span>
+              <span class="text-[10px] px-2 py-0.5 bg-amber-500/20 text-amber-400 font-bold rounded">Pre-Approved</span>
+            </div>
+            <p class="text-xs text-slate-300">
+              We noticed recent multi-lender repayments. To help manage cash flow, you're eligible for a <strong>₹15,000 Calibrated Micro-Credit Buffer</strong> or a <strong>Free EMI Tenor Extension</strong>.
+            </p>
+            <div class="space-y-2 pt-1">
+              <button onclick="showToast('Offer claimed! Our team will contact you.', '🎉')" class="w-full py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs shadow-lg shadow-brand-500/20">
+                Claim ₹15,000 Micro-Credit Buffer
+              </button>
+              <button onclick="openContestModal()" class="w-full py-2 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-300 text-xs font-medium transition-all">
+                Understand or Contest Assessment Factors
+              </button>
+            </div>
           </div>
 
-          <div class="mt-5">
-            <label class="mb-2 block text-xs font-medium text-slate-300">AA OTP (mock)</label>
-            <input id="otpInput" type="text" inputmode="numeric" maxlength="6"
-              class="w-full rounded-lg border border-slate-700 bg-slate-900 px-3.5 py-2.5 text-center text-base tracking-[0.2em] text-emerald-400 placeholder-slate-600 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-              placeholder="● ● ● ● ● ●" />
+          <!-- Wellness Tips -->
+          <div class="space-y-2">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Personalized Wellness Tips</h3>
+            <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-300">
+              💡 <strong>Consolidate UPI Repayments:</strong> Replacing unverified high-interest daily micro-loans with a single low-cost bank line saves up to ₹2,400/month.
+            </div>
           </div>
         </div>
 
-        <div class="flex items-center justify-between border-t border-slate-800 p-3">
-          <button id="consentReject"
-            class="flex-1 rounded-lg py-2.5 text-center text-sm font-medium text-slate-300 hover:text-slate-100">
-            Not now
+      </div>
+    </section>
+
+    <!-- ==================== VIEW: SCANNER SANDBOX ==================== -->
+    <section id="view-scanner" class="hidden space-y-4">
+      <div class="glass-card rounded-2xl p-6 border border-slate-800 space-y-5">
+        <div>
+          <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Interactive AA Transaction Stream Scanner
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">Submit custom transaction streams or load preset test vectors to observe real-time Debt Velocity classification and flag detection.</p>
+        </div>
+
+        <div class="flex items-center gap-2 overflow-x-auto pb-1">
+          <span class="text-xs text-slate-400 font-medium">Load Preset:</span>
+          <button onclick="loadPreset('rapid')" class="px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-xs border border-rose-500/30 transition-all font-medium">
+            ⚡ Rapid Loan Stacking
           </button>
-          <button id="consentApprove"
-            class="flex-1 rounded-lg bg-emerald-600 py-2.5 text-center text-sm font-semibold text-white transition-colors hover:bg-emerald-500">
-            Approve & Sync
+          <button onclick="loadPreset('shadow')" class="px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs border border-amber-500/30 transition-all font-medium">
+            🕸️ Shadow Lending Net
           </button>
+          <button onclick="loadPreset('safe')" class="px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-xs border border-emerald-500/30 transition-all font-medium">
+            🛡️ Safe Salary Stream
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider flex justify-between">
+              <span>Account Payload JSON</span>
+              <span class="text-slate-500 text-[10px]">AA FHIR Envelope</span>
+            </label>
+            <textarea id="scannerPayload" rows="14" class="w-full p-4 bg-slate-950 border border-slate-800 rounded-xl font-mono text-xs text-emerald-400 focus:outline-none focus:border-brand-500/50 transition-all leading-relaxed"></textarea>
+            <button onclick="executeScan()" class="w-full py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold text-xs transition-all shadow-lg shadow-brand-500/20 flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span>Execute EWS Scan Engine</span>
+            </button>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Detection Engine Output</label>
+            <div id="scanResultContainer" class="min-h-[320px] p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-4">
+              <div class="py-16 text-center text-slate-500 text-xs">
+                Select a preset or edit JSON payload above and click <span class="text-brand-400">Execute EWS Scan Engine</span>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW: AUDIT TRAIL ==================== -->
+    <section id="view-audit" class="hidden space-y-4">
+      <div class="glass-card rounded-2xl p-6 border border-slate-800 space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-base font-bold text-white flex items-center gap-2">
+              <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              Immutable SQLite Audit Logs
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Real-time audit trail of scan events, staff approvals, and regulatory consent checks stored in debtguard.db.</p>
+          </div>
+          <button onclick="loadAuditLogs()" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs border border-slate-800 transition-all flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            Refresh Logs
+          </button>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-slate-800">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-900 border-b border-slate-800 text-slate-400 uppercase tracking-wider text-[10px] font-semibold">
+                <th class="py-2.5 px-4">Log ID</th>
+                <th class="py-2.5 px-4">Action Code</th>
+                <th class="py-2.5 px-4">Operator / Staff ID</th>
+                <th class="py-2.5 px-4">Resource ID</th>
+                <th class="py-2.5 px-4">Timestamp</th>
+                <th class="py-2.5 px-4">Audit Details</th>
+              </tr>
+            </thead>
+            <tbody id="audit-table-body" class="divide-y divide-slate-800/60 font-mono">
+              <tr><td colspan="6" class="py-8 text-center text-slate-500 font-sans">Loading audit logs from SQLite...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== RISK INSPECTOR SLIDE-OVER DRAWER ==================== -->
+  <div id="inspectorDrawer" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+    <div class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity" onclick="closeDrawer()"></div>
+
+    <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+      <div class="pointer-events-auto w-screen max-w-2xl bg-slate-900 border-l border-slate-800 shadow-2xl flex flex-col">
+        
+        <div class="px-6 py-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div id="drawer-tier-badge" class="px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/30">
+              HIGH RISK
+            </div>
+            <div>
+              <h2 id="drawer-customer-name" class="text-base font-bold text-white">Rohan Mehta</h2>
+              <p id="drawer-account-id" class="text-xs text-slate-400 font-mono">ACC-002</p>
+            </div>
+          </div>
+          <button onclick="closeDrawer()" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-6 space-y-5">
+
+          <div class="p-3 rounded-xl border border-brand-500/30 bg-brand-500/10 text-xs text-slate-200 flex items-start gap-2.5">
+            <svg class="w-5 h-5 text-brand-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <div>
+              <span class="font-bold text-brand-400">Non-Exclusion Guarantee:</span>
+              <span id="drawer-protection-notice">This early warning signal does NOT affect loan eligibility, reduce credit score, or block account status per RBI DLT 2026 guidelines.</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="p-3.5 bg-slate-950 border border-slate-800 rounded-xl space-y-1">
+              <p class="text-[11px] font-semibold text-slate-400 uppercase">Debt Velocity Score</p>
+              <p id="drawer-velocity" class="text-xl font-bold text-rose-400">₹56,250 / day</p>
+              <p class="text-[10px] text-slate-500">14-Day Rolling Window</p>
+            </div>
+            <div class="p-3.5 bg-slate-950 border border-slate-800 rounded-xl space-y-1">
+              <p class="text-[11px] font-semibold text-slate-400 uppercase">Unreported Debt</p>
+              <p id="drawer-debt" class="text-xl font-bold text-amber-400">₹450,000</p>
+              <p class="text-[10px] text-slate-500">3 NBFC Disbursals</p>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl border border-amber-500/20 bg-slate-950 space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Predictive Early Warning Timeline
+              </h3>
+              <span class="text-[10px] px-2 py-0.5 bg-amber-500/10 text-amber-400 rounded font-semibold border border-amber-500/20">Pre-Crisis Intercept</span>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              <strong class="text-white">Core Narrative:</strong> Without intervention today, borrower debt velocity crosses into <span class="text-rose-400 font-semibold">Critical Default Zone</span> by August 2026. Proactive intervention today prevents financial distress before bureau reporting.
+            </p>
+            <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-800/80 text-[10px]">
+              <div class="p-2 rounded bg-slate-900 border border-slate-800">
+                <span class="block text-brand-400 font-bold">TODAY (AA Stream)</span>
+                <span class="text-slate-400">Early Velocity Signal Detected</span>
+              </div>
+              <div class="p-2 rounded bg-brand-500/10 border border-brand-500/30">
+                <span class="block text-white font-bold">TODAY (Bank Staff)</span>
+                <span class="text-brand-300">Calibrated Micro-Credit Offer</span>
+              </div>
+              <div class="p-2 rounded bg-slate-900 border border-slate-800 opacity-60">
+                <span class="block text-slate-400 font-bold">AUG 2026 (Bureau Sync)</span>
+                <span class="text-slate-400">Default Prevented</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-2.5">
+            <h3 class="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center justify-between">
+              <span>Personalized Factor Mappings</span>
+              <span class="text-[10px] text-slate-500">Explicit Rules-Driven Logic</span>
+            </h3>
+            <div id="drawer-factors-container" class="space-y-2"></div>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Triggered Risk Signals</h3>
+            <div id="drawer-flags-container" class="space-y-2"></div>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center justify-between">
+              <span>AA Bank Transaction Stream</span>
+              <span class="text-[10px] text-slate-500 font-normal">Real-Time Book Entries</span>
+            </h3>
+            <div class="border border-slate-800 rounded-xl overflow-hidden bg-slate-950">
+              <div class="max-h-52 overflow-y-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr class="bg-slate-900 border-b border-slate-800 text-[10px] text-slate-400 uppercase tracking-wider">
+                      <th class="py-2 px-3">Date</th>
+                      <th class="py-2 px-3">Type</th>
+                      <th class="py-2 px-3">Narrative / Merchant</th>
+                      <th class="py-2 px-3 text-right">Amount (₹)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="drawer-txns-body" class="divide-y divide-slate-800/60 font-mono text-[11px]"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl border border-brand-500/30 bg-brand-500/10 space-y-3">
+            <div class="flex items-start gap-3">
+              <div class="p-2 rounded-lg bg-brand-500/20 text-brand-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+              </div>
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <h4 id="drawer-action-title" class="text-xs font-bold text-white">OFFER_CALIBRATED_MICRO_CREDIT</h4>
+                  <span class="px-2 py-0.5 text-[9px] font-bold bg-brand-500 text-slate-950 rounded">HUMAN-IN-THE-LOOP REQUIRED</span>
+                </div>
+                <p id="drawer-action-rationale" class="text-xs text-slate-300">Rapid loan stacking detected; offer a smaller, manageable ₹15,000 credit line to prevent predatory lender reliance while preserving liquidity.</p>
+              </div>
+            </div>
+            <button onclick="openHumanApprovalModal()" class="w-full py-2.5 rounded-lg bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs transition-all shadow-lg shadow-brand-500/20 flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span>Review & Authorize Operational Intervention</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- HUMAN-IN-THE-LOOP APPROVAL MODAL -->
+  <div id="humanApprovalModal" class="fixed inset-0 z-50 overflow-hidden hidden" role="dialog" aria-modal="true">
+    <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onclick="closeHumanApprovalModal()"></div>
+    <div class="relative min-h-screen flex items-center justify-center p-4">
+      <div class="relative w-full max-w-lg bg-slate-900 border border-brand-500/40 rounded-2xl p-6 shadow-2xl space-y-5">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+          <div class="flex items-center gap-2.5">
+            <div class="p-2 rounded-xl bg-brand-500/20 text-brand-400 border border-brand-500/30">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-white">Human-in-the-Loop Operational Approval</h3>
+              <p class="text-xs text-slate-400">Authorized Bank Staff Oversight Protocol</p>
+            </div>
+          </div>
+          <button onclick="closeHumanApprovalModal()" class="text-slate-400 hover:text-white p-1">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <div class="space-y-3 text-xs">
+          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+            <span class="text-[10px] text-slate-400 uppercase font-semibold">Target Borrower</span>
+            <p id="modal-customer-name" class="font-bold text-white">Rohan Mehta (ACC-002)</p>
+          </div>
+          <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+            <span class="text-[10px] text-slate-400 uppercase font-semibold">Intervention Action</span>
+            <p id="modal-action-name" class="font-bold text-brand-400">OFFER_CALIBRATED_MICRO_CREDIT</p>
+            <p id="modal-action-rationale" class="text-slate-300 text-[11px] mt-1"></p>
+          </div>
+
+          <div class="p-3 rounded-xl border border-brand-500/30 bg-brand-500/10 text-[11px] text-brand-300 flex items-center gap-2">
+            <svg class="w-4 h-4 text-brand-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>Verified: Action prevents financial exclusion & does not impact borrower credit score.</span>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-[10px] font-semibold text-slate-400 uppercase">Bank Staff Officer ID</label>
+            <input id="modalOfficerId" type="text" value="OFFICER-7892" class="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-lg text-xs font-mono text-white focus:outline-none focus:border-brand-500/50"/>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-[10px] font-semibold text-slate-400 uppercase">Intervention Assessment Notes</label>
+            <textarea id="modalNotes" rows="2" class="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-brand-500/50">Reviewed borrower debt velocity; approved calibrated micro-credit line of ₹15,000 to preserve liquidity and prevent shadow lending reliance.</textarea>
+          </div>
+        </div>
+
+        <div class="flex gap-2 pt-2">
+          <button onclick="closeHumanApprovalModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition-all">Cancel</button>
+          <button onclick="confirmHumanApproval()" class="w-1/2 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs transition-all shadow-lg shadow-brand-500/20">Approve & Dispatch Offer</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ===== Toast container ===== -->
-  <div id="toastContainer" class="fixed inset-x-0 bottom-6 z-50 flex flex-col items-center gap-3 px-4"></div>
+  <!-- 1. CUSTOMER NOTIFICATION PREVIEW MODAL -->
+  <div id="customerNotificationModal" class="fixed inset-0 z-50 overflow-hidden hidden" role="dialog" aria-modal="true">
+    <div class="absolute inset-0 bg-slate-950/85 backdrop-blur-md" onclick="closeCustomerNotificationModal()"></div>
+    <div class="relative min-h-screen flex items-center justify-center p-4">
+      <div class="relative w-full max-w-sm bg-slate-900 border border-brand-500/40 rounded-3xl p-5 shadow-2xl space-y-4">
+        
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="text-base">📱</span>
+            <div>
+              <h4 class="text-xs font-bold text-white">Customer Mobile Notification Preview</h4>
+              <p class="text-[10px] text-slate-400">Dispatched to Borrower Handset</p>
+            </div>
+          </div>
+          <button onclick="closeCustomerNotificationModal()" class="text-slate-400 hover:text-white text-xs">✕</button>
+        </div>
 
-  <style>.kpi-card{@apply flex items-center justify-between rounded-xl border border-slate-800 bg-slate-900/60 p-4;}</style>
+        <!-- Phone Card Mockup -->
+        <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between text-[10px] text-slate-400">
+            <span class="font-bold text-brand-400">DebtGuard Bank Sentinel</span>
+            <span>Just Now</span>
+          </div>
+          <p id="notif-message-body" class="text-xs text-slate-200 leading-relaxed">
+            "Hi Rohan, we noticed recent changes in your spending & repayment velocity. We'd like to offer you a free supportive check-in & a calibrated ₹15,000 credit buffer — zero impact to your account status or credit score."
+          </p>
+          <div class="space-y-2 pt-1">
+            <button onclick="showToast('Customer accepted offer!', '🎉'); closeCustomerNotificationModal();" class="w-full py-2 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs shadow-md">
+              [View Options & Accept Buffer]
+            </button>
+            <button onclick="openContestModal(); closeCustomerNotificationModal();" class="w-full py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-300 text-[11px]">
+              [Understand or Contest Assessment Factors]
+            </button>
+          </div>
+        </div>
 
+        <p class="text-[10px] text-slate-400 text-center">
+          ✓ Answers "Does the customer know?" instantly for regulatory auditors.
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTEST FACTORS MODAL -->
+  <div id="contestModal" class="fixed inset-0 z-50 overflow-hidden hidden" role="dialog" aria-modal="true">
+    <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onclick="closeContestModal()"></div>
+    <div class="relative min-h-screen flex items-center justify-center p-4">
+      <div class="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-4 text-xs">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <h3 class="font-bold text-white text-sm">Contest or Request Factor Explanation</h3>
+          <button onclick="closeContestModal()" class="text-slate-400 hover:text-white">✕</button>
+        </div>
+        <p class="text-slate-300">
+          Under RBI Responsible AI guidelines, you have the right to inspect the exact rules and transaction triggers behind your check-in notice:
+        </p>
+        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-2 text-[11px]">
+          <div class="font-bold text-brand-400">Triggered Factor Details:</div>
+          <ul class="list-disc list-inside space-y-1 text-slate-300">
+            <li>3 Disbursals from NBFC partners detected within a 14-day window.</li>
+            <li>EMI-to-income ratio currently at 56%.</li>
+            <li>Zero impact to CIBIL credit score or loan eligibility.</li>
+          </ul>
+        </div>
+        <div class="space-y-1">
+          <label class="text-[10px] text-slate-400 uppercase font-semibold">Optional Customer Feedback / Clarification</label>
+          <textarea rows="2" placeholder="e.g. Disbursals were for one-time business equipment purchase..." class="w-full p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-brand-500/50"></textarea>
+        </div>
+        <button onclick="showToast('Your feedback has been logged for staff review.', '✓'); closeContestModal();" class="w-full py-2 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs shadow">
+          Submit Factor Review Request
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden transition-all">
+    <div class="px-4 py-3 rounded-xl bg-slate-900 border border-brand-500/40 text-white text-xs shadow-2xl flex items-center gap-3">
+      <span id="toastIcon" class="text-brand-400">✓</span>
+      <span id="toastText">Action completed successfully.</span>
+    </div>
+  </div>
+
+  <!-- ==================== FRONTEND INTERACTIVE LOGIC ==================== -->
   <script>
-    "use strict";
-    const API = "/api/v1/ews/mock-portfolio";
-    let portfolio = [];
+    let globalPortfolio = [];
+    let activeFilter = 'ALL';
+    let selectedAccountForModal = null;
 
-    /* ---------- Toast ---------- */
-    function showToast(message) {
-      const container = document.getElementById("toastContainer");
-      const el = document.createElement("div");
-      el.className = "w-full max-w-sm rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-100 shadow-neon";
-      el.innerHTML = `<div class="flex items-center gap-2"><span>✅</span><span>${message}</span></div>`;
-      container.appendChild(el);
-      setTimeout(() => el.remove(), 3200);
-    }
-
-    /* ---------- KPIs ---------- */
-    function renderKpis() {
-      const total = portfolio.length;
-      const critical = portfolio.filter(p => p.debt_velocity_tier === "HIGH").length;
-      const shadow = portfolio.filter(p => p.risk_flags.some(f => f.code === "SHADOW_LENDING_PATTERN_DETECTED")).length;
-      setText("kpi-total-val", total);
-      setText("kpi-critical-val", critical);
-      setText("kpi-shadow-val", shadow);
-    }
-    function setText(id, val) {
-      const el = document.getElementById(id);
-      if (el) el.textContent = val;
-    }
-
-    /* ---------- Table helpers ---------- */
-    function tierBadge(tier) {
-      const color = tier === "HIGH" ? "rose" : tier === "MEDIUM" ? "amber" : "emerald";
-      const cfg = {
-        rose:   "border-rose-500/30 bg-rose-500/10 text-rose-300",
-        amber:  "border-amber-400/30 bg-amber-400/10 text-amber-300",
-        emerald:"border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
-      }[color];
-      return `<span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium ${cfg}">● ${tier}</span>`;
-    }
-    function velocityCell(score, tier) {
-      const high = tier === "HIGH";
-      const cls = high
-        ? "border-rose-500/30 bg-rose-500/10 text-rose-300 animate-pulse"
-        : "border-slate-700 bg-slate-800/60 text-slate-300";
-      return `<td class="px-4 py-3"><span class="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-medium tabular-nums ${cls}">₹${Number(score).toLocaleString('en-IN')}/day ${high ? '⚠️' : ''}</span></td>`;
-    }
-    function statusBadge(status) {
-      const ok = status === "LOW";
-      return `<span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium ${ok ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300' : 'border-rose-500/30 bg-rose-500/10 text-rose-300'}">● ${status}</span>`;
-    }
-    function flagsCell(flags) {
-      if (!flags.length) return `<span class="text-slate-500">— none</span>`;
-      return flags.map(f => `<span class="mr-1.5 rounded bg-slate-800 px-1.5 py-0.5 text-xs text-slate-300" title="${f.detail}">${f.code}</span>`).join("");
-    }
-    function renderTable() {
-      const tbody = document.getElementById("portfolio-body");
-      if (!portfolio.length) {
-        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-400">No accounts yet.</td></tr>`;
-        return;
+    const PRESETS = {
+      rapid: {
+        account_id: "ACC-TEST-RAPID",
+        customer_name: "Rohan Mehta (Simulated)",
+        transactions: [
+          { date: "2026-08-01", type: "CREDIT", desc: "NBFC_DISBURSAL BAJAJ", amount: 200000 },
+          { date: "2026-08-04", type: "CREDIT", desc: "NBFC_DISBURSAL LENDINGTREE", amount: 150000 },
+          { date: "2026-08-09", type: "CREDIT", desc: "NBFC_DISBURSAL KREDA", amount: 100000 },
+          { date: "2026-08-10", type: "DEBIT", desc: "fastpay UPI txn", amount: 450 },
+          { date: "2026-08-12", type: "DEBIT", desc: "EMI HDFC LOAN", amount: 12000 }
+        ]
+      },
+      shadow: {
+        account_id: "ACC-TEST-SHADOW",
+        customer_name: "Ananya Patel (Simulated)",
+        transactions: [
+          { date: "2026-08-01", type: "CREDIT", desc: "SALARY CREDIT", amount: 52000 },
+          { date: "2026-08-02", type: "DEBIT", desc: "fastpay UPI txn", amount: 750 },
+          { date: "2026-08-04", type: "DEBIT", desc: "quickcash payment", amount: 500 },
+          { date: "2026-08-06", type: "DEBIT", desc: "fastpay recharge", amount: 300 },
+          { date: "2026-08-10", type: "DEBIT", desc: "quickcash transfer", amount: 850 },
+          { date: "2026-08-15", type: "DEBIT", desc: "fastpay bill", amount: 650 }
+        ]
+      },
+      safe: {
+        account_id: "ACC-TEST-SAFE",
+        customer_name: "Priya Sharma (Simulated)",
+        transactions: [
+          { date: "2026-08-02", type: "CREDIT", desc: "SALARY CREDIT HDFC", amount: 75000 },
+          { date: "2026-08-05", type: "DEBIT", desc: "RENT PAYMENT UPI", amount: 22000 },
+          { date: "2026-08-08", type: "DEBIT", desc: "Electricity BILL", amount: 4500 }
+        ]
       }
-      tbody.innerHTML = portfolio.map(p => `
-        <tr class="border-t border-slate-800/60 transition-colors hover:bg-slate-800/40">
-          <td class="px-4 py-3 font-medium text-slate-100">${p.customer_name}</td>
-          <td class="px-4 py-3 text-slate-400">${p.account_id}</td>
-          ${velocityCell(p.debt_velocity_score, p.debt_velocity_tier)}
-          <td class="px-4 py-3">${statusBadge(p.risk_status)}</td>
-          <td class="max-w-[180px] px-4 py-3">${flagsCell(p.risk_flags)}</td>
-          <td class="px-4 py-3">
-            ${p.risk_status === "HIGH"
-              ? `<button data-customer="${p.customer_name}" onclick="firstAid(this)"
-                  class="inline-flex items-center gap-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 text-xs font-medium text-rose-300 transition-colors hover:bg-rose-500/20">🆘 Financial First-Aid</button>`
-              : `<span class="text-xs text-slate-500">—</span>`}
-          </td>
-        </tr>`).join("");
-    }
-
-    /* ---------- Load portfolio ---------- */
-    async function loadPortfolio() {
-      try {
-        const res = await fetch(API, { cache: "no-store" });
-        const data = await res.json();
-        portfolio = data.portfolio || [];
-        renderKpis();
-        renderTable();
-      } catch (e) {
-        document.getElementById("portfolio-body").innerHTML =
-          `<tr><td colspan="6" class="py-8 text-center text-rose-400">Failed to load portfolio: ${e.message}</td></tr>`;
-      }
-    }
-
-    /* ---------- AA Sync simulation ---------- */
-    document.getElementById("aaSyncBtn").addEventListener("click", () => {
-      document.getElementById("consentModal").classList.remove("hidden");
-      document.getElementById("consentModal").classList.add("flex");
-      document.getElementById("otpInput").value = "";
-      document.getElementById("otpInput").focus();
-    });
-    document.getElementById("consentApprove").addEventListener("click", async () => {
-      const otp = document.getElementById("otpInput").value.trim();
-      if (otp.length < 4) { showToast("Please enter the mock OTP (e.g. 123456)."); return; }
-      document.getElementById("consentModal").classList.add("hidden");
-      document.getElementById("consentModal").classList.remove("flex");
-      await loadPortfolio();
-      showToast("AA sync approved — portfolio refreshed.");
-    });
-    document.getElementById("consentReject").addEventListener("click", () => {
-      const m = document.getElementById("consentModal");
-      m.classList.add("hidden"); m.classList.remove("flex");
-    });
-
-    /* ---------- Financial First-Aid ---------- */
-    window.firstAid = function (btn) {
-      const name = btn.dataset.customer;
-      showToast(`Automated Debt Consolidation Offer sent to ${name} via WhatsApp.`);
     };
 
-    loadPortfolio();
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchPortfolio();
+      loadPreset('rapid');
+    });
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('text-white', 'bg-slate-800', 'shadow-sm');
+        btn.classList.add('hover:text-slate-200');
+      });
+      document.getElementById(`tab-${tabName}`).classList.add('text-white', 'bg-slate-800', 'shadow-sm');
+
+      ['sentinel', 'borrower', 'scanner', 'audit'].forEach(view => {
+        document.getElementById(`view-${view}`).classList.add('hidden');
+      });
+      document.getElementById(`view-${tabName}`).classList.remove('hidden');
+
+      if (tabName === 'audit') loadAuditLogs();
+    }
+
+    async function fetchPortfolio() {
+      try {
+        const res = await fetch('/api/v1/ews/mock-portfolio');
+        const data = await res.json();
+        globalPortfolio = data.portfolio || [];
+        updateKPIs();
+        renderPortfolioTable();
+      } catch (err) {
+        showToast('Failed to fetch portfolio data from server.', '⚠');
+      }
+    }
+
+    function updateKPIs() {
+      document.getElementById('kpi-total').innerText = globalPortfolio.length;
+      const alerts = globalPortfolio.filter(a => a.debt_velocity_tier === 'HIGH').length;
+      document.getElementById('kpi-alerts').innerText = alerts;
+      const totalExp = globalPortfolio.reduce((acc, curr) => acc + (curr.estimated_unreported_debt || 0), 0);
+      document.getElementById('kpi-exposure').innerText = `₹${totalExp.toLocaleString('en-IN')}`;
+    }
+
+    function renderPortfolioTable() {
+      const tbody = document.getElementById('portfolio-table-body');
+      const query = (document.getElementById('searchInput').value || '').toLowerCase();
+      
+      const filtered = globalPortfolio.filter(item => {
+        const matchesFilter = activeFilter === 'ALL' || item.debt_velocity_tier === activeFilter;
+        const matchesQuery = item.customer_name.toLowerCase().includes(query) || item.account_id.toLowerCase().includes(query);
+        return matchesFilter && matchesQuery;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-500">No borrowing profiles match your search criteria.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(acct => {
+        const isHigh = acct.debt_velocity_tier === 'HIGH';
+        const isMed = acct.debt_velocity_tier === 'MEDIUM';
+
+        const tierBadge = isHigh
+          ? `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/30">HIGH RISK</span>`
+          : isMed
+          ? `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">MEDIUM</span>`
+          : `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">LOW RISK</span>`;
+
+        const flagBadges = (acct.risk_flags || []).map(f => `
+          <span class="inline-block px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-300 border border-slate-700">${f.label || f.code}</span>
+        `).join(' ') || '<span class="text-slate-500 text-[11px]">None</span>';
+
+        return `
+          <tr onclick="openDrawer('${acct.account_id}')" class="hover:bg-slate-900/80 cursor-pointer transition-all">
+            <td class="py-3.5 px-4 font-medium text-white">
+              <div>${acct.customer_name}</div>
+              <div class="text-[10px] text-slate-400 font-mono">${acct.account_id}</div>
+            </td>
+            <td class="py-3.5 px-4 font-mono font-semibold ${isHigh ? 'text-rose-400' : 'text-slate-300'}">
+              ₹${(acct.debt_velocity_score || 0).toLocaleString('en-IN')} <span class="text-[10px] text-slate-500 font-sans">/day</span>
+            </td>
+            <td class="py-3.5 px-4">${tierBadge}</td>
+            <td class="py-3.5 px-4 space-x-1">${flagBadges}</td>
+            <td class="py-3.5 px-4 font-mono text-[11px] text-brand-400 font-bold">${acct.intervention ? acct.intervention.action : 'NO_ACTION'}</td>
+            <td class="py-3.5 px-4 text-right">
+              <button class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function setFilter(tier) {
+      activeFilter = tier;
+      document.querySelectorAll('.filter-pill').forEach(btn => {
+        btn.classList.remove('bg-brand-500', 'text-white');
+        btn.classList.add('bg-slate-800', 'text-slate-300');
+      });
+      document.getElementById(`filter-${tier}`).classList.add('bg-brand-500', 'text-white');
+      renderPortfolioTable();
+    }
+
+    function filterPortfolio() {
+      renderPortfolioTable();
+    }
+
+    function openDrawer(accountId) {
+      const acct = globalPortfolio.find(a => a.account_id === accountId);
+      if (!acct) return;
+      selectedAccountForModal = acct;
+
+      document.getElementById('drawer-customer-name').innerText = acct.customer_name;
+      document.getElementById('drawer-account-id').innerText = acct.account_id;
+      document.getElementById('drawer-velocity').innerText = `₹${(acct.debt_velocity_score || 0).toLocaleString('en-IN')} / day`;
+      document.getElementById('drawer-debt').innerText = `₹${(acct.estimated_unreported_debt || 0).toLocaleString('en-IN')}`;
+
+      const badge = document.getElementById('drawer-tier-badge');
+      badge.innerText = `${acct.debt_velocity_tier} RISK`;
+      badge.className = acct.debt_velocity_tier === 'HIGH'
+        ? "px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/30"
+        : "px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+
+      const factorsContainer = document.getElementById('drawer-factors-container');
+      if (acct.factor_mappings && acct.factor_mappings.length > 0) {
+        factorsContainer.innerHTML = acct.factor_mappings.map(fm => `
+          <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1 text-xs">
+            <div class="flex items-center justify-between font-bold">
+              <span class="text-amber-400">${fm.factor} (${fm.metric_value})</span>
+              <span class="text-brand-400 font-mono text-[11px]">${fm.recommended_action}</span>
+            </div>
+            <p class="text-slate-300 text-[11px]">${fm.rationale}</p>
+          </div>
+        `).join('');
+      } else {
+        factorsContainer.innerHTML = `<p class="text-xs text-slate-500">No factor anomalies detected.</p>`;
+      }
+
+      const flagsContainer = document.getElementById('drawer-flags-container');
+      if (acct.risk_flags && acct.risk_flags.length > 0) {
+        flagsContainer.innerHTML = acct.risk_flags.map(f => `
+          <div class="p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs">
+            <div class="font-bold text-rose-400 flex items-center justify-between">
+              <span>${f.label || f.code}</span>
+              <span class="text-[10px] px-2 py-0.5 bg-rose-500/10 border border-rose-500/20 rounded">${f.severity}</span>
+            </div>
+            <p class="text-slate-300 mt-1">${f.detail}</p>
+          </div>
+        `).join('');
+      } else {
+        flagsContainer.innerHTML = `<p class="text-xs text-slate-500">No risk velocity flags triggered for this borrowing account.</p>`;
+      }
+
+      const txnsBody = document.getElementById('drawer-txns-body');
+      if (acct.transactions && acct.transactions.length > 0) {
+        txnsBody.innerHTML = acct.transactions.map(t => {
+          const isCredit = t.type.toUpperCase() === 'CREDIT';
+          const isNBFC = isCredit && (t.desc.toLowerCase().includes('nbfc') || t.desc.toLowerCase().includes('disburs'));
+          const isShadow = !isCredit && (t.desc.toLowerCase().includes('fastpay') || t.desc.toLowerCase().includes('quickcash'));
+
+          const tag = isNBFC
+            ? `<span class="px-1.5 py-0.5 text-[9px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded">NBFC DISBURSAL</span>`
+            : isShadow
+            ? `<span class="px-1.5 py-0.5 text-[9px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded">SHADOW UPI</span>`
+            : '';
+
+          return `
+            <tr>
+              <td class="py-2 px-3 text-slate-400">${t.date}</td>
+              <td class="py-2 px-3 font-bold ${isCredit ? 'text-brand-400' : 'text-slate-300'}">${t.type}</td>
+              <td class="py-2 px-3 text-slate-200">
+                <div class="flex items-center gap-2">
+                  <span>${t.desc}</span>
+                  ${tag}
+                </div>
+              </td>
+              <td class="py-2 px-3 text-right ${isCredit ? 'text-brand-400 font-bold' : 'text-slate-300'}">₹${t.amount.toLocaleString('en-IN')}</td>
+            </tr>
+          `;
+        }).join('');
+      } else {
+        txnsBody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-500">No transaction stream provided.</td></tr>`;
+      }
+
+      if (acct.intervention) {
+        document.getElementById('drawer-action-title').innerText = acct.intervention.action;
+        document.getElementById('drawer-action-rationale').innerText = acct.intervention.rationale;
+      }
+
+      document.getElementById('inspectorDrawer').classList.remove('hidden');
+    }
+
+    function closeDrawer() {
+      document.getElementById('inspectorDrawer').classList.add('hidden');
+    }
+
+    function openHumanApprovalModal() {
+      if (!selectedAccountForModal) return;
+      document.getElementById('modal-customer-name').innerText = `${selectedAccountForModal.customer_name} (${selectedAccountForModal.account_id})`;
+      document.getElementById('modal-action-name').innerText = selectedAccountForModal.intervention ? selectedAccountForModal.intervention.action : 'OFFER_CALIBRATED_MICRO_CREDIT';
+      document.getElementById('modal-action-rationale').innerText = selectedAccountForModal.intervention ? selectedAccountForModal.intervention.rationale : '';
+      document.getElementById('humanApprovalModal').classList.remove('hidden');
+    }
+
+    function closeHumanApprovalModal() {
+      document.getElementById('humanApprovalModal').classList.add('hidden');
+    }
+
+    async function confirmHumanApproval() {
+      if (!selectedAccountForModal) return;
+      const officerId = document.getElementById('modalOfficerId').value || "OFFICER-7892";
+      const notes = document.getElementById('modalNotes').value || "Staff authorized intervention after DTI review.";
+
+      try {
+        const res = await fetch('/api/v1/ews/authorize-intervention', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            account_id: selectedAccountForModal.account_id,
+            officer_id: officerId,
+            action: selectedAccountForModal.intervention ? selectedAccountForModal.intervention.action : 'OFFER_CALIBRATED_MICRO_CREDIT',
+            notes: notes
+          })
+        });
+        const data = await res.json();
+        closeHumanApprovalModal();
+        closeDrawer();
+        
+        // Show Customer Notification Preview Modal
+        openCustomerNotificationModal(selectedAccountForModal.customer_name);
+        showToast(`Staff Approval Logged by ${officerId}. Customer Notification Sent!`, '🛡️');
+      } catch (err) {
+        showToast('Failed to log human approval.', '⚠');
+      }
+    }
+
+    function openCustomerNotificationModal(customerName) {
+      document.getElementById('notif-message-body').innerText = 
+        `"Hi ${customerName || 'Rohan'}, we noticed recent changes in your spending & repayment velocity. We'd like to offer you a free supportive check-in & a calibrated ₹15,000 credit buffer — zero impact to your account status or credit score."`;
+      document.getElementById('customerNotificationModal').classList.remove('hidden');
+    }
+
+    function closeCustomerNotificationModal() {
+      document.getElementById('customerNotificationModal').classList.add('hidden');
+    }
+
+    function openContestModal() {
+      document.getElementById('contestModal').classList.remove('hidden');
+    }
+
+    function closeContestModal() {
+      document.getElementById('contestModal').classList.add('hidden');
+    }
+
+    async function triggerAASync() {
+      const syncBtn = document.getElementById('syncBtn');
+      const icon = document.getElementById('syncIcon');
+      icon.classList.add('animate-spin');
+
+      try {
+        const res = await fetch('/api/v1/ews/simulate-sync', { method: 'POST' });
+        const data = await res.json();
+        
+        if (data.new_account) {
+          globalPortfolio.unshift(data.new_account);
+          updateKPIs();
+          renderPortfolioTable();
+        }
+
+        showToast(data.message || 'AA Stream sync simulation complete!', '⚡');
+      } catch (err) {
+        showToast('AA Sync simulation failed.', '⚠');
+      } finally {
+        icon.classList.remove('animate-spin');
+      }
+    }
+
+    function loadPreset(key) {
+      if (PRESETS[key]) {
+        document.getElementById('scannerPayload').value = JSON.stringify(PRESETS[key], null, 2);
+      }
+    }
+
+    async function executeScan() {
+      const payloadText = document.getElementById('scannerPayload').value;
+      const container = document.getElementById('scanResultContainer');
+
+      try {
+        const payload = JSON.parse(payloadText);
+        const res = await fetch('/api/v1/ews/scan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+
+        container.innerHTML = `
+          <div class="p-4 rounded-xl border border-slate-800 bg-slate-900 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-white">${result.customer_name} (${result.account_id})</span>
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${result.debt_velocity_tier === 'HIGH' ? 'bg-rose-500/20 text-rose-400' : 'bg-emerald-500/20 text-emerald-400'} border border-slate-700">${result.debt_velocity_tier} RISK TIER</span>
+            </div>
+
+            <div class="p-2.5 rounded-lg bg-brand-500/10 border border-brand-500/30 text-[11px] text-brand-300 flex items-start gap-2">
+              <svg class="w-4 h-4 text-brand-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span>${result.inclusion_safeguard_notice}</span>
+            </div>
+
+            <div class="space-y-1">
+              <span class="text-[10px] text-slate-400 uppercase font-semibold">Rules-Driven Factor Mapping</span>
+              ${(result.factor_mappings || []).map(fm => `
+                <div class="p-2 rounded bg-slate-950 border border-slate-800 text-[11px]">
+                  <div class="font-bold text-amber-400">${fm.factor} (${fm.metric_value}) → <span class="text-brand-400">${fm.recommended_action}</span></div>
+                  <div class="text-slate-400">${fm.rationale}</div>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <div class="p-2 bg-slate-950 rounded">
+                <span class="text-slate-400 text-[10px] block">Velocity Score</span>
+                <span class="font-mono font-bold text-brand-400">₹${result.debt_velocity_score} / day</span>
+              </div>
+              <div class="p-2 bg-slate-950 rounded">
+                <span class="text-slate-400 text-[10px] block">Windows Analyzed</span>
+                <span class="font-mono font-bold text-slate-200">${result.windows_analyzed} window(s)</span>
+              </div>
+            </div>
+            <div class="space-y-1">
+              <span class="text-[10px] text-slate-400 uppercase font-semibold">Recommended Intervention</span>
+              <p class="text-xs text-brand-400 font-mono font-bold">${result.intervention.action}</p>
+              <p class="text-xs text-slate-300">${result.intervention.rationale}</p>
+            </div>
+          </div>
+          <pre class="p-3 bg-slate-900 rounded-xl text-[10px] font-mono text-slate-300 overflow-x-auto">${JSON.stringify(result, null, 2)}</pre>
+        `;
+        showToast('EWS Engine successfully scored payload.', '✓');
+      } catch (err) {
+        container.innerHTML = `<div class="p-4 bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs rounded-xl">Invalid JSON payload or network error.</div>`;
+      }
+    }
+
+    async function loadAuditLogs() {
+      const tbody = document.getElementById('audit-table-body');
+      try {
+        const res = await fetch('/api/v1/ews/audit-logs');
+        const data = await res.json();
+        const logs = data.audit_logs || [];
+
+        if (logs.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-500">No SQLite audit logs recorded yet.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = logs.map(log => `
+          <tr class="hover:bg-slate-900/60">
+            <td class="py-2.5 px-4 text-slate-500">#${log.id}</td>
+            <td class="py-2.5 px-4 font-bold ${log.action.includes('HUMAN') ? 'text-amber-400' : 'text-brand-400'}">${log.action}</td>
+            <td class="py-2.5 px-4 text-slate-300 font-bold">${log.user_id || 'SYSTEM'}</td>
+            <td class="py-2.5 px-4 text-slate-400">${log.resource_id || '-'}</td>
+            <td class="py-2.5 px-4 text-slate-400 text-[10px]">${log.created_at}</td>
+            <td class="py-2.5 px-4 text-slate-300 text-[11px] font-sans">${JSON.stringify(log.details || {})}</td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-rose-400">Failed to load audit logs.</td></tr>`;
+      }
+    }
+
+    function showToast(msg, icon = '✓') {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastIcon').innerText = icon;
+      document.getElementById('toastText').innerText = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 3500);
+    }
   </script>
 </body>
 </html>

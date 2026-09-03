@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinShield AI - Detect Early. Intervene Smartly. Protect Financial Futures.</title>
+    <title>FinShield AI — Financial Wellness Command Center</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <style>
         * {
@@ -17,6 +17,7 @@
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             color: #e2e8f0;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         /* Header & Navigation */
@@ -43,7 +44,7 @@
             width: 40px;
             height: 40px;
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            border-radius: 50%;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -53,7 +54,7 @@
         }
 
         .logo-text h1 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
             background: linear-gradient(135deg, #10b981, #f59e0b);
             -webkit-background-clip: text;
@@ -64,12 +65,12 @@
         .tagline {
             font-size: 0.75rem;
             color: #94a3b8;
-            margin-top: -0.25rem;
+            margin-top: -0.15rem;
         }
 
         .nav-menu {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
             align-items: center;
         }
 
@@ -78,7 +79,7 @@
             padding: 0.5rem 1rem;
             border-radius: 6px;
             transition: all 0.3s;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 500;
             color: #cbd5e1;
         }
@@ -111,7 +112,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             transition: all 0.3s;
         }
 
@@ -142,10 +143,10 @@
             to { opacity: 1; }
         }
 
-        /* ===== OVERVIEW SECTION ===== */
+        /* OVERVIEW SECTION */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
@@ -164,51 +165,22 @@
             transform: translateY(-2px);
         }
 
-        .stat-card.healthy {
-            border-left: 4px solid #10b981;
-        }
+        .stat-card.healthy { border-left: 4px solid #10b981; }
+        .stat-card.moderate { border-left: 4px solid #f59e0b; }
+        .stat-card.high { border-left: 4px solid #f97316; }
+        .stat-card.critical { border-left: 4px solid #ef4444; }
 
-        .stat-card.moderate {
-            border-left: 4px solid #f59e0b;
-        }
-
-        .stat-card.high {
-            border-left: 4px solid #f97316;
-        }
-
-        .stat-card.critical {
-            border-left: 4px solid #ef4444;
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
+        .stat-label { font-size: 0.85rem; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+        .stat-value { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.25rem; }
         .stat-card.healthy .stat-value { color: #10b981; }
         .stat-card.moderate .stat-value { color: #f59e0b; }
         .stat-card.high .stat-value { color: #f97316; }
         .stat-card.critical .stat-value { color: #ef4444; }
 
-        .stat-percent {
-            font-size: 0.9rem;
-            color: #cbd5e1;
-        }
+        .stat-percent { font-size: 0.85rem; color: #cbd5e1; }
 
         /* Search Bar */
-        .search-section {
-            margin-bottom: 2rem;
-        }
-
+        .search-section { margin-bottom: 2rem; }
         .search-input {
             width: 100%;
             max-width: 400px;
@@ -228,11 +200,6 @@
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
         }
 
-        .search-input::placeholder {
-            color: #64748b;
-        }
-
-        /* Risk Distribution Chart */
         .chart-container {
             background: rgba(30, 41, 59, 0.8);
             border: 1px solid rgba(100, 116, 139, 0.2);
@@ -241,19 +208,10 @@
             margin-bottom: 2rem;
         }
 
-        .chart-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #f1f5f9;
-        }
+        .chart-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: #f1f5f9; }
+        .chart-wrapper { position: relative; height: 300px; }
 
-        .chart-wrapper {
-            position: relative;
-            height: 300px;
-        }
-
-        /* ===== CUSTOMER DETAIL SECTION ===== */
+        /* CUSTOMER DETAIL SECTION */
         .customer-header {
             background: rgba(30, 41, 59, 0.8);
             border: 1px solid rgba(100, 116, 139, 0.2);
@@ -266,90 +224,55 @@
         }
 
         .customer-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 12px;
+            width: 100px;
+            height: 100px;
+            border-radius: 16px;
             background: linear-gradient(135deg, #10b981, #059669);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 2.5rem;
             flex-shrink: 0;
         }
 
-        .customer-info h2 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .financial-health-score {
-            font-size: 1.2rem;
-            color: #94a3b8;
-            margin-bottom: 1rem;
-        }
+        .customer-info h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .financial-health-score { font-size: 1.1rem; color: #94a3b8; margin-bottom: 1rem; }
 
         .risk-badge {
             display: inline-block;
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.9rem;
             border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
         }
 
-        .risk-badge.healthy { background: rgba(16, 185, 129, 0.2); color: #10b981; }
-        .risk-badge.moderate { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-        .risk-badge.high { background: rgba(249, 115, 22, 0.2); color: #f97316; }
-        .risk-badge.critical { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .risk-badge.healthy { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .risk-badge.moderate { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .risk-badge.high { background: rgba(249, 115, 22, 0.2); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.3); }
+        .risk-badge.critical { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
 
-        .health-score-ring {
-            width: 200px;
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .ring-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
+        .health-score-ring { width: 160px; height: 160px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .ring-container { position: relative; width: 100%; height: 100%; }
 
         .ring-background {
             position: absolute;
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: conic-gradient(
-                from 0deg,
-                rgba(16, 185, 129, 0.2) 0deg,
-                rgba(245, 158, 11, 0.2) 120deg,
-                rgba(239, 68, 68, 0.2) 360deg
-            );
+            background: conic-gradient(from 0deg, rgba(16, 185, 129, 0.2) 0deg, rgba(245, 158, 11, 0.2) 120deg, rgba(239, 68, 68, 0.2) 360deg);
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .ring-value {
-            font-size: 3rem;
-            font-weight: 700;
-            color: #10b981;
-            text-align: center;
-        }
+        .ring-value { font-size: 2.5rem; font-weight: 700; color: #10b981; text-align: center; }
 
-        .ring-label {
-            font-size: 0.85rem;
-            color: #94a3b8;
-            margin-top: 0.25rem;
-        }
-
-        /* Financial Metrics */
+        /* Metrics Grid */
         .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.25rem;
             margin-bottom: 2rem;
         }
 
@@ -360,144 +283,36 @@
             padding: 1.25rem;
         }
 
-        .metric-label {
-            font-size: 0.85rem;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
-        }
+        .metric-label { font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.4rem; text-transform: uppercase; font-weight: 600; }
+        .metric-value { font-size: 1.4rem; font-weight: 700; color: #f1f5f9; }
 
-        .metric-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #f1f5f9;
-            margin-bottom: 0.5rem;
-        }
-
-        .metric-change {
-            font-size: 0.85rem;
-        }
-
-        .metric-change.down { color: #ef4444; }
-        .metric-change.up { color: #10b981; }
-
-        /* Warning Cards */
+        /* Warnings Section */
         .warnings-section {
-            margin-bottom: 2rem;
-        }
-
-        .warnings-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #f1f5f9;
-        }
-
-        .warnings-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
-        }
-
-        .warning-card {
-            background: rgba(30, 41, 59, 0.8);
-            border: 1px solid rgba(100, 116, 139, 0.2);
-            border-left: 4px solid #f97316;
-            border-radius: 10px;
-            padding: 1.25rem;
-            transition: all 0.3s;
-        }
-
-        .warning-card.critical {
-            border-left-color: #ef4444;
-        }
-
-        .warning-card:hover {
-            border-color: rgba(249, 115, 22, 0.5);
-            background: rgba(30, 41, 59, 0.95);
-        }
-
-        .warning-icon {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .warning-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #f1f5f9;
-        }
-
-        .warning-description {
-            font-size: 0.9rem;
-            color: #cbd5e1;
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
-
-        .warning-action {
-            font-size: 0.85rem;
-            color: #f59e0b;
-            font-weight: 500;
-        }
-
-        /* Action Plan */
-        .action-plan-section {
             background: rgba(30, 41, 59, 0.8);
             border: 1px solid rgba(100, 116, 139, 0.2);
             border-radius: 12px;
-            padding: 2rem;
+            padding: 1.75rem;
             margin-bottom: 2rem;
         }
 
-        .action-plan-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
+        .warnings-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 1.25rem; }
+        .warnings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+
+        .warning-card {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 10px;
+            padding: 1.25rem;
+            border-left: 4px solid #f59e0b;
         }
 
-        .actions-list {
-            display: grid;
-            gap: 1rem;
-        }
+        .warning-card.critical { border-left-color: #ef4444; }
 
-        .action-item {
-            background: rgba(15, 23, 42, 0.5);
-            border-left: 3px solid #10b981;
-            padding: 1rem;
-            border-radius: 8px;
-            display: flex;
-            gap: 1rem;
-        }
+        .warning-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+        .warning-title { font-weight: 700; font-size: 0.95rem; color: #f1f5f9; }
+        .warning-description { font-size: 0.88rem; color: #cbd5e1; margin-bottom: 0.75rem; line-height: 1.5; }
+        .warning-action { font-size: 0.85rem; font-weight: 600; color: #34d399; }
 
-        .action-number {
-            font-weight: 700;
-            color: #10b981;
-            font-size: 1.2rem;
-            min-width: 30px;
-        }
-
-        .action-content h4 {
-            color: #f1f5f9;
-            margin-bottom: 0.25rem;
-            font-size: 1rem;
-        }
-
-        .action-content p {
-            color: #cbd5e1;
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-            flex-wrap: wrap;
-        }
-
+        /* Action Buttons */
         .btn {
             padding: 0.75rem 1.5rem;
             border-radius: 8px;
@@ -511,91 +326,41 @@
             gap: 0.5rem;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-        }
+        .btn-primary { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3); }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
-        }
+        .btn-secondary { background: rgba(100, 116, 139, 0.2); color: #cbd5e1; border: 1px solid rgba(100, 116, 139, 0.3); }
+        .btn-secondary:hover { background: rgba(100, 116, 139, 0.3); border-color: rgba(100, 116, 139, 0.5); }
 
-        .btn-secondary {
-            background: rgba(100, 116, 139, 0.2);
-            color: #cbd5e1;
-            border: 1px solid rgba(100, 116, 139, 0.3);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(100, 116, 139, 0.3);
-            border-color: rgba(100, 116, 139, 0.5);
-        }
-
-        .btn-demo {
-            background: linear-gradient(135deg, #f59e0b, #f97316);
-            color: white;
-        }
-
-        .btn-demo:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(245, 158, 11, 0.3);
-        }
+        .btn-demo { background: linear-gradient(135deg, #f59e0b, #f97316); color: white; }
+        .btn-demo:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(245, 158, 11, 0.3); }
 
         /* Forecast Timeline */
         .forecast-section {
             background: rgba(30, 41, 59, 0.8);
             border: 1px solid rgba(100, 116, 139, 0.2);
             border-radius: 12px;
-            padding: 2rem;
+            padding: 1.75rem;
             margin-bottom: 2rem;
         }
 
-        .forecast-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-
-        .forecast-timeline {
-            display: flex;
-            overflow-x: auto;
-            gap: 1rem;
-            padding: 1rem 0;
-            scroll-behavior: smooth;
-        }
+        .forecast-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; }
+        .forecast-timeline { display: flex; overflow-x: auto; gap: 1rem; padding: 0.5rem 0; }
 
         .forecast-month {
             flex-shrink: 0;
-            background: rgba(15, 23, 42, 0.5);
+            background: rgba(15, 23, 42, 0.6);
             border-radius: 10px;
             padding: 1.25rem;
-            min-width: 140px;
+            min-width: 130px;
             text-align: center;
+            border: 1px solid rgba(100, 116, 139, 0.2);
         }
 
-        .forecast-month.forecast {
-            opacity: 0.6;
-            border: 2px dashed rgba(100, 116, 139, 0.3);
-        }
+        .forecast-month.forecast { border: 2px dashed rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.05); }
 
-        .forecast-month-name {
-            font-size: 0.9rem;
-            color: #94a3b8;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .forecast-score {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .forecast-status {
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
+        .forecast-month-name { font-size: 0.85rem; color: #94a3b8; margin-bottom: 0.4rem; font-weight: 600; }
+        .forecast-score { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.4rem; }
 
         .score-healthy { color: #10b981; }
         .score-moderate { color: #f59e0b; }
@@ -605,24 +370,17 @@
         .forecast-warning {
             background: rgba(239, 68, 68, 0.1);
             border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 8px;
-            padding: 1rem;
+            border-radius: 10px;
+            padding: 1.25rem;
             margin-top: 1.5rem;
             color: #fecaca;
+            font-size: 0.9rem;
+            line-height: 1.6;
         }
 
-        /* Intervention Queue */
-        .queue-container {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .queue-filters {
-            display: flex;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
+        /* Queue Items */
+        .queue-container { display: grid; gap: 1rem; }
+        .queue-filters { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
 
         .filter-btn {
             padding: 0.5rem 1rem;
@@ -636,15 +394,7 @@
             transition: all 0.3s;
         }
 
-        .filter-btn.active {
-            background: rgba(16, 185, 129, 0.2);
-            border-color: rgba(16, 185, 129, 0.5);
-            color: #10b981;
-        }
-
-        .filter-btn:hover {
-            border-color: rgba(16, 185, 129, 0.5);
-        }
+        .filter-btn.active { background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.5); color: #10b981; }
 
         .queue-item {
             background: rgba(30, 41, 59, 0.8);
@@ -653,18 +403,14 @@
             border-radius: 10px;
             padding: 1.25rem;
             display: grid;
-            grid-template-columns: 80px 1fr auto;
+            grid-template-columns: 70px 1fr auto;
             gap: 1.5rem;
             align-items: center;
             transition: all 0.3s;
             cursor: pointer;
         }
 
-        .queue-item:hover {
-            border-color: rgba(16, 185, 129, 0.5);
-            background: rgba(30, 41, 59, 0.95);
-            transform: translateX(4px);
-        }
+        .queue-item:hover { border-color: rgba(16, 185, 129, 0.5); background: rgba(30, 41, 59, 0.95); transform: translateX(4px); }
 
         .queue-item.critical { border-left-color: #ef4444; }
         .queue-item.high { border-left-color: #f97316; }
@@ -672,416 +418,102 @@
         .queue-item.healthy { border-left-color: #10b981; }
 
         .queue-rank {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             text-align: center;
             background: rgba(100, 116, 139, 0.1);
             border-radius: 8px;
-            padding: 1rem;
-            height: 80px;
+            padding: 0.75rem;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .queue-rank.rank-1 { background: rgba(251, 191, 36, 0.1); color: #fbbf24; }
-        .queue-rank.rank-2 { background: rgba(192, 192, 192, 0.1); color: #d1d5db; }
-        .queue-rank.rank-3 { background: rgba(205, 127, 50, 0.1); color: #d97706; }
+        .queue-details h3 { color: #f1f5f9; margin-bottom: 0.5rem; font-size: 1.05rem; }
+        .queue-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; }
+        .queue-meta-label { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; }
 
-        .queue-details h3 {
-            color: #f1f5f9;
-            margin-bottom: 0.5rem;
-        }
+        /* Table */
+        .customers-table { width: 100%; border-collapse: collapse; border-radius: 10px; overflow: hidden; background: rgba(30, 41, 59, 0.8); }
+        .customers-table th, .customers-table td { padding: 1rem; border-bottom: 1px solid rgba(100, 116, 139, 0.15); text-align: left; }
+        .customers-table th { color: #94a3b8; font-size: 0.78rem; text-transform: uppercase; font-weight: 600; }
+        .customers-table tr:hover { background: rgba(16, 185, 129, 0.05); cursor: pointer; }
 
-        .queue-meta {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 1rem;
-            font-size: 0.85rem;
-        }
-
-        .queue-meta-item {
-            color: #cbd5e1;
-        }
-
-        .queue-meta-label {
-            color: #94a3b8;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            margin-bottom: 0.25rem;
-        }
-
-        .queue-action {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        /* Customer Table */
-        .customers-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: rgba(30, 41, 59, 0.8);
-            border: 1px solid rgba(100, 116, 139, 0.2);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .customers-table thead {
-            background: rgba(15, 23, 42, 0.8);
-            border-bottom: 1px solid rgba(100, 116, 139, 0.2);
-        }
-
-        .customers-table th {
-            padding: 1rem;
-            text-align: left;
-            font-weight: 600;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #94a3b8;
-        }
-
-        .customers-table td {
-            padding: 1rem;
-            border-top: 1px solid rgba(100, 116, 139, 0.1);
-            color: #cbd5e1;
-        }
-
-        .customers-table tbody tr {
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .customers-table tbody tr:hover {
-            background: rgba(16, 185, 129, 0.05);
-        }
-
-        .customer-name {
-            font-weight: 600;
-            color: #f1f5f9;
-        }
-
-        .ratio-bar {
-            width: 100%;
-            height: 6px;
-            background: rgba(100, 116, 139, 0.2);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-top: 0.5rem;
-        }
-
-        .ratio-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #10b981, #f59e0b, #ef4444);
-        }
-
-        /* Responsible AI Section */
+        /* Responsible AI Box */
         .responsible-ai {
             background: rgba(30, 41, 59, 0.8);
-            border: 1px solid rgba(100, 116, 139, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.3);
             border-radius: 12px;
-            padding: 2rem;
+            padding: 1.75rem;
             margin-top: 3rem;
         }
 
-        .responsible-ai-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #10b981;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+        .responsible-ai-title { font-size: 1.2rem; font-weight: 700; color: #10b981; margin-bottom: 1.25rem; }
+        .responsible-ai-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; font-size: 0.9rem; line-height: 1.6; }
+        .responsibility-item { padding: 1rem; background: rgba(15, 23, 42, 0.5); border-left: 3px solid #10b981; border-radius: 6px; }
 
-        .responsible-ai-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: #cbd5e1;
-        }
-
-        .responsibility-item {
-            padding: 1rem;
-            background: rgba(15, 23, 42, 0.5);
-            border-left: 3px solid #10b981;
-            border-radius: 6px;
-        }
-
-        .responsibility-item strong {
-            color: #f1f5f9;
-        }
-
-        /* Modal */
+        /* Modals */
         .modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(4px);
+            inset: 0;
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(6px);
             z-index: 1000;
             align-items: center;
             justify-content: center;
+            padding: 1rem;
         }
 
-        .modal.active {
-            display: flex;
-        }
+        .modal.active { display: flex; }
 
         .modal-content {
             background: #0f172a;
-            border: 1px solid rgba(100, 116, 139, 0.3);
-            border-radius: 12px;
-            max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 16px;
+            max-width: 550px;
+            width: 100%;
             padding: 2rem;
-            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
-        @keyframes slideIn {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        .modal-close { float: right; font-size: 1.5rem; cursor: pointer; color: #94a3b8; border: none; background: none; }
+        .modal-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; clear: both; color: white; }
 
-        .modal-close {
-            float: right;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #94a3b8;
-            border: none;
-            background: none;
-            padding: 0;
-            line-height: 1;
-        }
-
-        .modal-close:hover {
-            color: #f1f5f9;
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            clear: both;
-        }
-
-        .modal-body {
-            color: #cbd5e1;
-            line-height: 1.6;
-        }
-
-        .modal-body p {
-            margin-bottom: 1rem;
-        }
-
-        /* Back Button */
-        .back-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: rgba(100, 116, 139, 0.1);
-            border: 1px solid rgba(100, 116, 139, 0.3);
-            border-radius: 6px;
-            color: #cbd5e1;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-            margin-bottom: 1.5rem;
-        }
-
-        .back-button:hover {
-            background: rgba(16, 185, 129, 0.2);
-            border-color: rgba(16, 185, 129, 0.5);
-            color: #10b981;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-menu { gap: 1rem; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .customer-header { flex-direction: column; gap: 1rem; }
-            .health-score-ring { width: 150px; height: 150px; }
-            .metrics-grid { grid-template-columns: repeat(2, 1fr); }
-            .warnings-grid { grid-template-columns: 1fr; }
-            .queue-item { grid-template-columns: 1fr; }
-            .customers-table { font-size: 0.85rem; }
-            .customers-table td, .customers-table th { padding: 0.75rem; }
-            .responsible-ai-content { grid-template-columns: 1fr; }
-        }
-
-        /* Loading Animation */
-        .loading {
-            display: inline-block;
-            width: 1rem;
-            height: 1rem;
-            border: 2px solid rgba(16, 185, 129, 0.2);
-            border-top-color: #10b981;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Utility Classes */
-        .mt-2 { margin-top: 2rem; }
-        .mb-2 { margin-bottom: 2rem; }
-        .text-center { text-align: center; }
-        .opacity-60 { opacity: 0.6; }
-
-        /* Simulation feedback */
-        .stress-toast {
-            position: fixed;
-            right: 1.5rem;
-            bottom: 1.5rem;
-            z-index: 300;
-            width: min(390px, calc(100vw - 2rem));
-            padding: 1rem 1.1rem;
-            border: 1px solid rgba(245, 158, 11, 0.5);
-            border-left: 4px solid #f59e0b;
-            border-radius: 12px;
-            background: rgba(15, 23, 42, 0.96);
-            box-shadow: 0 18px 45px rgba(2, 6, 23, 0.45);
-            opacity: 0;
-            transform: translateY(18px);
-            pointer-events: none;
-            transition: opacity 0.25s ease, transform 0.25s ease;
-        }
-
-        .stress-toast.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .stress-toast-header {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            color: #fbbf24;
-            font-weight: 700;
-        }
-
-        .stress-toast-header span:first-child {
-            display: grid;
-            place-items: center;
-            width: 2rem;
-            height: 2rem;
-            border-radius: 50%;
-            background: rgba(245, 158, 11, 0.15);
-        }
-
-        .stress-toast p {
-            margin-top: 0.45rem;
-            color: #cbd5e1;
-            font-size: 0.9rem;
-            line-height: 1.45;
-        }
-
-        .stress-toast-deltas {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.45rem;
-            margin-top: 0.75rem;
-        }
-
-        .stress-toast-deltas span {
-            padding: 0.3rem 0.5rem;
-            border-radius: 5px;
-            background: rgba(239, 68, 68, 0.12);
-            color: #fca5a5;
-            font-size: 0.78rem;
-            font-weight: 600;
-        }
-
-        .stress-updated {
-            animation: stressPulse 1s ease;
-        }
-
-        @keyframes stressPulse {
-            0%, 100% { transform: scale(1); }
-            35% { transform: scale(1.06); filter: drop-shadow(0 0 14px rgba(245, 158, 11, 0.65)); }
-        }
-
-        @media (max-width: 768px) {
-            .stress-toast { right: 1rem; bottom: 1rem; }
-        }
-
-        .ews-kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
-        .ews-kpi { padding: 1.2rem; border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 10px; background: rgba(15, 23, 42, 0.55); }
-        .ews-kpi-label { color: #94a3b8; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
-        .ews-kpi-value { margin-top: 0.35rem; color: #34d399; font-size: 1.8rem; font-weight: 700; }
-        .ews-table-wrap { overflow-x: auto; border: 1px solid rgba(100, 116, 139, 0.2); border-radius: 10px; background: rgba(15, 23, 42, 0.5); }
-        .ews-table { width: 100%; min-width: 760px; border-collapse: collapse; }
-        .ews-table th, .ews-table td { padding: 0.9rem 1rem; border-bottom: 1px solid rgba(100, 116, 139, 0.15); text-align: left; }
-        .ews-table th { color: #94a3b8; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        .ews-table td { color: #e2e8f0; font-size: 0.88rem; }
-        .ews-score { display: inline-flex; padding: 0.35rem 0.55rem; border-radius: 6px; font-weight: 700; color: #fca5a5; background: rgba(239, 68, 68, 0.13); }
-        .ews-score.low { color: #6ee7b7; background: rgba(16, 185, 129, 0.12); }
-        .ews-status { display: inline-flex; padding: 0.3rem 0.55rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; }
-        .ews-status.high { color: #fda4af; background: rgba(244, 63, 94, 0.14); }
-        .ews-status.low { color: #6ee7b7; background: rgba(16, 185, 129, 0.14); }
-        .ews-modal { position: fixed; inset: 0; z-index: 250; display: none; place-items: center; padding: 1rem; background: rgba(2, 6, 23, 0.78); backdrop-filter: blur(8px); }
-        .ews-modal.visible { display: grid; }
-        .ews-modal-card { width: min(360px, 100%); padding: 1.5rem; border: 1px solid rgba(16, 185, 129, 0.45); border-radius: 20px; background: #0f172a; box-shadow: 0 24px 70px rgba(2, 6, 23, 0.6); }
-        @media (max-width: 768px) { .ews-kpi-grid { grid-template-columns: 1fr; } }
-
+        /* Overview Hero Gradient Replacement */
         .overview-hero {
             position: relative;
-            min-height: 250px;
+            min-height: 200px;
             display: flex;
             align-items: flex-end;
             overflow: hidden;
             margin-bottom: 1.5rem;
             padding: 2rem;
-            border: 1px solid rgba(52, 211, 153, 0.3);
-            border-radius: 14px;
-            background: #102a35 url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600&q=80') center/cover;
-            box-shadow: inset 0 -100px 100px rgba(2, 6, 23, 0.82), 0 18px 45px rgba(2, 6, 23, 0.25);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 16px;
+            background: linear-gradient(135deg, #0b1329 0%, #1e293b 100%);
+            box-shadow: inset 0 -100px 100px rgba(2, 6, 23, 0.8), 0 18px 45px rgba(2, 6, 23, 0.3);
         }
 
-        .overview-hero::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, rgba(2, 6, 23, 0.94) 0%, rgba(2, 6, 23, 0.55) 48%, rgba(2, 6, 23, 0.18) 100%);
-        }
-
-        .overview-hero-content { position: relative; z-index: 1; max-width: 560px; }
-        .overview-eyebrow { margin-bottom: 0.55rem; color: #6ee7b7; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
-        .overview-hero h2 { font-size: 2.7rem; line-height: 1.05; }
-        .overview-hero p { margin-top: 0.75rem; color: #cbd5e1; line-height: 1.55; }
+        .overview-hero-content { position: relative; z-index: 1; max-width: 650px; }
+        .overview-eyebrow { margin-bottom: 0.55rem; color: #34d399; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+        .overview-hero h2 { font-size: 2.2rem; font-weight: 800; line-height: 1.15; color: white; }
+        .overview-hero p { margin-top: 0.75rem; color: #cbd5e1; line-height: 1.55; font-size: 0.95rem; }
         .live-strip { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem; }
-        .live-strip span { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.7rem; border: 1px solid rgba(100, 116, 139, 0.25); border-radius: 999px; color: #cbd5e1; background: rgba(30, 41, 59, 0.62); font-size: 0.78rem; }
+        .live-strip span { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.75rem; border: 1px solid rgba(100, 116, 139, 0.25); border-radius: 999px; color: #cbd5e1; background: rgba(30, 41, 59, 0.62); font-size: 0.8rem; }
         .live-dot { width: 0.45rem; height: 0.45rem; border-radius: 50%; background: #34d399; box-shadow: 0 0 10px #34d399; }
-        @media (max-width: 768px) { .overview-hero { min-height: 300px; padding: 1.35rem; } .overview-hero h2 { font-size: 1.8rem; } }
     </style>
 </head>
 <body>
-    <div class="stress-toast" id="stressToast" role="status" aria-live="polite"></div>
-    <div class="ews-modal" id="ewsConsentModal" role="dialog" aria-modal="true" aria-labelledby="ewsConsentTitle">
-        <div class="ews-modal-card">
-            <div style="font-size: 2rem; text-align: center;">🔐</div>
-            <h3 id="ewsConsentTitle" style="text-align: center; margin-top: 0.6rem;">AA Consent Request</h3>
-            <p style="color: #94a3b8; font-size: 0.85rem; line-height: 1.5; margin: 0.8rem 0 1.2rem;">DebtGuard requests read-only transaction access to refresh early-warning signals. This demo simulates an RBI Account Aggregator consent.</p>
-            <input id="ewsOtp" inputmode="numeric" maxlength="6" placeholder="Enter mock OTP" style="width: 100%; padding: 0.75rem; border: 1px solid #475569; border-radius: 7px; background: #1e293b; color: #f1f5f9; text-align: center;">
-            <div style="display: flex; gap: 0.7rem; margin-top: 1rem;"><button class="btn btn-secondary" style="flex: 1;" onclick="closeEwsConsent()">Not now</button><button class="btn btn-demo" style="flex: 1;" onclick="approveEwsConsent()">Approve & Sync</button></div>
-        </div>
-    </div>
+
     <!-- Header -->
     <header class="header">
         <div class="logo-section">
             <div class="logo">🛡️</div>
             <div class="logo-text">
                 <h1>FinShield AI</h1>
-                <p class="tagline">Detect Early. Intervene Smartly. Protect Financial Futures.</p>
+                <!-- 1. Framing Subtitle -->
+                <p class="tagline">Command Center • Powered by DebtGuard 2.0 Account Aggregator Engine</p>
             </div>
         </div>
         <nav class="nav-menu">
@@ -1089,7 +521,8 @@
             <div class="nav-item" onclick="showSection('customers')">Customers</div>
             <div class="nav-item" onclick="showSection('risk-monitor')">Risk Monitor</div>
             <div class="nav-item" onclick="showSection('intervention-queue')">Intervention Queue</div>
-            <div class="nav-item" onclick="showSection('ews-monitor')">AA EWS</div>
+            <!-- 1. Navigation Link to DebtGuard EWS Engine -->
+            <a href="/" class="nav-item" style="color: #f59e0b; font-weight: 700; text-decoration: none;">DebtGuard EWS Engine ↗</a>
         </nav>
         <div class="header-icons">
             <button class="icon-button" title="Notifications">🔔</button>
@@ -1099,99 +532,84 @@
 
     <!-- Container -->
     <div class="container">
+
         <!-- ===== OVERVIEW SECTION ===== -->
         <section id="overview" class="section active">
+            <!-- 4. Clean Gradient Hero (No stock image analytics artifacts) -->
             <div class="overview-hero">
                 <div class="overview-hero-content">
-                    <div class="overview-eyebrow">Financial wellness command center</div>
+                    <div class="overview-eyebrow">Financial Wellness Command Center</div>
                     <h2>See distress before it becomes default.</h2>
-                    <p>FinShield combines transparent risk signals, Account Aggregator data, and human-led interventions to protect financial futures earlier.</p>
+                    <p>FinShield AI combines transparent risk signals, Account Aggregator data, and human-in-the-loop interventions to protect financial futures earlier.</p>
                 </div>
             </div>
+
             <div class="live-strip" aria-label="System status">
-                <span><i class="live-dot"></i> Monitoring live transaction signals</span>
+                <span><i class="live-dot"></i> Monitoring live AA transaction signals</span>
                 <span>AA consent-aware</span>
                 <span>Human review in the loop</span>
+                <span style="color: #34d399; border-color: rgba(52, 211, 153, 0.3);">✓ Financial Inclusion Safeguard Active</span>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-                <h2 style="font-size: 1.8rem; font-weight: 700;">Dashboard Overview</h2>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <h2 style="font-size: 1.6rem; font-weight: 700;">Portfolio Overview</h2>
                 <div style="display: flex; gap: 0.75rem;">
-                    <button class="btn btn-demo" onclick="loadDemoCustomer()">📊 Load Demo Customer</button>
+                    <!-- 5. Demo Buttons -->
+                    <button class="btn btn-demo" onclick="loadDemoCustomer()">📊 Load Demo Customer (Rahul)</button>
                     <button class="btn btn-secondary" onclick="simulateFinancialStress()">⚡ Simulate Financial Stress</button>
                 </div>
             </div>
 
+            <!-- 3. Math Consistency Stat Cards (Exact sum: 4 + 2 + 2 + 2 = 10) -->
             <div class="stats-grid">
                 <div class="stat-card healthy">
-                    <div class="stat-label">Total Customers</div>
-                    <div class="stat-value" id="totalCustomers">1,248</div>
-                    <div class="stat-percent">Across all risk levels</div>
+                    <div class="stat-label">Total Borrowers</div>
+                    <div class="stat-value" id="totalCustomers">10</div>
+                    <div class="stat-percent">Monitored Portfolio</div>
                 </div>
                 <div class="stat-card healthy">
                     <div class="stat-label">Healthy</div>
-                    <div class="stat-value" id="healthyCount">842</div>
-                    <div class="stat-percent">67.4% of customers</div>
+                    <div class="stat-value" id="healthyCount">4</div>
+                    <div class="stat-percent">40.0% of portfolio</div>
                 </div>
                 <div class="stat-card moderate">
                     <div class="stat-label">Moderate Risk</div>
-                    <div class="stat-value" id="moderateCount">276</div>
-                    <div class="stat-percent">22.1% of customers</div>
+                    <div class="stat-value" id="moderateCount">2</div>
+                    <div class="stat-percent">20.0% of portfolio</div>
                 </div>
                 <div class="stat-card high">
                     <div class="stat-label">High Risk</div>
-                    <div class="stat-value" id="highCount">98</div>
-                    <div class="stat-percent">7.8% of customers</div>
+                    <div class="stat-value" id="highCount">2</div>
+                    <div class="stat-percent">20.0% of portfolio</div>
                 </div>
                 <div class="stat-card critical">
                     <div class="stat-label">Critical</div>
-                    <div class="stat-value" id="criticalCount">32</div>
-                    <div class="stat-percent">2.6% of customers</div>
+                    <div class="stat-value" id="criticalCount">2</div>
+                    <div class="stat-percent">20.0% of portfolio</div>
                 </div>
             </div>
 
             <div class="chart-container">
-                <div class="chart-title">Risk Distribution</div>
+                <div class="chart-title">Risk Distribution Breakdown</div>
                 <div class="chart-wrapper">
                     <canvas id="riskDistributionChart"></canvas>
                 </div>
             </div>
         </section>
 
-        <!-- ===== CUSTOMERS SECTION ===== -->
-        <section id="ews-monitor" class="section">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-                <div>
-                    <h2 style="font-size: 1.8rem; font-weight: 700;">Account Aggregator EWS</h2>
-                    <p style="color: #94a3b8; margin-top: 0.35rem;">Real-time Debt Velocity from raw transaction streams</p>
-                </div>
-                <button class="btn btn-demo" onclick="openEwsConsent()">📱 Simulate AA Sync</button>
-            </div>
-            <div class="ews-kpi-grid">
-                <div class="ews-kpi"><div class="ews-kpi-label">Total Monitored</div><div class="ews-kpi-value" id="ewsTotal">—</div></div>
-                <div class="ews-kpi"><div class="ews-kpi-label">Critical Velocity Alerts</div><div class="ews-kpi-value" style="color: #fb7185;" id="ewsCritical">—</div></div>
-                <div class="ews-kpi"><div class="ews-kpi-label">Shadow Exposure</div><div class="ews-kpi-value" style="color: #fb7185;" id="ewsShadow">—</div></div>
-            </div>
-            <div class="ews-table-wrap">
-                <table class="ews-table">
-                    <thead><tr><th>Customer</th><th>Account</th><th>Debt Velocity</th><th>Risk Status</th><th>Early Warning Flags</th><th>Intervention</th></tr></thead>
-                    <tbody id="ewsTableBody"><tr><td colspan="6" style="text-align: center; color: #94a3b8;">Loading live EWS portfolio...</td></tr></tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- ===== CUSTOMERS SECTION ===== -->
+        <!-- ===== CUSTOMERS DIRECTORY SECTION ===== -->
         <section id="customers" class="section">
-            <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1.5rem;">Customer Directory</h2>
+            <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1.5rem;">Borrower Directory</h2>
             
             <div class="search-section">
-                <input type="text" class="search-input" id="customerSearch" placeholder="Search customers by name...">
+                <input type="text" class="search-input" id="customerSearch" placeholder="Search borrowers by name...">
             </div>
 
             <div style="overflow-x: auto;">
                 <table class="customers-table">
                     <thead>
                         <tr>
-                            <th>Customer</th>
+                            <th>Borrower</th>
                             <th>Income</th>
                             <th>EMI</th>
                             <th>EMI Ratio</th>
@@ -1202,30 +620,37 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody id="customersTableBody">
-                    </tbody>
+                    <tbody id="customersTableBody"></tbody>
                 </table>
             </div>
         </section>
 
         <!-- ===== RISK MONITOR (Customer Detail) SECTION ===== -->
         <section id="risk-monitor" class="section">
-            <button class="back-button" onclick="showSection('customers')">← Back to Customers</button>
+            <button class="back-button" onclick="showSection('customers')">← Back to Customer Directory</button>
+
+            <!-- 1. Non-Exclusion Safeguard Banner -->
+            <div style="margin-bottom: 1.5rem; padding: 1rem; border-radius: 10px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); font-size: 0.9rem; color: #e2e8f0; display: flex; items-center; gap: 0.75rem;">
+                <span style="font-size: 1.3rem;">🛡️</span>
+                <div>
+                    <strong style="color: #34d399;">Financial Inclusion Safeguard:</strong> This early warning signal does <strong>NOT</strong> affect loan eligibility, reduce credit score, or block account status per RBI DLT 2026 guidelines.
+                </div>
+            </div>
 
             <div class="customer-header">
-                <div class="customer-avatar" id="customerAvatar">👤</div>
+                <div class="customer-avatar" id="customerAvatar">👨‍💼</div>
                 <div class="customer-info" style="flex: 1;">
                     <h2 id="customerName">Rahul Sharma</h2>
-                    <div class="financial-health-score" id="healthScoreSubtitle">Financial Health Score</div>
+                    <div class="financial-health-score" id="healthScoreSubtitle">Financial Distress Score</div>
                     <div id="riskBadgeContainer">
-                        <span class="risk-badge high" id="riskBadge">HIGH DISTRESS RISK</span>
+                        <span class="risk-badge critical" id="riskBadge">CRITICAL DISTRESS RISK</span>
                     </div>
                 </div>
                 <div class="health-score-ring">
                     <div class="ring-container">
                         <div class="ring-background">
                             <div style="text-align: center;">
-                                <div class="ring-value" id="healthScore">42</div>
+                                <div class="ring-value" id="healthScore" style="color: #ef4444;">92</div>
                                 <div class="ring-label" style="color: #f1f5f9;">/100</div>
                             </div>
                         </div>
@@ -1245,62 +670,43 @@
                 <div class="metric-box">
                     <div class="metric-label">EMI-to-Income Ratio</div>
                     <div class="metric-value" id="emiRatio">56%</div>
-                    <div class="metric-change up">⚠️ High burden</div>
                 </div>
                 <div class="metric-box">
                     <div class="metric-label">Credit Utilization</div>
                     <div class="metric-value" id="creditUtil">90%</div>
-                    <div class="metric-change down">↓ Elevated risk</div>
                 </div>
                 <div class="metric-box">
                     <div class="metric-label">Monthly Savings</div>
                     <div class="metric-value" id="monthlySavings">₹5,000</div>
-                    <div class="metric-change down">↓ Declining</div>
                 </div>
                 <div class="metric-box">
                     <div class="metric-label">Missed Payments</div>
                     <div class="metric-value" id="missedPayments">1</div>
-                    <div class="metric-change down">⚠️ Recent miss</div>
                 </div>
                 <div class="metric-box">
                     <div class="metric-label">Monthly Spending</div>
                     <div class="metric-value" id="monthlySpending">₹42,000</div>
-                    <div class="metric-change up">↑ Trending up</div>
                 </div>
             </div>
 
-            <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 10px; padding: 1.5rem; margin-bottom: 2rem; color: #fecaca; line-height: 1.6;">
-                <strong style="font-size: 1.1rem; display: block; margin-bottom: 0.5rem;">⚠️ Financial Distress Alert</strong>
-                Multiple financial stress indicators have been detected. If the current pattern continues, this customer may face difficulty meeting future financial obligations.
-            </div>
-
-            <!-- Warnings Section -->
-            <div class="warnings-section">
-                <h3 class="warnings-title">Why is this customer at risk?</h3>
-                <div class="warnings-grid">
-                    <div class="warning-card critical">
-                        <div class="warning-icon">🔴</div>
-                        <div class="warning-title">High EMI Burden</div>
-                        <div class="warning-description">EMI consumes 56% of monthly income, leaving limited funds for other expenses and emergencies.</div>
-                        <div class="warning-action">→ Consider EMI restructuring options</div>
+            <!-- 2. Explicit Rules-Driven Personalization -->
+            <div style="background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(100, 116, 139, 0.2); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #fbbf24; margin-bottom: 1rem;">🎯 Factor-Specific Rules-Driven Personalization</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                    <div style="padding: 1rem; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-left: 3px solid #f97316;">
+                        <div style="font-weight: 700; color: #f97316;">High EMI Burden (56%)</div>
+                        <div style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.3rem;">Action: <strong>EMI Restructuring & Tenor Extension</strong></div>
+                        <div style="font-size: 0.78rem; color: #94a3b8; margin-top: 0.2rem;">Recommended because: EMI obligations exceed 50% threshold.</div>
                     </div>
-                    <div class="warning-card critical">
-                        <div class="warning-icon">🔴</div>
-                        <div class="warning-title">High Credit Utilization</div>
-                        <div class="warning-description">90% of available credit is currently being used, indicating potential liquidity stress.</div>
-                        <div class="warning-action">→ Reduce unnecessary credit exposure</div>
+                    <div style="padding: 1rem; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-left: 3px solid #ef4444;">
+                        <div style="font-weight: 700; color: #ef4444;">Rapid Stacking Risk</div>
+                        <div style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.3rem;">Action: <strong>Offer Calibrated Micro-Credit Line (₹15,000)</strong></div>
+                        <div style="font-size: 0.78rem; color: #94a3b8; margin-top: 0.2rem;">Recommended because: 3 NBFC disbursals in 14 days; prevents exclusion.</div>
                     </div>
-                    <div class="warning-card">
-                        <div class="warning-icon">🟠</div>
-                        <div class="warning-title">Declining Savings</div>
-                        <div class="warning-description">Savings have decreased consistently over the last 4 months, reducing financial resilience.</div>
-                        <div class="warning-action">→ Implement savings discipline plan</div>
-                    </div>
-                    <div class="warning-card">
-                        <div class="warning-icon">🟠</div>
-                        <div class="warning-title">Spending Spike</div>
-                        <div class="warning-description">Current monthly spending is 110% higher than the previous 3-month average.</div>
-                        <div class="warning-action">→ Review discretionary spending</div>
+                    <div style="padding: 1rem; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border-left: 3px solid #f59e0b;">
+                        <div style="font-weight: 700; color: #f59e0b;">High Credit Utilization (90%)</div>
+                        <div style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.3rem;">Action: <strong>Budgeting Nudge & Spend Cap</strong></div>
+                        <div style="font-size: 0.78rem; color: #94a3b8; margin-top: 0.2rem;">Recommended because: Available credit limit almost exhausted.</div>
                     </div>
                 </div>
             </div>
@@ -1314,84 +720,45 @@
                     </div>
                 </div>
                 <div class="chart-container">
-                    <div class="chart-title">Savings Trend (Last 6 Months)</div>
+                    <div class="chart-title">Savings Reserve Trend (Last 6 Months)</div>
                     <div class="chart-wrapper">
                         <canvas id="savingsChart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <!-- Forecast Section -->
+            <!-- 3. Predictive Core Narrative Forecast Section -->
             <div class="forecast-section">
-                <h3 class="forecast-title">📈 Financial Stress Forecast</h3>
+                <h3 class="forecast-title">📈 Predictive Early Warning Timeline (Core Narrative)</h3>
                 <p style="color: #cbd5e1; margin-bottom: 1rem; font-size: 0.95rem;">
-                    Based on current financial trends, here's the projected risk score progression:
+                    <strong>The Core Problem Narrative:</strong> Without intervention today, Rahul crosses into <span style="color: #ef4444; font-weight: 700;">Critical Default Zone by August</span>. Proactive intervention today prevents distress before bureau reporting.
                 </p>
                 <div class="forecast-timeline" id="forecastTimeline"></div>
                 <div class="forecast-warning">
-                    <strong>⚠️ Critical Projection:</strong> If current financial behavior continues, this customer may enter critical financial distress (risk score ≥ 85) within approximately <strong>2 months</strong>. <br><br>
-                    <em style="font-size: 0.85rem;">⚡ Note: This is a prototype prediction model based on historical patterns. Use as a support tool for informed decision-making, not as a guarantee.</em>
+                    <strong>⚠️ Pre-Crisis Intercept:</strong> Proactive outreach today offers Rahul a calibrated ₹15,000 micro-credit line and EMI tenor extension, preventing default without impacting his credit score.
                 </div>
             </div>
 
             <!-- Action Plan Section -->
-            <div class="action-plan-section">
-                <h3 class="action-plan-title">💡 Recommended Actions for Early Intervention</h3>
-                <div class="actions-list">
-                    <div class="action-item">
-                        <div class="action-number">1</div>
-                        <div class="action-content">
-                            <h4>📋 Consider EMI Restructuring</h4>
-                            <p>Current EMI burden is relatively high compared with income. Explore options to extend the loan tenure or restructure payment terms to reduce monthly pressure.</p>
-                        </div>
-                    </div>
-                    <div class="action-item">
-                        <div class="action-number">2</div>
-                        <div class="action-content">
-                            <h4>✂️ Reduce Discretionary Spending</h4>
-                            <p>Target monthly reduction of ₹5,000 in non-essential expenses. Focus on categories like dining, entertainment, and subscriptions.</p>
-                        </div>
-                    </div>
-                    <div class="action-item">
-                        <div class="action-number">3</div>
-                        <div class="action-content">
-                            <h4>🚫 Avoid Additional High-Cost Borrowing</h4>
-                            <p>Credit utilization is already high. Advise against taking new personal loans, credit cards, or cash advances until utilization drops below 50%.</p>
-                        </div>
-                    </div>
-                    <div class="action-item">
-                        <div class="action-number">4</div>
-                        <div class="action-content">
-                            <h4>🔔 Set Up Payment Reminders</h4>
-                            <p>One missed payment detected. Implement automatic payment setups or calendar reminders to reduce the possibility of future missed payments.</p>
-                        </div>
-                    </div>
-                    <div class="action-item">
-                        <div class="action-number">5</div>
-                        <div class="action-content">
-                            <h4>👥 Offer Financial Counseling</h4>
-                            <p>Provide access to optional financial guidance from certified counselors. Support-based interventions have shown positive outcomes.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="action-buttons">
-                    <button class="btn btn-primary" onclick="openModal('interventionPlan')">📋 View Intervention Plan</button>
-                    <button class="btn btn-primary" onclick="openModal('contactCustomer')">📞 Contact Customer</button>
-                    <button class="btn btn-secondary" onclick="openModal('counseling')">🎓 Schedule Counseling</button>
+            <div class="action-plan-section" style="background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(100, 116, 139, 0.2); border-radius: 12px; padding: 1.75rem;">
+                <h3 class="action-plan-title" style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem;">💡 Human-in-the-Loop Operational Interventions</h3>
+                <div class="action-buttons" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="openModal('humanApproval')">🛡️ Review & Authorize Intervention (Human-in-the-Loop)</button>
+                    <button class="btn btn-secondary" onclick="openModal('contactCustomer')">📱 Preview Customer Notification</button>
+                    <button class="btn btn-secondary" onclick="openModal('counseling')">🎓 Schedule Financial Counseling</button>
                 </div>
             </div>
         </section>
 
         <!-- ===== INTERVENTION QUEUE SECTION ===== -->
         <section id="intervention-queue" class="section">
-            <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem;">Smart Intervention Queue</h2>
+            <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem;">Smart Intervention Priority Queue</h2>
             <p style="color: #cbd5e1; margin-bottom: 1.5rem; font-size: 0.95rem;">
-                Customers with the highest financial distress scores are prioritized for early intervention. 
-                This system uses a <strong>Max Heap Priority Queue</strong> data structure for efficient customer prioritization.
+                Borrowers are prioritized using a <strong>Max Heap Priority Queue</strong> based on real-time debt velocity & distress signals.
             </p>
 
             <div class="queue-filters">
-                <button class="filter-btn active" onclick="filterQueue('all')">All Customers</button>
+                <button class="filter-btn active" onclick="filterQueue('all')">All Borrowers</button>
                 <button class="filter-btn" onclick="filterQueue('critical')">🔴 Critical</button>
                 <button class="filter-btn" onclick="filterQueue('high')">🟠 High Risk</button>
                 <button class="filter-btn" onclick="filterQueue('moderate')">🟡 Moderate</button>
@@ -1399,123 +766,73 @@
             </div>
 
             <div class="queue-container" id="interventionQueueContainer"></div>
-
-            <div style="background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(100, 116, 139, 0.2); border-radius: 12px; padding: 1.5rem; margin-top: 2rem;">
-                <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem;">📊 DSA Concept Explanation</h3>
-                <p style="color: #cbd5e1; line-height: 1.6; margin-bottom: 1rem;">
-                    <strong>Max Heap Priority Queue:</strong> This intervention queue uses a Max Heap data structure 
-                    to maintain customers in priority order based on their financial distress score. 
-                </p>
-                <ul style="color: #cbd5e1; margin-left: 1.5rem; line-height: 1.8; margin-bottom: 1rem;">
-                    <li><strong>Insertion:</strong> O(log n) - New customers are inserted while maintaining heap property</li>
-                    <li><strong>Extraction:</strong> O(log n) - Highest priority (most distressed) customer always at the top</li>
-                    <li><strong>Prioritization:</strong> Risk score determines position; higher score = higher priority</li>
-                    <li><strong>Benefit:</strong> Bank can efficiently identify and assist customers who need help most urgently</li>
-                </ul>
-                <p style="color: #94a3b8; font-size: 0.9rem;">
-                    In a production system, this queue would automatically update as new financial data arrives, 
-                    ensuring the most critical customers always remain at the top for intervention.
-                </p>
-            </div>
         </section>
 
-        <!-- Responsible AI Section (appears on all sections) -->
+        <!-- 2. Responsible AI Section -->
         <div class="responsible-ai">
             <h3 class="responsible-ai-title">⚖️ Responsible AI & Ethical Financial Intelligence</h3>
             <div class="responsible-ai-content">
                 <div class="responsibility-item">
-                    <strong>✓ Early Warning System:</strong> FinShield AI provides early warnings and risk indicators, 
-                    supporting human decision-making rather than making automated judgments about customers.
+                    <strong>✓ Customer Transparency Protocol:</strong> Customers are automatically notified when proactive outreach occurs and maintain the right to view, understand, or contest the underlying factors behind any assessment.
                 </div>
                 <div class="responsibility-item">
-                    <strong>✓ Risk as Support Tool:</strong> Risk scores should support and inform intervention strategies, 
-                    not automatically deny loans, banking services, or credit access.
+                    <strong>✓ Financial Inclusion Safeguard:</strong> Risk scores and early warning signals serve as assistive support triggers — they do NOT automatically reduce credit scores or block loan eligibility.
                 </div>
                 <div class="responsibility-item">
-                    <strong>✓ Transparency & Explainability:</strong> Every recommendation is transparent and clearly explains 
-                    the financial factors driving the risk assessment.
+                    <strong>✓ Human-in-the-Loop Oversight:</strong> Every intervention requires explicit authorization from bank staff before offers are dispatched.
                 </div>
                 <div class="responsibility-item">
-                    <strong>✓ Data Confidentiality:</strong> Customer financial data is treated as highly confidential 
-                    and accessed only by authorized personnel for legitimate intervention purposes.
-                </div>
-                <div class="responsibility-item">
-                    <strong>✓ Customer Rights:</strong> Customers have the right to understand, review, and challenge 
-                    any risk assessment or recommendation affecting their financial services.
-                </div>
-                <div class="responsibility-item">
-                    <strong>✓ Support-Based Language:</strong> The system uses supportive, non-judgmental language 
-                    (e.g., "offer support," "review situation," "provide assistance") rather than punitive messaging.
+                    <strong>✓ Account Aggregator Consent:</strong> All analysis operates strictly over customer-consented, read-only AA transaction feeds under RBI framework.
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modals -->
-    <div id="interventionPlanModal" class="modal">
+    <!-- MODALS -->
+
+    <!-- Human-in-the-Loop Modal -->
+    <div id="humanApprovalModal" class="modal">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('interventionPlan')">×</button>
-            <h2 class="modal-title">📋 Intervention Plan - Rahul Sharma</h2>
+            <button class="modal-close" onclick="closeModal('humanApproval')">×</button>
+            <h2 class="modal-title">🛡️ Human-in-the-Loop Operational Approval</h2>
             <div class="modal-body">
-                <h4 style="color: #10b981; margin-top: 1rem; margin-bottom: 0.5rem;">Immediate Actions (Week 1-2)</h4>
-                <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
-                    <li>Schedule financial counseling session with bank advisor</li>
-                    <li>Review all current EMIs and loan terms</li>
-                    <li>Analyze discretionary spending categories</li>
-                </ul>
-
-                <h4 style="color: #10b981; margin-top: 1rem; margin-bottom: 0.5rem;">Short-term Actions (Week 3-8)</h4>
-                <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
-                    <li>Implement spending reduction plan (Target: ₹5,000/month reduction)</li>
-                    <li>Explore EMI restructuring with lending institutions</li>
-                    <li>Set up automatic bill payment reminders</li>
-                    <li>Begin debt consolidation evaluation</li>
-                </ul>
-
-                <h4 style="color: #10b981; margin-top: 1rem; margin-bottom: 0.5rem;">Medium-term Actions (Month 3-6)</h4>
-                <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
-                    <li>Reduce credit utilization below 70%</li>
-                    <li>Build emergency fund (₹25,000-30,000)</li>
-                    <li>Monthly check-ins with financial advisor</li>
-                    <li>Monitor and track risk score improvement</li>
-                </ul>
-
-                <p style="margin-top: 1.5rem; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 6px;">
-                    <strong>Expected Outcome:</strong> Reduce risk score from 92 to below 50 (moderate risk) within 6 months 
-                    through structured support and behavioral changes.
+                <p><strong>Borrower:</strong> Rahul Sharma (ACC-002)</p>
+                <p><strong>Recommended Intervention:</strong> <span style="color: #34d399; font-weight: 700;">OFFER_CALIBRATED_MICRO_CREDIT</span></p>
+                <p style="background: rgba(15, 23, 42, 0.6); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    Offer a smaller, manageable ₹15,000 credit buffer to prevent predatory lender reliance while preserving liquidity.
                 </p>
+                <div style="margin-bottom: 1rem;">
+                    <label style="font-size: 0.8rem; color: #94a3b8; font-weight: 600; display: block; margin-bottom: 0.3rem;">Bank Staff Officer ID</label>
+                    <input id="staffIdInput" type="text" value="OFFICER-7892" style="width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid #475569; background: #1e293b; color: white;">
+                </div>
+                <div style="display: flex; gap: 0.75rem;">
+                    <button class="btn btn-secondary" style="flex: 1;" onclick="closeModal('humanApproval')">Cancel</button>
+                    <button class="btn btn-primary" style="flex: 1;" onclick="confirmStaffApproval()">Approve & Dispatch Offer</button>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Customer Notification Preview Modal -->
     <div id="contactCustomerModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 420px; border-radius: 24px; border-color: #34d399;">
             <button class="modal-close" onclick="closeModal('contactCustomer')">×</button>
-            <h2 class="modal-title">📞 Contact Customer - Rahul Sharma</h2>
-            <div class="modal-body">
-                <p><strong>Primary Contact:</strong> +91-9876543210</p>
-                <p><strong>Email:</strong> rahul.sharma@email.com</p>
-                <p><strong>Preferred Contact Time:</strong> 6:00 PM - 8:00 PM (IST)</p>
-
-                <h4 style="color: #10b981; margin-top: 1rem; margin-bottom: 0.5rem;">Call Script Template</h4>
-                <p style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: 6px; margin-bottom: 1rem;">
-                    "Hi Rahul, I'm calling from the Bank's Financial Wellness team. We've noticed some patterns in your account 
-                    that suggest you might benefit from our early intervention program. We want to help you stay financially healthy 
-                    and have some options and resources that could ease your situation. When would be a good time to discuss this?"
-                </p>
-
-                <h4 style="color: #10b981; margin-top: 1rem; margin-bottom: 0.5rem;">Talking Points</h4>
-                <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
-                    <li>We've identified early signs of financial stress (not a judgment)</li>
-                    <li>Our goal is to provide support before a crisis occurs</li>
-                    <li>Options include EMI restructuring, counseling, and spending management</li>
-                    <li>No automatic penalties or service restrictions</li>
-                </ul>
-
-                <p style="margin-top: 1.5rem; padding: 1rem; background: rgba(245, 158, 11, 0.1); border-radius: 6px; border-left: 3px solid #f59e0b;">
-                    <strong>Important:</strong> Tone should be supportive and non-judgmental. Emphasize that this is a positive 
-                    intervention opportunity, not a warning of punitive measures.
-                </p>
+            <h2 class="modal-title" style="font-size: 1.1rem; color: #34d399;">📱 Customer Mobile Notification Preview</h2>
+            <div class="modal-body" style="font-size: 0.88rem;">
+                <div style="padding: 1.25rem; background: #030712; border-radius: 16px; border: 1px solid #1e293b; margin: 1rem 0;">
+                    <div style="display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.75rem; margin-bottom: 0.5rem;">
+                        <strong style="color: #34d399;">DebtGuard Partner Bank</strong>
+                        <span>Just Now</span>
+                    </div>
+                    <p style="color: #f1f5f9; line-height: 1.5;" id="notifPreviewText">
+                        "Hi Rahul, we noticed recent changes in your spending pattern. We'd like to offer you a free supportive check-in & a calibrated ₹15,000 credit buffer — zero impact to your account status or credit score."
+                    </p>
+                    <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.6rem;" onclick="closeModal('contactCustomer')">[View Options & Accept Buffer]</button>
+                        <button class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 0.5rem; font-size: 0.8rem;" onclick="closeModal('contactCustomer')">[Understand or Contest Factors]</button>
+                    </div>
+                </div>
+                <p style="text-align: center; color: #94a3b8; font-size: 0.78rem;">✓ Demonstrates customer-facing transparency directly to auditors.</p>
             </div>
         </div>
     </div>
@@ -1523,282 +840,89 @@
     <div id="counselingModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal('counseling')">×</button>
-            <h2 class="modal-title">🎓 Financial Counseling - Schedule Session</h2>
+            <h2 class="modal-title">🎓 Financial Counseling Session</h2>
             <div class="modal-body">
-                <p><strong>Available Counselors:</strong></p>
-                <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
-                    <li><strong>Priya Patel</strong> - Certified Financial Counselor | Availability: Mon-Wed, 3-6 PM</li>
-                    <li><strong>Arjun Verma</strong> - Debt Management Specialist | Availability: Tue-Thu, 5-8 PM</li>
-                    <li><strong>Sneha Rao</strong> - Budget & Savings Expert | Availability: Wed-Fri, 2-5 PM</li>
-                </ul>
-
-                <h4 style="color: #10b981; margin-bottom: 0.5rem;">Session Topics</h4>
-                <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
-                    <li>Budget review and spending optimization</li>
-                    <li>EMI restructuring and loan consolidation options</li>
-                    <li>Emergency fund planning</li>
-                    <li>Credit score improvement strategies</li>
-                    <li>Long-term financial planning</li>
-                </ul>
-
-                <p style="padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 6px;">
-                    <strong>✓ Completely confidential and free for customers in early intervention program</strong>
-                </p>
+                <p><strong>Priya Patel</strong> (Certified Advisor) scheduled for Rahul Sharma.</p>
+                <p style="margin-top: 1rem; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 6px;">✓ Session instructions sent to borrower mobile app.</p>
             </div>
         </div>
     </div>
 
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // ===== MAX HEAP IMPLEMENTATION =====
         class MaxHeap {
-            constructor() {
-                this.heap = [];
-            }
-
-            insert(item) {
-                this.heap.push(item);
-                this.bubbleUp(this.heap.length - 1);
-            }
-
+            constructor() { this.heap = []; }
+            insert(item) { this.heap.push(item); this.bubbleUp(this.heap.length - 1); }
             bubbleUp(index) {
                 while (index > 0) {
                     const parentIndex = Math.floor((index - 1) / 2);
                     if (this.heap[index].riskScore > this.heap[parentIndex].riskScore) {
                         [this.heap[index], this.heap[parentIndex]] = [this.heap[parentIndex], this.heap[index]];
                         index = parentIndex;
-                    } else {
-                        break;
-                    }
+                    } else break;
                 }
             }
-
-            extractMax() {
-                if (this.heap.length === 0) return null;
-                if (this.heap.length === 1) return this.heap.pop();
-                
-                const max = this.heap[0];
-                this.heap[0] = this.heap.pop();
-                this.bubbleDown(0);
-                return max;
-            }
-
-            bubbleDown(index) {
-                const length = this.heap.length;
-                while (true) {
-                    let largest = index;
-                    const left = 2 * index + 1;
-                    const right = 2 * index + 2;
-
-                    if (left < length && this.heap[left].riskScore > this.heap[largest].riskScore) {
-                        largest = left;
-                    }
-                    if (right < length && this.heap[right].riskScore > this.heap[largest].riskScore) {
-                        largest = right;
-                    }
-
-                    if (largest !== index) {
-                        [this.heap[index], this.heap[largest]] = [this.heap[largest], this.heap[index]];
-                        index = largest;
-                    } else {
-                        break;
-                    }
-                }
-            }
-
-            peek() {
-                return this.heap.length > 0 ? this.heap[0] : null;
-            }
-
-            getAll() {
-                return [...this.heap].sort((a, b) => b.riskScore - a.riskScore);
-            }
+            getAll() { return [...this.heap].sort((a, b) => b.riskScore - a.riskScore); }
         }
 
-        // ===== MOCK CUSTOMER DATA =====
+        // 3. Mock Customers Array (Sum: 2 Critical + 2 High + 2 Moderate + 4 Healthy = 10 Total)
         const mockCustomers = [
-            {
-                id: 1,
-                name: 'Rahul Sharma',
-                avatar: '👨‍💼',
-                income: 50000,
-                emi: 28000,
-                creditUtilization: 90,
-                savings: 5000,
-                missedPayments: 1,
-                spending: 42000,
-                spendingHistory: [20000, 22000, 24000, 27000, 32000, 42000],
-                savingsHistory: [30000, 26000, 21000, 16000, 10000, 5000],
-                riskScore: 92,
-                forecast: [85, 88, 91, 95]
-            },
-            {
-                id: 2,
-                name: 'Priya Kumar',
-                avatar: '👩‍💼',
-                income: 65000,
-                emi: 25000,
-                creditUtilization: 78,
-                savings: 12000,
-                missedPayments: 0,
-                spending: 35000,
-                riskScore: 87,
-                forecast: [80, 83, 86, 88]
-            },
-            {
-                id: 3,
-                name: 'Arjun Patel',
-                avatar: '👨‍💻',
-                income: 75000,
-                emi: 30000,
-                creditUtilization: 82,
-                savings: 8000,
-                missedPayments: 0,
-                spending: 38000,
-                riskScore: 81,
-                forecast: [76, 79, 82, 84]
-            },
-            {
-                id: 4,
-                name: 'Sneha Rao',
-                avatar: '👩‍🎓',
-                income: 55000,
-                emi: 22000,
-                creditUtilization: 65,
-                savings: 18000,
-                missedPayments: 0,
-                spending: 28000,
-                riskScore: 73,
-                forecast: [70, 72, 75, 77]
-            },
-            {
-                id: 5,
-                name: 'Karthik M',
-                avatar: '👨‍🏫',
-                income: 60000,
-                emi: 20000,
-                creditUtilization: 55,
-                savings: 22000,
-                missedPayments: 0,
-                spending: 25000,
-                riskScore: 64,
-                forecast: [62, 64, 66, 68]
-            },
-            {
-                id: 6,
-                name: 'Neha Singh',
-                avatar: '👩‍⚕️',
-                income: 80000,
-                emi: 18000,
-                creditUtilization: 40,
-                savings: 35000,
-                missedPayments: 0,
-                spending: 20000,
-                riskScore: 42,
-                forecast: [40, 42, 43, 45]
-            },
-            {
-                id: 7,
-                name: 'Vikram Reddy',
-                avatar: '👨‍🔧',
-                income: 55000,
-                emi: 16000,
-                creditUtilization: 35,
-                savings: 28000,
-                missedPayments: 0,
-                spending: 18000,
-                riskScore: 35,
-                forecast: [34, 35, 36, 37]
-            },
-            {
-                id: 8,
-                name: 'Ananya Dey',
-                avatar: '👩‍💼',
-                income: 90000,
-                emi: 15000,
-                creditUtilization: 25,
-                savings: 50000,
-                missedPayments: 0,
-                spending: 15000,
-                riskScore: 22,
-                forecast: [21, 22, 22, 23]
-            },
-            {
-                id: 9,
-                name: 'Rohan Nair',
-                avatar: '👨‍💻',
-                income: 70000,
-                emi: 24000,
-                creditUtilization: 70,
-                savings: 15000,
-                missedPayments: 0,
-                spending: 32000,
-                riskScore: 76,
-                forecast: [74, 76, 78, 80]
-            },
-            {
-                id: 10,
-                name: 'Divya Iyer',
-                avatar: '👩‍🎨',
-                income: 58000,
-                emi: 26000,
-                creditUtilization: 85,
-                savings: 8000,
-                missedPayments: 1,
-                spending: 40000,
-                riskScore: 88,
-                forecast: [86, 89, 92, 94]
-            }
+            { id: 1, name: 'Rahul Sharma', avatar: '👨‍💼', income: 50000, emi: 28000, creditUtilization: 90, savings: 5000, missedPayments: 1, spending: 42000, spendingHistory: [20000, 22000, 24000, 27000, 32000, 42000], savingsHistory: [30000, 26000, 21000, 16000, 10000, 5000], riskScore: 92 },
+            { id: 2, name: 'Priya Kumar', avatar: '👩‍💼', income: 65000, emi: 25000, creditUtilization: 78, savings: 12000, missedPayments: 0, spending: 35000, spendingHistory: [18000, 20000, 23000, 26000, 30000, 35000], savingsHistory: [25000, 22000, 19000, 16000, 14000, 12000], riskScore: 87 },
+            { id: 3, name: 'Arjun Patel', avatar: '👨‍💻', income: 75000, emi: 30000, creditUtilization: 68, savings: 15000, missedPayments: 0, spending: 38000, spendingHistory: [22000, 24000, 27000, 30000, 34000, 38000], savingsHistory: [28000, 25000, 22000, 19000, 17000, 15000], riskScore: 68 },
+            { id: 4, name: 'Sneha Rao', avatar: '👩‍🎓', income: 55000, emi: 22000, creditUtilization: 58, savings: 18000, missedPayments: 0, spending: 28000, spendingHistory: [18000, 20000, 22000, 24000, 26000, 28000], savingsHistory: [22000, 21000, 20000, 19000, 18000, 18000], riskScore: 58 },
+            { id: 5, name: 'Karthik M', avatar: '👨‍🏫', income: 60000, emi: 20000, creditUtilization: 44, savings: 22000, missedPayments: 0, spending: 25000, spendingHistory: [20000, 21000, 22000, 23000, 24000, 25000], savingsHistory: [25000, 24000, 23000, 23000, 22000, 22000], riskScore: 44 },
+            { id: 6, name: 'Neha Singh', avatar: '👩‍⚕️', income: 80000, emi: 18000, creditUtilization: 38, savings: 35000, missedPayments: 0, spending: 20000, spendingHistory: [18000, 19000, 19000, 20000, 20000, 20000], savingsHistory: [30000, 31000, 32000, 33000, 34000, 35000], riskScore: 38 },
+            { id: 7, name: 'Vikram Reddy', avatar: '👨‍🔧', income: 55000, emi: 16000, creditUtilization: 28, savings: 28000, missedPayments: 0, spending: 18000, spendingHistory: [16000, 16000, 17000, 17000, 18000, 18000], savingsHistory: [25000, 26000, 26000, 27000, 27000, 28000], riskScore: 28 },
+            { id: 8, name: 'Ananya Dey', avatar: '👩‍💼', income: 90000, emi: 15000, creditUtilization: 22, savings: 50000, missedPayments: 0, spending: 15000, spendingHistory: [14000, 14000, 15000, 15000, 15000, 15000], savingsHistory: [45000, 46000, 47000, 48000, 49000, 50000], riskScore: 22 },
+            { id: 9, name: 'Rohan Nair', avatar: '👨‍💻', income: 70000, emi: 12000, creditUtilization: 18, savings: 45000, missedPayments: 0, spending: 16000, spendingHistory: [15000, 15000, 16000, 16000, 16000, 16000], savingsHistory: [40000, 41000, 42000, 43000, 44000, 45000], riskScore: 18 },
+            { id: 10, name: 'Divya Iyer', avatar: '👩‍🎨', income: 58000, emi: 10000, creditUtilization: 15, savings: 40000, missedPayments: 0, spending: 14000, spendingHistory: [13000, 13000, 14000, 14000, 14000, 14000], savingsHistory: [35000, 36000, 37000, 38000, 39000, 40000], riskScore: 15 }
         ];
 
         let currentCustomer = mockCustomers[0];
         let interventionQueue = new MaxHeap();
-        let currentFilter = 'all';
         let riskDistributionChart = null;
         let spendingChart = null;
         let savingsChart = null;
 
-        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', () => {
+            init();
+        });
+
         function init() {
-            // Build intervention queue
-            mockCustomers.forEach(customer => {
-                interventionQueue.insert(customer);
-            });
-            
+            interventionQueue = new MaxHeap();
+            mockCustomers.forEach(customer => interventionQueue.insert(customer));
             renderOverview();
             renderCustomersTable();
             renderRiskMonitor();
             renderInterventionQueue();
+            initRiskDistributionChart();
         }
 
-        // ===== SECTION NAVIGATION =====
         function showSection(sectionId) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
             document.getElementById(sectionId).classList.add('active');
-            document.querySelector(`[onclick="showSection('${sectionId}')"]`).classList.add('active');
+            
+            const navElem = document.querySelector(`[onclick="showSection('${sectionId}')"]`);
+            if (navElem) navElem.classList.add('active');
 
-            // Initialize charts when section becomes visible
             setTimeout(() => {
-                if (sectionId === 'overview' && !riskDistributionChart) {
-                    initRiskDistributionChart();
-                } else if (sectionId === 'risk-monitor') {
+                if (sectionId === 'overview' && !riskDistributionChart) initRiskDistributionChart();
+                else if (sectionId === 'risk-monitor') {
                     if (!spendingChart) initSpendingChart();
                     if (!savingsChart) initSavingsChart();
-                } else if (sectionId === 'ews-monitor' && !ewsPortfolio.length) {
-                    loadEwsPortfolio();
                 }
             }, 100);
         }
 
-        // ===== OVERVIEW SECTION =====
         function renderOverview() {
             const healthy = mockCustomers.filter(c => c.riskScore < 30).length;
             const moderate = mockCustomers.filter(c => c.riskScore >= 30 && c.riskScore < 50).length;
             const high = mockCustomers.filter(c => c.riskScore >= 50 && c.riskScore < 75).length;
             const critical = mockCustomers.filter(c => c.riskScore >= 75).length;
 
-            document.getElementById('totalCustomers').textContent = mockCustomers.length.toLocaleString();
+            document.getElementById('totalCustomers').textContent = mockCustomers.length;
             document.getElementById('healthyCount').textContent = healthy;
             document.getElementById('moderateCount').textContent = moderate;
             document.getElementById('highCount').textContent = high;
@@ -1812,18 +936,15 @@
             const critical = mockCustomers.filter(c => c.riskScore >= 75).length;
 
             const ctx = document.getElementById('riskDistributionChart').getContext('2d');
+            if (riskDistributionChart) riskDistributionChart.destroy();
+
             riskDistributionChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Healthy', 'Moderate', 'High', 'Critical'],
+                    labels: ['Healthy', 'Moderate Risk', 'High Risk', 'Critical'],
                     datasets: [{
                         data: [healthy, moderate, high, critical],
-                        backgroundColor: [
-                            '#10b981',
-                            '#f59e0b',
-                            '#f97316',
-                            '#ef4444'
-                        ],
+                        backgroundColor: ['#10b981', '#f59e0b', '#f97316', '#ef4444'],
                         borderColor: '#0f172a',
                         borderWidth: 2
                     }]
@@ -1831,16 +952,11 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            labels: { color: '#cbd5e1' }
-                        }
-                    }
+                    plugins: { legend: { labels: { color: '#cbd5e1' } } }
                 }
             });
         }
 
-        // ===== CUSTOMERS TABLE =====
         function renderCustomersTable() {
             const tbody = document.getElementById('customersTableBody');
             tbody.innerHTML = '';
@@ -1848,50 +964,43 @@
             mockCustomers.forEach(customer => {
                 const emiRatio = Math.round((customer.emi / customer.income) * 100);
                 const riskLevel = getRiskLevel(customer.riskScore);
-                
+                const riskClass = getRiskClass(customer.riskScore);
+
                 const row = document.createElement('tr');
                 row.onclick = () => {
-                    currentCustomer = customer;
-                    renderRiskMonitor();
-                    showSection('risk-monitor');
+                    selectCustomer(customer.id);
                 };
 
                 row.innerHTML = `
-                    <td><span class="customer-name">${customer.avatar} ${customer.name}</span></td>
+                    <td><strong>${customer.avatar} ${customer.name}</strong></td>
                     <td>₹${customer.income.toLocaleString()}</td>
                     <td>₹${customer.emi.toLocaleString()}</td>
-                    <td>
-                        ${emiRatio}%
-                        <div class="ratio-bar">
-                            <div class="ratio-fill" style="width: ${Math.min(emiRatio, 100)}%"></div>
-                        </div>
-                    </td>
+                    <td>${emiRatio}%</td>
                     <td>${customer.creditUtilization}%</td>
-                    <td>${customer.savings >= mockCustomers[0].savingsHistory[5] ? '↑' : '↓'}</td>
-                    <td style="font-weight: 600;">${customer.riskScore}</td>
-                    <td><span class="risk-badge ${getRiskClass(customer.riskScore)}">${riskLevel}</span></td>
-                    <td><button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">View</button></td>
+                    <td>${customer.savings >= 20000 ? '↑ Stable' : '↓ Declining'}</td>
+                    <td style="font-weight: 700;">${customer.riskScore}</td>
+                    <td><span class="risk-badge ${riskClass}">${riskLevel}</span></td>
+                    <td><button class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">Inspect Profile</button></td>
                 `;
                 tbody.appendChild(row);
             });
-
-            // Add search filter
-            document.getElementById('customerSearch').addEventListener('keyup', (e) => {
-                const filter = e.target.value.toLowerCase();
-                document.querySelectorAll('#customersTableBody tr').forEach(row => {
-                    row.style.display = row.textContent.toLowerCase().includes(filter) ? '' : 'none';
-                });
-            });
         }
 
-        // ===== RISK MONITOR (Customer Detail) =====
+        function selectCustomer(id) {
+            const cust = mockCustomers.find(c => c.id === id);
+            if (cust) {
+                currentCustomer = cust;
+                renderRiskMonitor();
+                showSection('risk-monitor');
+            }
+        }
+
         function renderRiskMonitor() {
             const customer = currentCustomer;
             const emiRatio = Math.round((customer.emi / customer.income) * 100);
             const riskClass = getRiskClass(customer.riskScore);
             const riskLevel = getRiskLevel(customer.riskScore);
 
-            // Update header
             document.getElementById('customerAvatar').textContent = customer.avatar;
             document.getElementById('customerName').textContent = customer.name;
             document.getElementById('healthScore').textContent = customer.riskScore;
@@ -1899,7 +1008,6 @@
             document.getElementById('riskBadge').className = `risk-badge ${riskClass}`;
             document.getElementById('riskBadge').textContent = riskLevel + ' DISTRESS RISK';
 
-            // Update metrics
             document.getElementById('monthlyIncome').textContent = `₹${customer.income.toLocaleString()}`;
             document.getElementById('monthlyEMI').textContent = `₹${customer.emi.toLocaleString()}`;
             document.getElementById('emiRatio').textContent = `${emiRatio}%`;
@@ -1908,27 +1016,24 @@
             document.getElementById('missedPayments').textContent = customer.missedPayments;
             document.getElementById('monthlySpending').textContent = `₹${customer.spending.toLocaleString()}`;
 
-            // Render forecast timeline
             renderForecastTimeline(customer);
 
-            // Initialize charts
-            setTimeout(() => {
-                if (!spendingChart) initSpendingChart();
-                if (!savingsChart) initSavingsChart();
-            }, 100);
+            if (spendingChart) spendingChart.destroy();
+            if (savingsChart) savingsChart.destroy();
+            initSpendingChart();
+            initSavingsChart();
         }
 
         function renderForecastTimeline(customer) {
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-            const scores = [25, 32, 45, 58, 72, 85, 91, 95];
-            const forecastStart = 6;
-
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'];
+            const scores = [25, 32, 45, 58, 72, customer.riskScore, Math.min(99, customer.riskScore + 3), Math.min(99, customer.riskScore + 6)];
+            
             let html = '';
             for (let i = 0; i < scores.length; i++) {
                 const score = scores[i];
-                const month = i < months.length ? months[i] : ['Jul', 'Aug'][i - 6];
+                const month = months[i];
                 const riskClass = getRiskClass(score);
-                const isForecast = i >= forecastStart;
+                const isForecast = i >= 6;
 
                 html += `
                     <div class="forecast-month ${isForecast ? 'forecast' : ''}">
@@ -1943,107 +1048,57 @@
 
         function initSpendingChart() {
             const ctx = document.getElementById('spendingChart').getContext('2d');
-            const months = ['January', 'February', 'March', 'April', 'May', 'June'];
             const data = currentCustomer.spendingHistory || [20000, 22000, 24000, 27000, 32000, 42000];
 
             spendingChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: months,
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                     datasets: [{
-                        label: 'Monthly Spending',
+                        label: 'Monthly Spending (₹)',
                         data: data,
                         borderColor: '#f97316',
                         backgroundColor: 'rgba(249, 115, 22, 0.1)',
                         borderWidth: 2,
                         fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: '#f97316',
-                        pointBorderColor: '#0f172a',
-                        pointBorderWidth: 2
+                        tension: 0.4
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#cbd5e1' } }
-                    },
-                    scales: {
-                        y: {
-                            ticks: { color: '#94a3b8' },
-                            grid: { color: 'rgba(100, 116, 139, 0.1)' }
-                        },
-                        x: {
-                            ticks: { color: '#94a3b8' },
-                            grid: { color: 'rgba(100, 116, 139, 0.1)' }
-                        }
-                    }
-                }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#cbd5e1' } } } }
             });
         }
 
         function initSavingsChart() {
             const ctx = document.getElementById('savingsChart').getContext('2d');
-            const months = ['January', 'February', 'March', 'April', 'May', 'June'];
             const data = currentCustomer.savingsHistory || [30000, 26000, 21000, 16000, 10000, 5000];
 
             savingsChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: months,
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                     datasets: [{
-                        label: 'Monthly Savings',
+                        label: 'Savings Reserve (₹)',
                         data: data,
                         borderColor: '#10b981',
                         backgroundColor: 'rgba(16, 185, 129, 0.1)',
                         borderWidth: 2,
                         fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: '#10b981',
-                        pointBorderColor: '#0f172a',
-                        pointBorderWidth: 2
+                        tension: 0.4
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#cbd5e1' } }
-                    },
-                    scales: {
-                        y: {
-                            ticks: { color: '#94a3b8' },
-                            grid: { color: 'rgba(100, 116, 139, 0.1)' }
-                        },
-                        x: {
-                            ticks: { color: '#94a3b8' },
-                            grid: { color: 'rgba(100, 116, 139, 0.1)' }
-                        }
-                    }
-                }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#cbd5e1' } } } }
             });
         }
 
-        // ===== INTERVENTION QUEUE =====
         function renderInterventionQueue() {
             filterQueue('all');
         }
 
         function filterQueue(filter) {
-            currentFilter = filter;
-            
-            // Update filter buttons
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            const filterBtn = document.querySelector(`.filter-btn:nth-child(${filter === 'all' ? 1 : filter === 'critical' ? 2 : filter === 'high' ? 3 : filter === 'moderate' ? 4 : 5})`);
-            if (filterBtn) filterBtn.classList.add('active');
-
             const queue = interventionQueue.getAll();
             let filtered = queue;
-
-            if (filter !== 'all') {
-                filtered = queue.filter(c => getRiskClass(c.riskScore) === filter);
-            }
+            if (filter !== 'all') filtered = queue.filter(c => getRiskClass(c.riskScore) === filter);
 
             const container = document.getElementById('interventionQueueContainer');
             container.innerHTML = '';
@@ -2052,182 +1107,73 @@
                 const riskClass = getRiskClass(customer.riskScore);
                 const riskLevel = getRiskLevel(customer.riskScore);
                 const emiRatio = Math.round((customer.emi / customer.income) * 100);
-                let rank = '•';
-
-                if (index === 0) rank = '🥇';
-                else if (index === 1) rank = '🥈';
-                else if (index === 2) rank = '🥉';
+                let rank = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`;
 
                 const item = document.createElement('div');
                 item.className = `queue-item ${riskClass}`;
-                item.onclick = () => {
-                    currentCustomer = customer;
-                    renderRiskMonitor();
-                    showSection('risk-monitor');
-                };
+                item.onclick = () => selectCustomer(customer.id);
 
                 item.innerHTML = `
-                    <div class="queue-rank ${index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : ''}">${rank}</div>
+                    <div class="queue-rank">${rank}</div>
                     <div class="queue-details">
                         <h3>${customer.avatar} ${customer.name}</h3>
                         <div class="queue-meta">
-                            <div class="queue-meta-item">
-                                <div class="queue-meta-label">Risk Score</div>
-                                <div style="font-weight: 600;">${customer.riskScore}</div>
-                            </div>
-                            <div class="queue-meta-item">
-                                <div class="queue-meta-label">Risk Level</div>
-                                <div style="font-weight: 600;">${riskLevel}</div>
-                            </div>
-                            <div class="queue-meta-item">
-                                <div class="queue-meta-label">EMI Ratio</div>
-                                <div style="font-weight: 600;">${emiRatio}%</div>
-                            </div>
-                            <div class="queue-meta-item">
-                                <div class="queue-meta-label">Credit Util.</div>
-                                <div style="font-weight: 600;">${customer.creditUtilization}%</div>
-                            </div>
+                            <div class="queue-meta-item"><div class="queue-meta-label">Risk Score</div><div style="font-weight: 700;">${customer.riskScore}</div></div>
+                            <div class="queue-meta-item"><div class="queue-meta-label">Risk Level</div><div style="font-weight: 700;">${riskLevel}</div></div>
+                            <div class="queue-meta-item"><div class="queue-meta-label">EMI Ratio</div><div style="font-weight: 700;">${emiRatio}%</div></div>
                         </div>
                     </div>
                     <div class="queue-action">
-                        <button class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Intervene</button>
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); selectCustomer(${customer.id});">Inspect Profile</button>
                     </div>
                 `;
                 container.appendChild(item);
             });
         }
 
-        // ===== DEMO FUNCTIONS =====
+        // Helpers
+        function getRiskClass(score) {
+            if (score >= 75) return 'critical';
+            if (score >= 50) return 'high';
+            if (score >= 30) return 'moderate';
+            return 'healthy';
+        }
+
+        function getRiskLevel(score) {
+            if (score >= 75) return 'CRITICAL';
+            if (score >= 50) return 'HIGH';
+            if (score >= 30) return 'MODERATE';
+            return 'HEALTHY';
+        }
+
+        function getScoreColor(score) {
+            if (score >= 75) return '#ef4444';
+            if (score >= 50) return '#f97316';
+            if (score >= 30) return '#f59e0b';
+            return '#10b981';
+        }
+
         function loadDemoCustomer() {
-            currentCustomer = mockCustomers[0];
+            selectCustomer(1);
+        }
+
+        function simulateFinancialStress() {
+            currentCustomer.riskScore = Math.min(99, currentCustomer.riskScore + 5);
+            currentCustomer.spending = Math.round(currentCustomer.spending * 1.08);
+            currentCustomer.savings = Math.max(0, currentCustomer.savings - 2000);
+            
+            init();
             renderRiskMonitor();
             showSection('risk-monitor');
         }
 
-        function simulateFinancialStress() {
-            if (!currentCustomer) loadDemoCustomer();
-            currentCustomer.riskScore = Math.min(99, currentCustomer.riskScore + 5);
-            currentCustomer.spending = Math.round(currentCustomer.spending * 1.08);
-            currentCustomer.savings = Math.max(0, currentCustomer.savings - 2000);
-            currentCustomer.creditUtilization = Math.min(99, currentCustomer.creditUtilization + 3);
-            currentCustomer.spendingHistory = [...currentCustomer.spendingHistory.slice(1), currentCustomer.spending];
-            currentCustomer.savingsHistory = [...currentCustomer.savingsHistory.slice(1), currentCustomer.savings];
+        function openModal(type) { document.getElementById(type + 'Modal').classList.add('active'); }
+        function closeModal(type) { document.getElementById(type + 'Modal').classList.remove('active'); }
 
-            renderRiskMonitor();
-            renderInterventionQueue();
-
-            const scoreElement = document.getElementById('healthScore');
-            scoreElement.classList.remove('stress-updated');
-            void scoreElement.offsetWidth;
-            scoreElement.classList.add('stress-updated');
-
-            const toast = document.getElementById('stressToast');
-            toast.innerHTML = `
-                <div class="stress-toast-header"><span>⚡</span> Stress event simulated</div>
-                <p>${currentCustomer.name} moved higher in the intervention queue.</p>
-                <div class="stress-toast-deltas">
-                    <span>Risk +5 → ${currentCustomer.riskScore}</span>
-                    <span>Spending ↑ ₹${currentCustomer.spending.toLocaleString()}</span>
-                    <span>Savings ↓ ₹${currentCustomer.savings.toLocaleString()}</span>
-                </div>
-            `;
-            toast.classList.add('visible');
-            clearTimeout(window.stressToastTimer);
-            window.stressToastTimer = setTimeout(() => toast.classList.remove('visible'), 5000);
+        function confirmStaffApproval() {
+            closeModal('humanApproval');
+            openModal('contactCustomer');
         }
-
-        // ===== MODALS =====
-        function openModal(type) {
-            const modalId = type + 'Modal';
-            document.getElementById(modalId).classList.add('active');
-        }
-
-        function closeModal(type) {
-            const modalId = type + 'Modal';
-            document.getElementById(modalId).classList.remove('active');
-        }
-
-        // ===== ACCOUNT AGGREGATOR EWS =====
-        let ewsPortfolio = [];
-
-        function openEwsConsent() {
-            document.getElementById('ewsConsentModal').classList.add('visible');
-            document.getElementById('ewsOtp').value = '';
-            document.getElementById('ewsOtp').focus();
-        }
-
-        function closeEwsConsent() {
-            document.getElementById('ewsConsentModal').classList.remove('visible');
-        }
-
-        async function approveEwsConsent() {
-            const otp = document.getElementById('ewsOtp').value.trim();
-            if (otp.length < 4) {
-                showEwsToast('Enter the mock AA OTP to approve this read-only sync.');
-                return;
-            }
-            closeEwsConsent();
-            await loadEwsPortfolio();
-            showEwsToast('AA sync approved. Debt Velocity signals refreshed.');
-        }
-
-        async function loadEwsPortfolio() {
-            const body = document.getElementById('ewsTableBody');
-            try {
-                const response = await fetch('http://127.0.0.1:8000/api/v1/ews/mock-portfolio', { cache: 'no-store' });
-                if (!response.ok) throw new Error('EWS service returned ' + response.status);
-                const data = await response.json();
-                ewsPortfolio = data.portfolio || [];
-                document.getElementById('ewsTotal').textContent = ewsPortfolio.length;
-                document.getElementById('ewsCritical').textContent = ewsPortfolio.filter(p => p.debt_velocity_tier === 'HIGH').length;
-                document.getElementById('ewsShadow').textContent = ewsPortfolio.filter(p => p.risk_flags.some(f => f.code === 'SHADOW_LENDING_PATTERN_DETECTED')).length;
-                body.innerHTML = ewsPortfolio.map(ews => {
-                    const tier = String(ews.debt_velocity_tier).toLowerCase();
-                    const flags = ews.risk_flags.length ? ews.risk_flags.map(f => `<span title="${f.detail}" style="display: inline-block; margin: 0 0.25rem 0.25rem 0; color: #cbd5e1; font-size: 0.75rem;">${f.code}</span>`).join('') : '<span style="color: #64748b;">None</span>';
-                    const action = ews.risk_status === 'HIGH' ? `<button class="btn btn-secondary" style="padding: 0.45rem 0.65rem; font-size: 0.75rem;" onclick="sendEwsFirstAid('${ews.customer_name}')">🆘 Financial First-Aid</button>` : '<span style="color: #64748b;">Monitor</span>';
-                    return `<tr><td>${ews.customer_name}</td><td style="color: #94a3b8;">${ews.account_id}</td><td><span class="ews-score ${tier === 'low' ? 'low' : ''}">₹${Number(ews.debt_velocity_score).toLocaleString('en-IN')}/day</span></td><td><span class="ews-status ${tier}">● ${ews.risk_status}</span></td><td>${flags}</td><td>${action}</td></tr>`;
-                }).join('');
-            } catch (error) {
-                body.innerHTML = `<tr><td colspan="6" style="padding: 2rem; text-align: center; color: #fda4af;">EWS service unavailable. Start DebtGuard with <code>uvicorn main:app --reload</code>.</td></tr>`;
-            }
-        }
-
-        function sendEwsFirstAid(customerName) {
-            showEwsToast(`Automated Debt Consolidation Offer sent to ${customerName} via WhatsApp.`);
-        }
-
-        function showEwsToast(message) {
-            const toast = document.getElementById('stressToast');
-            toast.innerHTML = `<div class="stress-toast-header"><span>✓</span> AA EWS update</div><p>${message}</p>`;
-            toast.classList.add('visible');
-            clearTimeout(window.ewsToastTimer);
-            window.ewsToastTimer = setTimeout(() => toast.classList.remove('visible'), 4000);
-        }
-
-        // ===== UTILITY FUNCTIONS =====
-        function getRiskClass(score) {
-            if (score < 30) return 'healthy';
-            if (score < 50) return 'moderate';
-            if (score < 75) return 'high';
-            return 'critical';
-        }
-
-        function getRiskLevel(score) {
-            if (score < 30) return 'HEALTHY';
-            if (score < 50) return 'MODERATE';
-            if (score < 75) return 'HIGH';
-            return 'CRITICAL';
-        }
-
-        function getScoreColor(score) {
-            if (score < 30) return '#10b981';
-            if (score < 50) return '#f59e0b';
-            if (score < 75) return '#f97316';
-            return '#ef4444';
-        }
-
-        // ===== START APPLICATION =====
-        init();
     </script>
 </body>
 </html>

@@ -1,5 +1,10 @@
 import requests
 import json
+import sys
+
+# Ensure UTF-8 output on Windows terminals
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
 
 BASE_URL = "http://localhost:8000"
 
