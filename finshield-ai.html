@@ -1032,6 +1032,36 @@
         .ews-modal.visible { display: grid; }
         .ews-modal-card { width: min(360px, 100%); padding: 1.5rem; border: 1px solid rgba(16, 185, 129, 0.45); border-radius: 20px; background: #0f172a; box-shadow: 0 24px 70px rgba(2, 6, 23, 0.6); }
         @media (max-width: 768px) { .ews-kpi-grid { grid-template-columns: 1fr; } }
+
+        .overview-hero {
+            position: relative;
+            min-height: 250px;
+            display: flex;
+            align-items: flex-end;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            padding: 2rem;
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            border-radius: 14px;
+            background: #102a35 url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600&q=80') center/cover;
+            box-shadow: inset 0 -100px 100px rgba(2, 6, 23, 0.82), 0 18px 45px rgba(2, 6, 23, 0.25);
+        }
+
+        .overview-hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(2, 6, 23, 0.94) 0%, rgba(2, 6, 23, 0.55) 48%, rgba(2, 6, 23, 0.18) 100%);
+        }
+
+        .overview-hero-content { position: relative; z-index: 1; max-width: 560px; }
+        .overview-eyebrow { margin-bottom: 0.55rem; color: #6ee7b7; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+        .overview-hero h2 { font-size: 2.7rem; line-height: 1.05; }
+        .overview-hero p { margin-top: 0.75rem; color: #cbd5e1; line-height: 1.55; }
+        .live-strip { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem; }
+        .live-strip span { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.7rem; border: 1px solid rgba(100, 116, 139, 0.25); border-radius: 999px; color: #cbd5e1; background: rgba(30, 41, 59, 0.62); font-size: 0.78rem; }
+        .live-dot { width: 0.45rem; height: 0.45rem; border-radius: 50%; background: #34d399; box-shadow: 0 0 10px #34d399; }
+        @media (max-width: 768px) { .overview-hero { min-height: 300px; padding: 1.35rem; } .overview-hero h2 { font-size: 1.8rem; } }
     </style>
 </head>
 <body>
@@ -1071,6 +1101,18 @@
     <div class="container">
         <!-- ===== OVERVIEW SECTION ===== -->
         <section id="overview" class="section active">
+            <div class="overview-hero">
+                <div class="overview-hero-content">
+                    <div class="overview-eyebrow">Financial wellness command center</div>
+                    <h2>See distress before it becomes default.</h2>
+                    <p>FinShield combines transparent risk signals, Account Aggregator data, and human-led interventions to protect financial futures earlier.</p>
+                </div>
+            </div>
+            <div class="live-strip" aria-label="System status">
+                <span><i class="live-dot"></i> Monitoring live transaction signals</span>
+                <span>AA consent-aware</span>
+                <span>Human review in the loop</span>
+            </div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
                 <h2 style="font-size: 1.8rem; font-weight: 700;">Dashboard Overview</h2>
                 <div style="display: flex; gap: 0.75rem;">
