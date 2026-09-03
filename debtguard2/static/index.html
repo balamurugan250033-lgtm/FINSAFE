@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DebtGuard 2.0 — RBI Early Warning System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            emerald: { 400:'#34d399',500:'#10b981',600:'#059669' },
+            rose: { 400:'#fb7185',500:'#f43f5e',600:'#e11d48' },
+            amber: { 400:'#fbbf24',500:'#f59e0b' },
+            slate: { 900:'#0f172a',950:'#020617' },
+          },
+          fontFamily: { sans:['Inter','ui-sans-serif','system-ui'], mono:['ui-monospace','Menlo','monospace'] },
+          boxShadow: {
+            neon: '0 0 0 3px theme(colors.emerald.500/0.25), 0 0 16px theme(colors.emerald.500/0.4)',
+            'neon-rose':'0 0 0 3px theme(colors.rose.500/0.25), 0 0 16px theme(colors.rose.500/0.4)',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body { background: radial-gradient(1200px 600px at 70% -10%, theme(colors.emerald.500/0.04) 0%, transparent 60%), theme(colors.slate.900); }
+    .phone-frame { background: radial-gradient(ellipse at center, #1e293b 0%, #0f172a 100%); }
+  </style>
+</head>
+<body class="min-h-screen font-sans text-slate-100 antialiased">
+  <!-- ===== HEADER ===== -->
+  <header class="sticky top-0 z-30 flex items-center justify-between border-b border-slate-800/60 bg-slate-900/80 px-5 py-3 backdrop-blur">
+    <div class="flex items-center gap-3">
+      <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/15 ring-2 ring-emerald-500/40">🛡️</div>
+      <div>
+        <h1 class="text-base font-semibold tracking-tight text-emerald-400">DebtGuard 2.0</h1>
+        <p class="text-xs text-slate-400">RBI-Compliant Early Warning System (EWS)</p>
+      </div>
+    </div>
+    <button id="aaSyncBtn"
+      class="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-emerald-300 ring-1 ring-slate-700 transition-all hover:bg-slate-700 hover:shadow-neon">
+      📱 Simulate AA Sync
+    </button>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="px-5 py-6">
+    <!-- KPI cards -->
+    <section class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div id="kpi-total" class="kpi-card">
+        <div class="text-2xl">👥</div>
+        <div class="text-right">
+          <div id="kpi-total-val" class="text-2xl font-bold text-emerald-400">—</div>
+          <div class="text-xs text-slate-400">Total Monitored</div>
+        </div>
+      </div>
+      <div id="kpi-critical" class="kpi-card">
+        <div class="text-2xl">⚡</div>
+        <div class="text-right">
+          <div id="kpi-critical-val" class="text-2xl font-bold text-rose-400">—</div>
+          <div class="text-xs text-slate-400">Critical Velocity Alerts</div>
+        </div>
+      </div>
+      <div id="kpi-shadow" class="kpi-card">
+        <div class="text-2xl">🕸️</div>
+        <div class="text-right">
+          <div id="kpi-shadow-val" class="text-2xl font-bold text-rose-400">—</div>
+          <div class="text-xs text-slate-400">Shadow Exposure</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Compliance note -->
+    <div class="mb-5 rounded-xl border border-slate-800 bg-slate-900/50 p-3.5 text-xs text-slate-400">
+      <span class="font-medium text-slate-300">Compliance:</span>
+      Scores computed in real time over raw AA transaction streams (zero reliance on 30-day-lagged CIBIL snapshots).
+      All risk actions are assistive recommendations reviewed per RBI FRMG 2026 §32.
+    </div>
+
+    <!-- Portfolio table -->
+    <section class="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/60 ring-1 ring-slate-800">
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[720px] table-fixed text-sm">
+          <thead>
+            <tr class="bg-slate-800/60">
+              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Customer</th>
+              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Account</th>
+              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Debt Velocity</th>
+              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Risk Status</th>
+              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Flags</th>
+              <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Action</th>
+            </tr>
+          </thead>
+          <tbody id="portfolio-body" class="divide-y divide-slate-800">
+            <tr><td colspan="6" class="py-8 text-center text-slate-400">Loading portfolio…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== AA Consent Modal (mobile phone frame) ===== -->
+  <div id="consentModal"
+    class="fixed inset-0 z-40 hidden items-end justify-center bg-black/60 p-4 backdrop-blur-sm">
+    <div class="phone-frame relative mx-auto mb-12 h-[560px] w-72 max-w-sm overflow-hidden rounded-[2.25rem] border-4 border-slate-800 shadow-2xl shadow-black/70">
+      <div class="absolute -right-1 -top-3 h-2 w-2 rounded-full bg-slate-700"></div>
+      <div class="absolute -right-1 bottom-16 h-6 w-6 rounded-full bg-slate-700"></div>
+
+      <div class="absolute inset-0 flex flex-col bg-slate-950">
+        <!-- status bar -->
+        <div class="flex items-center justify-between px-4 py-1 text-[10px] text-slate-500">
+          <span>9:41</span><span>100%</span><span>📶</span>
+        </div>
+
+        <div class="flex-1 overflow-y-auto px-5 py-6">
+          <div class="mb-5 text-center">
+            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/15 ring-2 ring-emerald-500/40">🔐</div>
+            <h2 class="mt-3 text-lg font-semibold text-slate-100">Account Aggregator Consent</h2>
+            <p class="mt-1.5 text-xs text-slate-400">
+              DebtGuard 2.0 requests read-only access to your transaction streams to generate EWS alerts.
+            </p>
+          </div>
+
+          <div class="rounded-xl border border-slate-800 bg-slate-900/80 p-3.5 text-xs text-slate-300">
+            <div class="mb-2 flex justify-between"><span>Data shared</span><span class="text-slate-400">Transactions (180 days)</span></div>
+            <div class="mb-2 flex justify-between"><span>Purpose</span><span class="text-slate-400">Risk scoring</span></div>
+            <div class="flex justify-between"><span>Duration</span><span class="text-slate-400">Single session</span></div>
+          </div>
+
+          <div class="mt-5">
+            <label class="mb-2 block text-xs font-medium text-slate-300">AA OTP (mock)</label>
+            <input id="otpInput" type="text" inputmode="numeric" maxlength="6"
+              class="w-full rounded-lg border border-slate-700 bg-slate-900 px-3.5 py-2.5 text-center text-base tracking-[0.2em] text-emerald-400 placeholder-slate-600 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              placeholder="● ● ● ● ● ●" />
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between border-t border-slate-800 p-3">
+          <button id="consentReject"
+            class="flex-1 rounded-lg py-2.5 text-center text-sm font-medium text-slate-300 hover:text-slate-100">
+            Not now
+          </button>
+          <button id="consentApprove"
+            class="flex-1 rounded-lg bg-emerald-600 py-2.5 text-center text-sm font-semibold text-white transition-colors hover:bg-emerald-500">
+            Approve & Sync
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Toast container ===== -->
+  <div id="toastContainer" class="fixed inset-x-0 bottom-6 z-50 flex flex-col items-center gap-3 px-4"></div>
+
+  <style>.kpi-card{@apply flex items-center justify-between rounded-xl border border-slate-800 bg-slate-900/60 p-4;}</style>
+
+  <script>
+    "use strict";
+    const API = "/api/v1/ews/mock-portfolio";
+    let portfolio = [];
+
+    /* ---------- Toast ---------- */
+    function showToast(message) {
+      const container = document.getElementById("toastContainer");
+      const el = document.createElement("div");
+      el.className = "w-full max-w-sm rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-100 shadow-neon";
+      el.innerHTML = `<div class="flex items-center gap-2"><span>✅</span><span>${message}</span></div>`;
+      container.appendChild(el);
+      setTimeout(() => el.remove(), 3200);
+    }
+
+    /* ---------- KPIs ---------- */
+    function renderKpis() {
+      const total = portfolio.length;
+      const critical = portfolio.filter(p => p.debt_velocity_tier === "HIGH").length;
+      const shadow = portfolio.filter(p => p.risk_flags.some(f => f.code === "SHADOW_LENDING_PATTERN_DETECTED")).length;
+      setText("kpi-total-val", total);
+      setText("kpi-critical-val", critical);
+      setText("kpi-shadow-val", shadow);
+    }
+    function setText(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    }
+
+    /* ---------- Table helpers ---------- */
+    function tierBadge(tier) {
+      const color = tier === "HIGH" ? "rose" : tier === "MEDIUM" ? "amber" : "emerald";
+      const cfg = {
+        rose:   "border-rose-500/30 bg-rose-500/10 text-rose-300",
+        amber:  "border-amber-400/30 bg-amber-400/10 text-amber-300",
+        emerald:"border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
+      }[color];
+      return `<span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium ${cfg}">● ${tier}</span>`;
+    }
+    function velocityCell(score, tier) {
+      const high = tier === "HIGH";
+      const cls = high
+        ? "border-rose-500/30 bg-rose-500/10 text-rose-300 animate-pulse"
+        : "border-slate-700 bg-slate-800/60 text-slate-300";
+      return `<td class="px-4 py-3"><span class="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-medium tabular-nums ${cls}">₹${Number(score).toLocaleString('en-IN')}/day ${high ? '⚠️' : ''}</span></td>`;
+    }
+    function statusBadge(status) {
+      const ok = status === "LOW";
+      return `<span class="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium ${ok ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300' : 'border-rose-500/30 bg-rose-500/10 text-rose-300'}">● ${status}</span>`;
+    }
+    function flagsCell(flags) {
+      if (!flags.length) return `<span class="text-slate-500">— none</span>`;
+      return flags.map(f => `<span class="mr-1.5 rounded bg-slate-800 px-1.5 py-0.5 text-xs text-slate-300" title="${f.detail}">${f.code}</span>`).join("");
+    }
+    function renderTable() {
+      const tbody = document.getElementById("portfolio-body");
+      if (!portfolio.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-400">No accounts yet.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = portfolio.map(p => `
+        <tr class="border-t border-slate-800/60 transition-colors hover:bg-slate-800/40">
+          <td class="px-4 py-3 font-medium text-slate-100">${p.customer_name}</td>
+          <td class="px-4 py-3 text-slate-400">${p.account_id}</td>
+          ${velocityCell(p.debt_velocity_score, p.debt_velocity_tier)}
+          <td class="px-4 py-3">${statusBadge(p.risk_status)}</td>
+          <td class="max-w-[180px] px-4 py-3">${flagsCell(p.risk_flags)}</td>
+          <td class="px-4 py-3">
+            ${p.risk_status === "HIGH"
+              ? `<button data-customer="${p.customer_name}" onclick="firstAid(this)"
+                  class="inline-flex items-center gap-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 text-xs font-medium text-rose-300 transition-colors hover:bg-rose-500/20">🆘 Financial First-Aid</button>`
+              : `<span class="text-xs text-slate-500">—</span>`}
+          </td>
+        </tr>`).join("");
+    }
+
+    /* ---------- Load portfolio ---------- */
+    async function loadPortfolio() {
+      try {
+        const res = await fetch(API, { cache: "no-store" });
+        const data = await res.json();
+        portfolio = data.portfolio || [];
+        renderKpis();
+        renderTable();
+      } catch (e) {
+        document.getElementById("portfolio-body").innerHTML =
+          `<tr><td colspan="6" class="py-8 text-center text-rose-400">Failed to load portfolio: ${e.message}</td></tr>`;
+      }
+    }
+
+    /* ---------- AA Sync simulation ---------- */
+    document.getElementById("aaSyncBtn").addEventListener("click", () => {
+      document.getElementById("consentModal").classList.remove("hidden");
+      document.getElementById("consentModal").classList.add("flex");
+      document.getElementById("otpInput").value = "";
+      document.getElementById("otpInput").focus();
+    });
+    document.getElementById("consentApprove").addEventListener("click", async () => {
+      const otp = document.getElementById("otpInput").value.trim();
+      if (otp.length < 4) { showToast("Please enter the mock OTP (e.g. 123456)."); return; }
+      document.getElementById("consentModal").classList.add("hidden");
+      document.getElementById("consentModal").classList.remove("flex");
+      await loadPortfolio();
+      showToast("AA sync approved — portfolio refreshed.");
+    });
+    document.getElementById("consentReject").addEventListener("click", () => {
+      const m = document.getElementById("consentModal");
+      m.classList.add("hidden"); m.classList.remove("flex");
+    });
+
+    /* ---------- Financial First-Aid ---------- */
+    window.firstAid = function (btn) {
+      const name = btn.dataset.customer;
+      showToast(`Automated Debt Consolidation Offer sent to ${name} via WhatsApp.`);
+    };
+
+    loadPortfolio();
+  </script>
+</body>
+</html>

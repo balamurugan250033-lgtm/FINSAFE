@@ -1,0 +1,35 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@layer base {
+  html {
+    font-size: 14px;
+  }
+
+  @media (min-width: 640px) {
+    html {
+      font-size: 15px;
+    }
+  }
+
+  body {
+    @apply m-0 bg-gray-50 font-sans antialiased;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #root {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  .rounded-bubble {
+    border-radius: 14px;
+  }
+
+  .rounded-bubble-lg {
+    border-radius: 16px;
+  }
+}
