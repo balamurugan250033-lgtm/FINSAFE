@@ -1932,6 +1932,25 @@
         }
 
         function simulateFinancialStress() {
+                // If no customer loaded, load demo customer first
+                if (!currentCustomer) {
+                    loadDemoCustomer();
+                    setTimeout(() => {
+                        // After loading, simulate stress
+                        currentCustomer.riskScore = Math.min(99, currentCustomer.riskScore + 5);
+                        currentCustomer.spending = Math.round(currentCustomer.spending * 1.08);
+                        currentCustomer.savings = Math.max(0, currentCustomer.savings - 2000);
+                        currentCustomer.creditUtilization = Math.min(99, currentCustomer.creditUtilization + 3);
+                        currentCustomer.spendingHistory = [...currentCustomer.spendingHistory.slice(1), currentCustomer.spending];
+                        currentCustomer.savingsHistory = [...currentCustomer.savingsHistory.slice(1), currentCustomer.savings];
+
+                        renderRiskMonitor();
+                        renderInterventionQueue();
+                        alert(`⚡ Stress simulated!\n\n${currentCustomer.name}'s financial situation has worsened:\n✗ Risk Score: +5 → ${currentCustomer.riskScore}\n✗ Spending: ↑ ₹${currentCustomer.spending.toLocaleString()}\n✗ Savings: ↓ ₹${currentCustomer.savings.toLocaleString()}\n\nCustomer has moved up in the intervention queue!`);
+                    }, 100);
+                    return;
+                }
+
             currentCustomer.riskScore = Math.min(99, currentCustomer.riskScore + 5);
             currentCustomer.spending = Math.round(currentCustomer.spending * 1.08);
             currentCustomer.savings = Math.max(0, currentCustomer.savings - 2000);
