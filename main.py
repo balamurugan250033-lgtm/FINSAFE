@@ -376,7 +376,7 @@ def _persist_scan_and_audit(payload: AccountPayload, result: EWSScanResult):
 
 
 # ---------------------------------------------------------------------------
-# Mock portfolio
+# Mock portfolio (Shared 10-customer dataset matching FinShield AI)
 # ---------------------------------------------------------------------------
 def _mk_transactions(spec: list[tuple]) -> List[Transaction]:
     return [Transaction(date=d, type=t, desc=desc, amount=float(a)) for (d, t, desc, a) in spec]
@@ -385,43 +385,102 @@ def _mk_transactions(spec: list[tuple]) -> List[Transaction]:
 _MOCK_PORTFOLIO = [
     {
         "account_id": "ACC-001",
-        "customer_name": "Priya Sharma",
+        "customer_name": "Rahul Sharma",
         "transactions": _mk_transactions([
-            ("2026-08-02", "CREDIT", "SALARY CREDIT HDFC", 75000),
-            ("2026-08-05", "DEBIT", "RENT PAYMENT UPI", 22000),
-            ("2026-08-08", "DEBIT", "Electricity BILL", 4500),
-            ("2026-08-12", "DEBIT", "Groceries BigBazaar", 3100),
-            ("2026-08-15", "CREDIT", "INTEREST CREDIT", 1200),
-        ]),
-        "risk_status": "LOW",
-    },
-    {
-        "account_id": "ACC-002",
-        "customer_name": "Rohan Mehta",
-        "transactions": _mk_transactions([
-            ("2026-08-01", "CREDIT", "NBFC_DISBURSAL BAJAJ", 200000),
-            ("2026-08-04", "CREDIT", "NBFC_DISBURSAL LENDINGTREE", 150000),
-            ("2026-08-09", "CREDIT", "NBFC_DISBURSAL KREDA", 100000),
+            ("2026-08-01", "CREDIT", "NBFC_DISBURSAL BAJAJ", 150000),
+            ("2026-08-04", "CREDIT", "NBFC_DISBURSAL LENDINGTREE", 100000),
+            ("2026-08-09", "CREDIT", "NBFC_DISBURSAL KREDA", 80000),
             ("2026-08-10", "DEBIT", "fastpay UPI txn", 450),
-            ("2026-08-12", "DEBIT", "EMI HDFC LOAN", 12000),
+            ("2026-08-12", "DEBIT", "EMI HDFC LOAN", 28000),
             ("2026-08-14", "DEBIT", "quickcash transfer", 750),
         ]),
         "risk_status": "HIGH",
     },
     {
-        "account_id": "ACC-003",
-        "customer_name": "Ananya Patel",
+        "account_id": "ACC-002",
+        "customer_name": "Priya Kumar",
         "transactions": _mk_transactions([
-            ("2026-08-01", "CREDIT", "SALARY CREDIT", 52000),
-            ("2026-08-02", "DEBIT", "fastpay UPI txn", 750),
-            ("2026-08-04", "DEBIT", "quickcash payment", 500),
-            ("2026-08-06", "DEBIT", "fastpay recharge", 300),
-            ("2026-08-08", "DEBIT", "rent split", 900),
-            ("2026-08-10", "DEBIT", "quickcash transfer", 850),
-            ("2026-08-15", "DEBIT", "fastpay bill", 650),
-            ("2026-08-20", "DEBIT", "monthly subscription", 1200),
+            ("2026-08-02", "CREDIT", "NBFC_DISBURSAL KREDA", 120000),
+            ("2026-08-05", "CREDIT", "NBFC_DISBURSAL QUICKLOAN", 90000),
+            ("2026-08-11", "DEBIT", "fastpay recharge", 650),
+            ("2026-08-13", "DEBIT", "EMI AXIS LOAN", 25000),
         ]),
         "risk_status": "HIGH",
+    },
+    {
+        "account_id": "ACC-003",
+        "customer_name": "Arjun Patel",
+        "transactions": _mk_transactions([
+            ("2026-08-01", "CREDIT", "SALARY CREDIT", 75000),
+            ("2026-08-03", "DEBIT", "EMI ICICI LOAN", 30000),
+            ("2026-08-08", "DEBIT", "fastpay UPI txn", 500),
+            ("2026-08-12", "DEBIT", "quickcash transfer", 600),
+        ]),
+        "risk_status": "HIGH",
+    },
+    {
+        "account_id": "ACC-004",
+        "customer_name": "Sneha Rao",
+        "transactions": _mk_transactions([
+            ("2026-08-01", "CREDIT", "SALARY CREDIT", 55000),
+            ("2026-08-04", "DEBIT", "EMI SBI LOAN", 22000),
+            ("2026-08-10", "DEBIT", "Groceries Mart", 4500),
+        ]),
+        "risk_status": "MEDIUM",
+    },
+    {
+        "account_id": "ACC-005",
+        "customer_name": "Karthik M",
+        "transactions": _mk_transactions([
+            ("2026-08-01", "CREDIT", "SALARY CREDIT", 60000),
+            ("2026-08-05", "DEBIT", "EMI HDFC LOAN", 20000),
+        ]),
+        "risk_status": "MEDIUM",
+    },
+    {
+        "account_id": "ACC-006",
+        "customer_name": "Neha Singh",
+        "transactions": _mk_transactions([
+            ("2026-08-01", "CREDIT", "SALARY CREDIT", 80000),
+            ("2026-08-06", "DEBIT", "EMI KOTAK LOAN", 18000),
+        ]),
+        "risk_status": "LOW",
+    },
+    {
+        "account_id": "ACC-007",
+        "customer_name": "Vikram Reddy",
+        "transactions": _mk_transactions([
+            ("2026-08-01", "CREDIT", "SALARY CREDIT", 55000),
+            ("2026-08-05", "DEBIT", "EMI AXIS LOAN", 16000),
+        ]),
+        "risk_status": "LOW",
+    },
+    {
+        "account_id": "ACC-008",
+        "customer_name": "Ananya Dey",
+        "transactions": _mk_transactions([
+            ("2026-08-01", "CREDIT", "SALARY CREDIT", 90000),
+            ("2026-08-04", "DEBIT", "EMI HDFC LOAN", 15000),
+        ]),
+        "risk_status": "LOW",
+    },
+    {
+        "account_id": "ACC-009",
+        "customer_name": "Rohan Nair",
+        "transactions": _mk_transactions([
+            ("2026-08-01", "CREDIT", "SALARY CREDIT", 70000),
+            ("2026-08-05", "DEBIT", "EMI ICICI LOAN", 12000),
+        ]),
+        "risk_status": "LOW",
+    },
+    {
+        "account_id": "ACC-010",
+        "customer_name": "Divya Iyer",
+        "transactions": _mk_transactions([
+            ("2026-08-01", "CREDIT", "SALARY CREDIT", 58000),
+            ("2026-08-06", "DEBIT", "EMI SBI LOAN", 10000),
+        ]),
+        "risk_status": "LOW",
     },
 ]
 
